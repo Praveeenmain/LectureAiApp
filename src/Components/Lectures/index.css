@@ -1,0 +1,176 @@
+/* For devices with a max width of 1200px (large tablets and small desktops) */
+.Lecture-heading {
+    color: aliceblue;
+}
+
+.Lecture-item {
+    display: flex;
+    width: 500px;
+    background-color: #f0f0f0;
+    align-items: center;
+    border-radius: 20px;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.title-delete {
+    display: flex;
+}
+.no-lectures{
+    color:#f0f0f0;
+    font-size: 25px;
+}
+.title {
+    font-size: 15px;
+    margin-right: 12px;
+}
+@media (max-width: 1200px) {
+    .Lecture-heading {
+        color: aliceblue;
+    }
+    .Lecture-item {
+        display: flex;
+        max-width: 600px;
+        background-color: #f0f0f0;
+        align-items: center;
+        border-radius: 20px;
+        justify-content: space-between;
+        padding: 15px;
+    }
+    .title-delete {
+        display: flex;
+    }
+    .title {
+        font-size: 15px;
+        margin-right: 12px;
+    }
+}
+
+/* For devices with a max width of 992px (medium tablets and small desktops) */
+@media (max-width: 992px) {
+    .Lecture-heading {
+        color: aliceblue;
+    }
+    .Lecture-item {
+        display: flex;
+        max-width: 600px;
+        background-color: #f0f0f0;
+        align-items: center;
+        border-radius: 20px;
+        justify-content: space-between;
+        padding: 15px;
+    }
+    .title-delete {
+        display: flex;
+    }
+    .title {
+        font-size: 15px;
+        margin-right: 12px;
+    }
+}
+
+/* For devices with a max width of 768px (large smartphones and small tablets) */
+@media (max-width: 768px) {
+    .Lecture-heading {
+        color: aliceblue;
+    }
+    .Lecture-item {
+        display: flex;
+        max-width: 600px;
+        background-color: #f0f0f0;
+        align-items: center;
+        border-radius: 20px;
+        justify-content: space-between;
+        padding: 15px;
+    }
+    .title-delete {
+        display: flex;
+    }
+    .title {
+        font-size: 15px;
+        margin-right: 12px;
+    }
+}
+
+/* For devices with a max width of 576px (large smartphones) */
+@media (max-width: 576px) {
+    .Lecture-heading {
+        color: aliceblue;
+    }
+    .Lecture-item {
+        display: flex;
+        max-width: 600px;
+        background-color: #f0f0f0;
+        align-items: center;
+        border-radius: 20px;
+        justify-content: space-between;
+        padding: 15px;
+        max-height: 90px;
+    }
+    .title-delete {
+        display: flex;
+    }
+    .title {
+        font-size: 15px;
+        margin-right: 12px;
+    }
+}
+
+/* For devices with a max width of 480px (small smartphones) */
+@media (max-width: 480px) {
+    .Lecture-heading {
+        color: aliceblue;
+    }
+    .Lecture-item {
+        display: flex;
+        width: 100%;
+        background-color: #f0f0f0;
+        align-items: center;
+        border-radius: 20px;
+        justify-content: space-between;
+        padding: 15px;
+    }
+    .title-delete {
+        display: flex;
+    }
+    .title {
+        font-size: 15px;
+        margin-right: 12px;
+    }
+}
+
+/* For devices with a max width of 360px (extra small smartphones) */
+@media (max-width: 360px) {
+    .Lecture-heading {
+        color: aliceblue;
+    }
+    .Lecture-item {
+        display: flex;
+        width: 100%;
+        background-color: #f0f0f0;
+        align-items: center;
+        border-radius: 20px;
+        justify-content: space-between;
+        padding: 15px;
+    }
+    .title-delete {
+        display: flex;
+    }
+    .title {
+        font-size: 15px;
+        margin-right: 12px;
+    }
+}
+
+
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid lightblue;
+    border-right-color: orange;
+    animation: l2 1s infinite linear;
+  }
+  @keyframes l2 {to{transform: rotate(1turn)}}

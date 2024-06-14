@@ -1,0 +1,491 @@
+/* index.css */
+
+/* Styling for the entire audio recorder container */
+.audio-recorder-container {
+    display:none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Takes full viewport height */
+    background-color: hsl(0, 4%, 9%); /* Dark background color */
+    
+}
+
+.Record-Title {
+    color: white;
+}
+
+.audio-content-box {
+    background-color: #3c3939; /* Darker box background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%; /* Takes full width of its container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for the record button */
+.record-button {
+    border-radius: 50%; /* Circular button */
+    background-color: #f0f0f0; /* Light button background */
+    height: 120px; /* Button height */
+    width: 120px; /* Button width */
+    animation: pulse 2s infinite; /* Pulse animation applied when recording */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+}
+
+/* Styling for other buttons (assuming to be added later) */
+
+/* Styling for the recorded audio player container */
+.recorded-audio-container {
+    margin-top: 20px; /* Adds space above the recorded audio player */
+    display: flex;
+    width: 500px;
+    background-color: #f0f0f0;
+    align-items: center;
+    border-radius: 20px;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.record-title {
+    color: white;
+}
+
+/* Styling for the ReactAudioPlayer component */
+.react-audio-player {
+    width: 100%; /* Takes full width of its container */
+}
+
+/* Styling for upload and delete buttons */
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+.button-group {
+    margin-left: 10px; /* Adjust spacing between buttons and audio player */
+}
+
+.upload-button,
+.delete-button {
+    cursor: pointer;
+    margin-right: 25px; /* Adjust spacing between icons */
+    background-color: none;
+    border: 0px;
+    font-size: 30px;
+}
+
+.Time {
+    color: rgb(19, 17, 17);
+}
+
+.auido-time {
+    background-color: #f0f0f0;
+    border-radius: 35px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    margin-top: -250px; /* Adjust as needed */
+    margin-left: 15px; /* Adjust as needed */
+}
+
+.waves div {
+    height: 30px;
+    width: 3px;
+    margin-right: 10px;
+    background-color: rgb(134, 42, 42);
+    animation: loading 1s linear infinite;
+}
+
+.waves div:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.waves div:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.waves div:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.waves div:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.waves div:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+@keyframes loading {
+    0% {
+        height: 0;
+    }
+    25% {
+        height: 25px;
+    }
+    50% {
+        height: 50px;
+    }
+    75% {
+        height: 25px;
+    }
+    100% {
+        height: 0;
+    }
+}
+
+
+
+/* Media query for devices with a max width of 1200px (large tablets and small desktops) */
+@media (max-width: 1200px) {
+    
+    .audio-recorder-container {
+        justify-content: flex-start; /* Align items to the start of the container */
+        padding-top: 20px; /* Add space at the top */
+        margin-top: 45px;
+        position: relative;
+        display:flex;
+    }
+
+    .audio-content-box {
+        padding: 15px; /* Adjust padding for smaller screens */
+        max-width: 600px; /* Adjust max-width to take full width on smaller screens */
+        height: 400px;
+    }
+
+    .record-button {
+        height: 100px; /* Adjust button height for smaller screens */
+        width: 100px; /* Adjust button width for smaller screens */
+    }
+
+    .button-group {
+        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
+    }
+
+    .Record-Title {
+        color: #f0f0f0; /* Adjust text color for smaller screens */
+    }
+
+    .recorded-audio-container {
+        width: 600px;
+    }
+
+    .waves {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        margin-top: -250px; /* Adjust as needed */
+        margin-left: 15px; /* Adjust as needed */
+    }
+
+    .waves div {
+        height: 30px;
+        width: 3px;
+        margin-right: 10px;
+        background-color: rgb(134, 42, 42);
+        animation: loading 1s linear infinite;
+    }
+
+    .waves div:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .waves div:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .waves div:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .waves div:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .waves div:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    .Time {
+        color: rgb(19, 17, 17);
+    }
+
+    .auido-time {
+        width: 100%;
+    }
+}
+
+/* Media query for devices with a max width of 992px (medium tablets and small desktops) */
+@media (max-width: 992px) {
+    .audio-recorder-container {
+        justify-content: flex-start; /* Align items to the start of the container */
+        padding-top: 20px; /* Add space at the top */
+        margin-top: 45px;
+        position: relative;
+    }
+
+    .audio-content-box {
+        padding: 15px; /* Adjust padding for smaller screens */
+        max-width: 600px; /* Adjust max-width to take full width on smaller screens */
+        height: 400px;
+    }
+
+    .record-button {
+        height: 100px; /* Adjust button height for smaller screens */
+        width: 100px; /* Adjust button width for smaller screens */
+    }
+
+    .button-group {
+        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
+    }
+
+    .Record-Title {
+        color: #f0f0f0; /* Adjust text color for smaller screens */
+    }
+
+    .recorded-audio-container {
+        width: 600px;
+    }
+
+    .waves {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        margin-top: -250px; /* Adjust as needed */
+        margin-left: 15px; /* Adjust as needed */
+    }
+
+    .waves div {
+        height: 30px;
+        width: 3px;
+        margin-right: 10px;
+        background-color: rgb(134, 42, 42);
+        animation: loading 1s linear infinite;
+    }
+
+    .waves div:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .waves div:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .waves div:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .waves div:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .waves div:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    .Time {
+        color: rgb(19, 17, 17);
+    }
+
+    .auido-time {
+        width: 100%;
+    }
+}
+
+/* Media query for devices with a max width of 
+/* Media query for devices with a max width of 768px (large smartphones and small tablets) */
+@media (max-width: 768px) {
+    .audio-recorder-container {
+        justify-content: flex-start; /* Align items to the start of the container */
+        padding-top: 20px; /* Add space at the top */
+        margin-top: 45px;
+        position: relative;
+    }
+
+    .audio-content-box {
+        padding: 15px; /* Adjust padding for smaller screens */
+        max-width: 600px; /* Adjust max-width to take full width on smaller screens */
+        height: 400px;
+    }
+
+    .record-button {
+        height: 100px; /* Adjust button height for smaller screens */
+        width: 100px; /* Adjust button width for smaller screens */
+    }
+
+    .button-group {
+        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
+    }
+
+    .Record-Title {
+        color: #f0f0f0; /* Adjust text color for smaller screens */
+    }
+
+    .recorded-audio-container {
+        width: 100%;
+    }
+
+    .waves {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        margin-top: -250px; /* Adjust as needed */
+        margin-left: 15px; /* Adjust as needed */
+    }
+
+    .waves div {
+        height: 30px;
+        width: 3px;
+        margin-right: 10px;
+        background-color: rgb(134, 42, 42);
+        animation: loading 1s linear infinite;
+    }
+
+    .waves div:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .waves div:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .waves div:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .waves div:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .waves div:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    .Time {
+        color: rgb(19, 17, 17);
+    }
+
+    .auido-time {
+        width: 100%;
+    }
+}
+
+/* Media query for devices with a max width of 576px (large smartphones) */
+@media (max-width: 576px) {
+    .audio-recorder-container {
+        justify-content: flex-start; /* Align items to the start of the container */
+        padding-top: 20px; /* Add space at the top */
+        margin-top: 45px;
+        position: relative;
+    }
+
+    .audio-content-box {
+        padding: 10px; /* Further reduce padding for smaller screens */
+        max-width: 90%; /* Adjust max-width to take up most of the screen width */
+        height: 300px; /* Adjust height as needed */
+    }
+
+    .record-button {
+        height: 80px; /* Adjust button height for smaller screens */
+        width: 80px; /* Adjust button width for smaller screens */
+    }
+
+    .button-group {
+        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
+    }
+
+    .Record-Title {
+        font-size: 20px; /* Adjust font size for smaller screens */
+    }
+
+    .recorded-audio-container {
+        width: 100%;
+    }
+
+    .waves {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        margin-top: -200px; /* Adjust as needed */
+        margin-left: 15px; /* Adjust as needed */
+    }
+
+    .waves div {
+        height: 25px; /* Adjust wave height for smaller screens */
+        width: 2px; /* Adjust wave width for smaller screens */
+        margin-right: 8px; /* Adjust margin between waves for smaller screens */
+        background-color: rgb(134, 42, 42);
+        animation: loading 1s linear infinite;
+    }
+
+    .waves div:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .waves div:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .waves div:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .waves div:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .waves div:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    .Time {
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+
+    .auido-time {
+        width: 100%;
+    }
+}
