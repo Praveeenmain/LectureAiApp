@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
+import './index.css';
 
-const LectureTitle = ({ lecture,id }) => {
+const LectureTitle = ({ lecture, id }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(lecture.title);
+
+  // Function to truncate title to 4 words
+  const truncateTitle = (text) => {
+    const words = text.split(' ');
+    if (words.length <= 4) {
+      return text; // Return full title if it has 4 or fewer words
+    }
+    return words.slice(0, 4).join(' ') + '...'; // Truncate and add ellipsis
+  };
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -32,12 +42,11 @@ const LectureTitle = ({ lecture,id }) => {
       setTitle(updatedLecture.title);
     } catch (error) {
       console.error('Error updating the title:', error);
-     
     }
   };
 
   return (
-    <div>
+    <div className="lecture-title">
       {isEditing ? (
         <input
           type="text"
@@ -45,11 +54,12 @@ const LectureTitle = ({ lecture,id }) => {
           onChange={handleTitleChange}
           onBlur={handleSaveClick}
           autoFocus
+          className="edit-input"
         />
       ) : (
-        <p className='title' onClick={handleEditClick}>
-          {title}
-        </p>
+        <h1 className="title" onClick={handleEditClick}>
+          {truncateTitle(title)}
+        </h1>
       )}
     </div>
   );

@@ -250,12 +250,14 @@
 }
 
 /* Media query for devices with a max width of 992px (medium tablets and small desktops) */
-@media (max-width: 992px) {
+@media (min-width: 992px) {
     .audio-recorder-container {
         justify-content: flex-start; /* Align items to the start of the container */
         padding-top: 20px; /* Add space at the top */
         margin-top: 45px;
         position: relative;
+        display:none ;
+        
     }
 
     .audio-content-box {
@@ -337,6 +339,7 @@
         padding-top: 20px; /* Add space at the top */
         margin-top: 45px;
         position: relative;
+       
     }
 
     .audio-content-box {
@@ -417,6 +420,7 @@
         padding-top: 20px; /* Add space at the top */
         margin-top: 45px;
         position: relative;
+        display: flex;
     }
 
     .audio-content-box {

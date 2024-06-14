@@ -1,0 +1,110 @@
+.lecture-item {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+    background-color: #333131;
+    position: relative;
+    color:#f0f0f0;
+    max-width: 600px;
+    width: 100%;
+    margin-left:15px;
+    margin-right:15px;
+    
+  }
+  
+  .audio-lecture-time-title {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .audio-time {
+    display: flex;
+    align-items: center;
+  }
+  
+  .media-symbol {
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+  
+  .date-time {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .lecture-title {
+    flex: 1;
+    margin-left: 1rem;
+  }
+  
+  .title-delete {
+    position: relative;
+  }
+  
+  .ellipsis-menu {
+    cursor: pointer;
+  }
+  
+  .delete-popup {
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+  
+  .delete-popup p {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .delete-confirm-button, .cancel-button {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .delete-confirm-button {
+    color: white;
+    background-color: #d9534f;
+  }
+  
+  .cancel-button {
+    color: #555;
+    background-color: #f0f0f0;
+    color: #333131;
+  }
+  
+  .delete-confirm-button:disabled {
+    cursor: not-allowed;
+    background-color: #c9302c;
+  }
+  .sure-paragraph{
+    color:black;
+  }
+
+  @media (max-width: 768px){
+    .lecture-item{
+        display: flex;
+        width:570px;
+    }
+
+
+  }
+  @media (max-width: 576px){
+    .lecture-item{
+      display: flex;
+      width:380px;
+  }
+
+  }
