@@ -62,4 +62,10 @@
      padding-right: 60px;
   }
   /* Additional specific adjustments as per your layout needs */
+  .loader-container{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  }
 }

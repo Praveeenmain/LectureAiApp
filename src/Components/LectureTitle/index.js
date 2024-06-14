@@ -4,6 +4,7 @@ import './index.css';
 const LectureTitle = ({ lecture, id }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(lecture.title);
+  const [error, setError] = useState(null);
 
   // Function to truncate title to 4 words
   const truncateTitle = (text) => {
@@ -23,8 +24,6 @@ const LectureTitle = ({ lecture, id }) => {
   };
 
   const handleSaveClick = async () => {
-    setIsEditing(false);
-    
     try {
       const response = await fetch(`https://lectureaibackend.onrender.com/audio-files/${id}`, {
         method: 'PUT',
@@ -40,13 +39,16 @@ const LectureTitle = ({ lecture, id }) => {
 
       const updatedLecture = await response.json();
       setTitle(updatedLecture.title);
+      setIsEditing(false);
     } catch (error) {
       console.error('Error updating the title:', error);
+      setError('Failed to update the title. Please try again.');
     }
   };
 
   return (
     <div className="lecture-title">
+      {error && <p className="error">{error}</p>}
       {isEditing ? (
         <input
           type="text"

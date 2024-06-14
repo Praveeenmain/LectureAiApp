@@ -62,7 +62,7 @@ const Lectures = () => {
   return (
     <div className="Lectures-container">
       <h1 className='Lecture-heading'>Lectures</h1>
-      {loading && <div className="loader"></div>} {/* Show loader only when loading is true */}
+      {loading && <div className='loader-container'> <div className="loader"></div> </div>} {/* Show loader only when loading is true */}
       {lectures.length > 0 && (
         <>
           {currentLectures.map((lecture) => (
