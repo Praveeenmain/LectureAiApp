@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStop, faUpload, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import ReactAudioPlayer from 'react-audio-player';
+import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import './index.css';  // Import the CSS file
 
@@ -11,8 +10,9 @@ const AudioRecorder = () => {
   const [recording, setRecording] = useState(null);  // State to store the recorded audio
   const [isRecording, setIsRecording] = useState(false);  // State to track if currently recording
   const [isUploading, setIsUploading] = useState(false);  // State to track if currently uploading
+  const [isPlaying, setIsPlaying] = useState(false); // State to track if audio is currently playing
   const mediaRecorderRef = useRef(null);  // Ref to store the MediaRecorder instance
-  const audioPlayerRef = useRef(null);  // Ref to store the ReactAudioPlayer instance
+  const audioElementRef = useRef(null); // Ref to store the <audio> element
 
   // Function to start recording audio
   const startRecording = () => {
@@ -64,8 +64,29 @@ const AudioRecorder = () => {
     }
     setIsUploading(false);
   };
+  const formattedDate = new Date().toLocaleString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+    hour: 'numeric',
+    minute: 'numeric'
+  });
+  // Function to handle playing the recorded audio
+  const playRecording = () => {
+    if (audioElementRef.current) {
+      audioElementRef.current.play();
+      setIsPlaying(true);
+    }
+  };
 
-  
+  // Function to handle pausing the recorded audio
+  const pauseRecording = () => {
+    if (audioElementRef.current) {
+      audioElementRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
   const deleteRecording = () => {
     setRecording(null);  
     alert("Lecture Deleted");
@@ -73,7 +94,6 @@ const AudioRecorder = () => {
 
   return (
     <>
-     
       <div className="audio-recorder-container">
         <h1 className="record-title">Record</h1>
         <div className="audio-content-box">
@@ -94,28 +114,26 @@ const AudioRecorder = () => {
           )}
         </div>
         {recording && (
-          <div className="recorded-audio-container">
-            <div className="audio-time">
-              <ReactAudioPlayer
-                className="react-audio-player"
-                src={recording.src}
-                controls
-                ref={audioPlayerRef}
-              />
-              <p className="time">{recording.dateTime.toLocaleString()}</p>
-            </div>
-            <div>
-              <button className="upload-button" onClick={uploadRecording} disabled={isUploading}>
-                {isUploading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faUpload} />}
-              </button>
-              <button className="delete-button" onClick={deleteRecording}>
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
-            </div>
-          </div>
-        )}
-        <Lectures/>
-        
+  <div className="recorded-audio-container">
+    <div className="audio-controls-and-date">
+      <button className="play-pause-button" onClick={isPlaying ? pauseRecording : playRecording}>
+        <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+      </button>
+      <p className="date-time">{formattedDate}</p>
+    </div>
+    <div className="upload-and-delete-buttons">
+      <button className="upload-button" onClick={uploadRecording} disabled={isUploading}>
+        {isUploading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faUpload} />}
+      </button>
+      <button className="delete-button" onClick={deleteRecording}>
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+    </div>
+    <audio ref={audioElementRef} src={recording.src} onEnded={() => setIsPlaying(false)} />
+  </div>
+)}
+
+        <Lectures />
       </div>
     </>
   );

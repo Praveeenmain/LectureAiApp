@@ -1,5 +1,6 @@
 .Lecture-heading {
     color: aliceblue;
+     text-align: center;
   }
   
   .no-lectures {
@@ -37,3 +38,28 @@
     background-color: #0056b3; /* Example of active state */
   }
   
+  /* Media query for devices with a max width of 576px (large smartphones) */
+@media (max-width: 576px) {
+  .page-button {
+      padding: 6px 12px; /* Adjust padding for smaller screens */
+      margin: 2px; /* Adjust margin for smaller screens */
+      font-size: 14px; /* Adjust font size for smaller screens */
+  }
+ 
+
+  .page-button.active {
+      background-color: #0056b3; /* Example of active state */
+      /* You can adjust active state styles as needed */
+  }
+  .pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .Lectures-container{
+     padding: 60px;
+     padding-left: 60px;
+     padding-right: 60px;
+  }
+  /* Additional specific adjustments as per your layout needs */
+}
