@@ -1,0 +1,130 @@
+.popup {
+    display: flex; /* Hide popup by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: auto;
+  }
+  .audio-player-container{
+    display: flex;
+    align-items: center;
+  }
+  .popup-content {
+    background-color: #212020;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 1000px;
+    height: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    color: #aaa;
+  }
+  
+  .close {
+    color: #aaa;
+    position: absolute;
+    top: -10px;
+    right: 8px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .generate-notes-btn,
+  .generate-summary-btn {
+    background-color: #a8aeb4; /* Blue color */
+    color: #fff; /* White text */
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .generate-summary-btn {
+    background-color: #070f09; /* Green color for summary button */
+  }
+  
+  .generate-notes-btn:hover,
+  .generate-summary-btn:hover {
+    opacity: 0.8; /* Reduce opacity on hover */
+  }
+  .audio-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #4e4b4b;
+    border-radius:10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  .play-pause-button {
+    background-color: transparent;
+    color:#f1f1f1;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .play-pause-button:hover {
+    opacity: 0.8;
+  }
+
+  
+  
+  /* popup.css */
+
+.options-menu {
+  position: relative; /* Ensure options menu is positioned relative to its container */
+  cursor: pointer;
+  
+}
+
+.options-menu:hover {
+  opacity: 0.8;
+}
+
+.delete-options {
+  position: absolute;
+  top: -0px; /* Adjust top position to move above the options menu */
+  right: 0; /* Adjust right position to align with the options menu */
+  background-color: #e3dcdc;
+  
+  padding: 10px;
+  z-index: 1;
+
+}
+
+.delete-button,
+.cancel-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.delete-button:hover,
+.cancel-button:hover {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}

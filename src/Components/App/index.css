@@ -1,382 +1,321 @@
-
-.audio-recorder-container {
-    display:none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
-    background-color: hsl(0, 4%, 9%); 
-    
-}
-
-.Record-Title {
-    color: white;
-}
-
-.audio-content-box {
-    background-color: #3c3939; 
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 500px;
-    width: 100%; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-.record-button {
-    border-radius: 50%; /* Circular button */
-    background-color: #f0f0f0; /* Light button background */
-    height: 120px; /* Button height */
-    width: 120px; /* Button width */
-    animation: pulse 2s infinite; /* Pulse animation applied when recording */
-}
-.recording{
-    background-color: red;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
-    }
-    70% {
-        transform: scale(1.1);
-        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-    }
-}
-
-/* Styling for other buttons (assuming to be added later) */
-
-/* Styling for the recorded audio player container */
-.recorded-audio-container {
-    margin-top: 20px; /* Adds space above the recorded audio player */
-    display: flex;
-   
-    background-color: #333131;
-    align-items: center;
-    border-radius: 20px;
-    justify-content: space-between;
-    padding: 15px;
-}
-
-.record-title {
-    color: white;
-}
-
-/* Styling for the ReactAudioPlayer component */
-.react-audio-player {
-    width: 100%; /* Takes full width of its container */
-}
-
-/* Styling for upload and delete buttons */
-.button-container {
-    display: flex;
-    align-items: center;
-}
-
-.button-group {
-    margin-left: 10px; /* Adjust spacing between buttons and audio player */
-}
-
-.upload-button,
-.delete-button {
-    cursor: pointer;
-    margin-right: 25px; /* Adjust spacing between icons */
-    background-color: none;
-    border: 0px;
-    font-size: 30px;
-}
-
-.Time {
-    color: rgb(19, 17, 17);
-}
-
-.auido-time {
-    background-color: #f0f0f0;
-    border-radius: 35px;
-    width: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.waves {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    margin-top: -250px; /* Adjust as needed */
-    margin-left: 15px; /* Adjust as needed */
-}
-
-.waves div {
-    height: 30px;
-    width: 3px;
-    margin-right: 10px;
-    background-color: rgb(134, 42, 42);
-    animation: loading 1s linear infinite;
-}
-
-.waves div:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.waves div:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.waves div:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-.waves div:nth-child(4) {
-    animation-delay: 0.4s;
-}
-
-.waves div:nth-child(5) {
-    animation-delay: 0.5s;
-}
-
-@keyframes loading {
-    0% {
-        height: 0;
-    }
-    25% {
-        height: 25px;
-    }
-    50% {
-        height: 50px;
-    }
-    75% {
-        height: 25px;
-    }
-    100% {
-        height: 0;
-    }
-}
-
-
-
-/* Media query for devices with a max width of 1200px (large tablets and small desktops) */
-@media (max-width: 1200px) {
-    
+@media (max-width: 767px) {
     .audio-recorder-container {
-        justify-content: flex-start; /* Align items to the start of the container */
-        padding-top: 20px; /* Add space at the top */
+        justify-content: flex-start;
+        padding-top: 20px;
         margin-top: 45px;
         position: relative;
-        display:flex;
-    }
-
-    .audio-content-box {
-        padding: 15px; /* Adjust padding for smaller screens */
-        max-width: 600px; /* Adjust max-width to take full width on smaller screens */
-        height: 400px;
-    }
-
-    .record-button {
-        height: 100px; /* Adjust button height for smaller screens */
-        width: 100px; /* Adjust button width for smaller screens */
-    }
-
-    .button-group {
-        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
-    }
-
-    .Record-Title {
-        color: #f0f0f0; /* Adjust text color for smaller screens */
-    }
-
-    .recorded-audio-container {
-        width: 600px;
-    }
-
-    .waves {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         display: flex;
-        align-items: center;
-        margin-top: -250px; /* Adjust as needed */
-        margin-left: 15px; /* Adjust as needed */
+        flex-direction: column; /* Adjust to column layout for smaller screens */
+        align-items: center; /* Center items vertically */
+        width: 100%; /* Ensure container takes full width of the viewport */
+        box-sizing: border-box; /* Include padding and border in width calculation */
+        overflow-x: hidden; /* Prevent horizontal scrollbar */
+        padding: 35px;
+      
     }
-
-    .waves div {
-        height: 30px;
-        width: 3px;
-        margin-right: 10px;
-        background-color: rgb(134, 42, 42);
-        animation: loading 1s linear infinite;
+    .stop-microphone{
+        font-size:35px;
     }
-
-    .waves div:nth-child(1) {
-        animation-delay: 0.1s;
-    }
-
-    .waves div:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .waves div:nth-child(3) {
-        animation-delay: 0.3s;
-    }
-
-    .waves div:nth-child(4) {
-        animation-delay: 0.4s;
-    }
-
-    .waves div:nth-child(5) {
-        animation-delay: 0.5s;
-    }
-
-    .Time {
-        color: rgb(19, 17, 17);
-    }
-
-    .auido-time {
+    .audio-content-box {
+        max-width: 300px;
         width: 100%;
-    }
-}
-
-/* Media query for devices with a max width of 992px (medium tablets and small desktops) */
-@media (min-width: 992px) {
-    .audio-recorder-container {
-        justify-content: flex-start; /* Align items to the start of the container */
-        padding-top: 20px; /* Add space at the top */
-        margin-top: 45px;
-        position: relative;
-        display:none ;
+        max-height: 300px;
+        height: 100vh;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        background-color: #333131;
         
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
-
-    .audio-content-box {
-        padding: 15px; /* Adjust padding for smaller screens */
-        max-width: 600px; /* Adjust max-width to take full width on smaller screens */
-        height: 400px;
-    }
+    
 
     .record-button {
-        height: 100px; /* Adjust button height for smaller screens */
-        width: 100px; /* Adjust button width for smaller screens */
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+        background-color: #c3cac4;
+        border: none;
+        color: white;
+        text-align: center;
+        line-height: 80px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: pulse 2s infinite; 
+    }
+    .recording{
+        background-color:red;
+        animation: pulse1 2s infinite; 
+    }
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(163, 167, 163, 0.7);
+        }
+        70% {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+        }
+    }
+    @keyframes pulse1 {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(137, 27, 3, 0.7);
+        }
+        70% {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+        }
     }
 
     .button-group {
-        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
+        margin-left: 5px;
     }
 
-    .Record-Title {
-        color: #f0f0f0; /* Adjust text color for smaller screens */
+    .record-title {
+        font-size: 28px;
+        color: white;
     }
 
     .recorded-audio-container {
-        width: 600px;
+        max-width: 100%; 
+        width: 100%; 
+        margin-top: 20px; 
+        display: flex;
+        background-color: #333131;
+        align-items: center;
+        border-radius: 20px;
+        justify-content: space-between;
+        padding: 15px;
     }
-
-    .waves {
+    .waves{
         position: absolute;
-        top: 50%;
+        top: 55%;
         left: 50%;
         transform: translate(-50%, -50%);
         display: flex;
         align-items: center;
-        margin-top: -250px; /* Adjust as needed */
-        margin-left: 15px; /* Adjust as needed */
-    }
-
-    .waves div {
-        height: 30px;
-        width: 3px;
-        margin-right: 10px;
-        background-color: rgb(134, 42, 42);
-        animation: loading 1s linear infinite;
-    }
-
-    .waves div:nth-child(1) {
-        animation-delay: 0.1s;
-    }
-
-    .waves div:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .waves div:nth-child(3) {
-        animation-delay: 0.3s;
-    }
-
-    .waves div:nth-child(4) {
-        animation-delay: 0.4s;
-    }
-
-    .waves div:nth-child(5) {
-        animation-delay: 0.5s;
-    }
-
-    .Time {
-        color: rgb(19, 17, 17);
-    }
-
-    .auido-time {
-        width: 100%;
-    }
-}
-
-/* Media query for devices with a max width of 
-/* Media query for devices with a max width of 768px (large smartphones and small tablets) */
-@media (max-width: 768px) {
-    .audio-recorder-container {
-        justify-content: flex-start; /* Align items to the start of the container */
-        padding-top: 20px; /* Add space at the top */
-        margin-top: 45px;
-        position: relative;
+       
+        
        
     }
 
+    
+    .waves div {
+        height: 30px;
+        width: 3px;
+        margin-right: 10px;
+        background-color: rgb(206, 198, 198);
+        animation: loading 1s linear infinite;
+    }
+    
+    .waves div:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    
+    .waves div:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    
+    .waves div:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+    
+    .waves div:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+    
+    .waves div:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+    
+    @keyframes loading {
+        0% {
+            height: 0;
+        }
+        25% {
+            height: 25px;
+        }
+        50% {
+            height: 50px;
+        }
+        75% {
+            height: 25px;
+        }
+        100% {
+            height: 0;
+        }
+    }
+    .recorded-audio-container {
+        display: flex;
+        flex-direction: row;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin: 10px;
+        background-color: #322f2f;
+    }
+    
+    .flex-row-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    .audio-controls-and-date,
+    .upload-and-delete-buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-grow: 1;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    
+    .audio-controls-and-date {
+        margin-right: 20px; /* Space between the two containers */
+    }
+    
+    .play-pause-button,
+    .upload-button,
+    .delete-menu-button {
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: white; /* Change icon color to white */
+    }
+    
+    .upload-and-delete-buttons .upload-button,
+    .upload-and-delete-buttons .delete-menu-button {
+        margin: 0; /* Ensure no margin between the buttons */
+    }
+    
+    .date-time {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin: 0 10px; /* Space between the date-time and other elements */
+    }
+    
+    .delete-menu {
+        position: relative;
+    }
+    
+    .delete-menu-content {
+        position: absolute;
+        bottom: 30px;
+        right: -20px; 
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        margin-left: 15px;
+    }
+    
+    .delete-menu-option {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-size: 16px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #d9534f;
+    }
+    
+    .delete-menu-option:hover {
+        background-color: #f0f0f0;
+    }
+    
+    audio {
+        width: 100%;
+        margin-top: 15px;
+    }
+    
+   
+}
+
+
+
+
+
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+    
+
+    .audio-recorder-container {
+        justify-content: flex-start;
+        padding-top: 20px;
+        margin-top: 45px;
+        position: relative;
+        display: none;
+ 
+        max-width:800px;
+        width: 100%;
+        max-height: 800px;
+        height: 100vh;
+    }
+
     .audio-content-box {
-        padding: 15px; /* Adjust padding for smaller screens */
-        max-width: 400px; /* Adjust max-width to take full width on smaller screens */
-        height: 300px;
+        padding: 15px;
+        max-width: 600px;
+        height: 400px;
+        
     }
 
     .record-button {
-        height: 100px; /* Adjust button height for smaller screens */
-        width: 100px; /* Adjust button width for smaller screens */
+        height: 100px;
+        width: 100px;
+   
     }
 
     .button-group {
-        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
+        margin-left: 5px;
+       
     }
 
     .Record-Title {
-        color: #f0f0f0; /* Adjust text color for smaller screens */
+        color: #f0f0f0;
+       
     }
 
     .recorded-audio-container {
-        width: 100%;
-        max-width:690px;
-        width: 570px;
+        width: 600px;
+      
     }
 
     .waves {
         position: absolute;
-        top: 50%;
+         bottom: 60%;
         left: 50%;
+
         transform: translate(-50%, -50%);
         display: flex;
         align-items: center;
-        margin-top: -250px; /* Adjust as needed */
-        margin-left: 15px; /* Adjust as needed */
+        margin-top: -280px;
+        margin-left: 15px;
+      
     }
 
     .waves div {
@@ -385,271 +324,83 @@
         margin-right: 10px;
         background-color: rgb(134, 42, 42);
         animation: loading 1s linear infinite;
-    }
-
-    .waves div:nth-child(1) {
-        animation-delay: 0.1s;
-    }
-
-    .waves div:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .waves div:nth-child(3) {
-        animation-delay: 0.3s;
-    }
-
-    .waves div:nth-child(4) {
-        animation-delay: 0.4s;
-    }
-
-    .waves div:nth-child(5) {
-        animation-delay: 0.5s;
+        
     }
 
     .Time {
         color: rgb(19, 17, 17);
+       
     }
 
     .auido-time {
         width: 100%;
-    }
-}
-
-/* Media query for devices with a max width of 576px (large smartphones) */
-@media (max-width: 576px) {
-    .audio-recorder-container {
-        justify-content: flex-start; /* Align items to the start of the container */
-        padding-top: 20px; /* Add space at the top */
-        margin-top: 45px;
-        position: relative;
-        display: flex;
+       
     }
 
-    .audio-content-box {
-        padding: 10px; /* Further reduce padding for smaller screens */
-        max-width: 90%; /* Adjust max-width to take up most of the screen width */
-        height: 500px; /* Adjust height as needed */
-    }
-
-    .record-button {
-        height: 80px; /* Adjust button height for smaller screens */
-        width: 80px; /* Adjust button width for smaller screens */
-    }
-
-    .button-group {
-        margin-left: 5px; /* Further reduce spacing between buttons and audio player */
-    }
-
-    .Record-Title {
-        font-size: 20px; /* Adjust font size for smaller screens */
-    }
-
-    .recorded-audio-container {
-      
-        max-width: 490px;
-        width: 490px;
-    }
-
-    .waves {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        align-items: center;
-        margin-top: -200px; /* Adjust as needed */
-        margin-left: 15px; /* Adjust as needed */
-    }
-
-    .waves div {
-        height: 25px; /* Adjust wave height for smaller screens */
-        width: 2px; /* Adjust wave width for smaller screens */
-        margin-right: 8px; /* Adjust margin between waves for smaller screens */
-        background-color: rgb(134, 42, 42);
-        animation: loading 1s linear infinite;
-    }
-
-    .waves div:nth-child(1) {
-        animation-delay: 0.1s;
-    }
-
-    .waves div:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .waves div:nth-child(3) {
-        animation-delay: 0.3s;
-    }
-
-    .waves div:nth-child(4) {
-        animation-delay: 0.4s;
-    }
-
-    .waves div:nth-child(5) {
-        animation-delay: 0.5s;
-    }
-
-    .Time {
-        font-size: 14px; /* Adjust font size for smaller screens */
-    }
-
-    .auido-time {
-        width: 100%;
-    }
+    
 }
 
 
-.recorded-audio-container {
-    display: flex;
-    align-items: center;
-    background-color: #3b3b3b; /* White background */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px;
-    margin-bottom: 15px; /* Spacing between recordings */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  }
-  
-  .audio-controls-and-date,
-  .upload-and-delete-buttons {
-    display: flex;
-    align-items: center; /* Vertically center icons and date */
-  }
-  
-  .audio-controls-and-date {
-    flex: 1; /* Take up available space */
-    justify-content: space-between; /* Distribute icons and date evenly */
-  }
-  
-  .upload-and-delete-buttons {
-    justify-content: flex-end; /* Align buttons to the right */
-  }
-  
-  .play-pause-button,
-  .upload-button,
-  .delete-button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer; /* Indicate clickable elements */
-    margin-right: 10px; /* Spacing between buttons (except last) */
-    color: #fff; /* White text color for buttons */
-  }
-  
-  .play-pause-button:last-child,
-  .upload-button:last-child,
-  .delete-button:last-child {
-    margin-right: 0; /* Remove margin for the last button */
-  }
-  
-  .play-pause-button svg,
-  .upload-button svg,
-  .delete-button svg {
-    font-size: 20px;
-    color: #fff; /* White icon color */
-  }
-  
-  .date-time {
-    font-size: 14px;
-    color: #ddd; /* Light gray for date text */
-  }
-  
-  /* Animation for play/pause button (optional) */
-  .play-pause-button {
-    transition: transform 0.2s ease-in-out; /* Smooth transition on hover */
-  }
-  
-  .play-pause-button:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
-  }
-  
-  /* Media query for devices with a max width of 576px (large smartphones) */
- /* Media query for devices with a max width of 576px (large smartphones) */
-@media (max-width: 576px) {
+@media (min-width: 992px) {
+    /* Styles to apply when screen width is 992px or wider */
+
     .audio-recorder-container {
-      justify-content: flex-start;
-      padding-top: 20px;
-      margin-top: 45px;
-      position: relative;
-      display: flex;
-      flex-direction: column; /* Adjust to column layout for smaller screens */
-      align-items: center; /* Center items vertically */
-      width: 100%; /* Ensure container takes full width of the viewport */
-      box-sizing: border-box; /* Include padding and border in width calculation */
-      overflow-x: hidden; /* Prevent horizontal scrollbar */
-      padding: 35px;
+        display: none; /* Hide the audio recorder container */
     }
-  
-    .audio-content-box {
-      padding: 10px; /* Further reduce padding for smaller screens */
-      max-width: 100%; /* Adjust max-width to take up most of the screen width */
-      height: 200px; /* Adjust height as needed */
+
+    /* Add more selectors as needed */
+}
+
+
+
+
+
+.loader-1 {
+    display: inline-block;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+}
+
+.loader-1 div {
+    display: inline-block;
+    position: absolute;
+    left: 7px;
+    width: 3px;
+    background: white; /* Adjust the color as needed */
+    animation: loader-animation 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.loader-1 div:nth-child(1) {
+    left: 3px;
+    animation-delay: -0.24s;
+}
+
+.loader-1 div:nth-child(2) {
+    left: 9px;
+    animation-delay: -0.12s;
+}
+
+.loader-1 div:nth-child(3) {
+    left: 15px;
+    animation-delay: 0;
+}
+.loader div:nth-child(4) {
+    left: 21px;
+    animation-delay: 0; /* Adjust delay to fit the sequence */
+}
+@keyframes loader-animation {
+    0% {
+        top: 3px;
+        height: 18px;
     }
-  
-    .record-button {
-      height: 80px;
-      width: 80px;
+    50%, 100% {
+        top: 8px;
+        height: 8px;
     }
-  
-    .button-group {
-      margin-left: 5px;
-    }
-  
-    .Record-Title {
-      font-size: 20px;
-    }
-  
-    .recorded-audio-container {
-      max-width: 100%; /* Adjust to take up most of the screen width */
-      width: 100%; /* Let it expand as per content */
-    }
-  
-    .waves {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: center;
-      margin-top: -200px; /* Adjust as needed */
-      margin-left: 15px; /* Adjust as needed */
-    }
-  
-    .waves div {
-      height: 25px;
-      width: 2px;
-      margin-right: 8px;
-      background-color: rgb(134, 42, 42);
-      animation: loading 1s linear infinite;
-    }
-  
-    .waves div:nth-child(1) {
-      animation-delay: 0.1s;
-    }
-  
-    .waves div:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-  
-    .waves div:nth-child(3) {
-      animation-delay: 0.3s;
-    }
-  
-    .waves div:nth-child(4) {
-      animation-delay: 0.4s;
-    }
-  
-    .waves div:nth-child(5) {
-      animation-delay: 0.5s;
-    }
-  
-    .Time {
-      font-size: 14px;
-    }
-  
-    .auido-time {
-      width: 100%;
-    }
-  
-    /* Additional specific adjustments as per your layout needs */
-  }
-  
+}
+
+.success-message{
+    color:red;
+}

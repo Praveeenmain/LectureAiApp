@@ -4,7 +4,7 @@ import './index.css';
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-light bg-dark fixed-top d-flex justify-content-between align-items-center px-3">
+    <nav className="navbar navbar-light bg-dark  d-flex justify-content-between align-items-center px-3">
       <div className="d-flex align-items-center">
         <div className="navbar-brand" style={{color:'white'}} >
           <img

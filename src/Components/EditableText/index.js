@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import './index.css';
+import './index.css'; // Assuming you have a CSS file for styling
+import axios from 'axios';
 
 const LectureTitle = ({ lecture, id }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(lecture.title);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Function to truncate title to 4 words
   const truncateTitle = (text) => {
     const words = text.split(' ');
     if (words.length <= 4) {
@@ -17,6 +18,7 @@ const LectureTitle = ({ lecture, id }) => {
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
+    setError(null); // Clear any previous errors when the user starts typing
   };
 
   const handleEditClick = () => {
@@ -24,25 +26,25 @@ const LectureTitle = ({ lecture, id }) => {
   };
 
   const handleSaveClick = async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch(`https://lectureaibackend.onrender.com/audio-files/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title }),
+      const response = await axios.put(`https://lectureaibackend.onrender.com/audio-files/${id}`, {
+        title,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to update the title.');
+      if (response.status >= 400) { // Check for HTTP error codes
+        throw new Error(response.data.message || 'Failed to update the title.');
+      } else if (response.data.error) { // Check for specific error property in response data (if applicable)
+        throw new Error(response.data.error);
       }
 
-      const updatedLecture = await response.json();
-      setTitle(updatedLecture.title);
+      setTitle(response.data.lecture.title); // Assuming the response contains the updated lecture data
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating the title:', error);
-      setError('Failed to update the title. Please try again.');
+      setError('Failed to update the title. Please try again.'); // Generic message for user
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,13 +56,13 @@ const LectureTitle = ({ lecture, id }) => {
           type="text"
           value={title}
           onChange={handleTitleChange}
-          onBlur={handleSaveClick}
+          onBlur={handleSaveClick} // Save on blur or Enter key press (optional)
           autoFocus
           className="edit-input"
         />
       ) : (
         <h1 className="title" onClick={handleEditClick}>
-          {truncateTitle(title)}
+          {isLoading ? 'Saving...' : truncateTitle(title)}
         </h1>
       )}
     </div>
