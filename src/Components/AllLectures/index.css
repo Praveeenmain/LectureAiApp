@@ -3,24 +3,35 @@
   
   
   .lectures-container {
-    width: 100%;
+    
     height: 100vh; 
     background-color: #0b0404;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     flex-direction: column; 
-    padding: 75px;
+   padding:15px;
   }
   .menu {
     list-style-type: none;
     padding: 0;
     background-color: #3d3b3b;
-    width: 100%; /* Take full width of the container */
-    max-width: 600px; /* Limit the width for better readability */
+    max-width: 700px; /* Limit the width for better readability on larger screens */
+    margin: 0 auto; /* Center the menu horizontally */
     margin-bottom: 20px; /* Add some space between list and popup */
-    padding:45px;
-    border-radius:10px
+    padding: 35px; /* Padding inside the menu */
+    border-radius: 10px; /* Rounded corners for the menu */
+
+    /* Media query for mobile devices */
+   
+}
+@media (max-width: 600px) {
+  .menu{
+   
+  max-width: 100%; /* Full width on mobile devices */
+  border-radius: 10; /* No border radius on mobile */
+  padding: 20px; /* Reduced padding for better spacing on mobile */
+}
 }
   .Lecture-heading{
     color:white;
