@@ -12,6 +12,12 @@
     flex-direction: column; 
    padding:15px;
   }
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; /* Adjust height as needed based on your design */
+}
   .menu {
     list-style-type: none;
     padding: 0;
@@ -26,6 +32,13 @@
    
 }
 @media (max-width: 600px) {
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
   .menu{
    
   max-width: 100%; /* Full width on mobile devices */

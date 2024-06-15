@@ -203,11 +203,13 @@
         cursor: pointer;
         color: white; /* Change icon color to white */
     }
+  
     
-    .upload-and-delete-buttons .upload-button,
+    .upload-and-delete-buttons ,
     .upload-and-delete-buttons .delete-menu-button {
-        margin: 0; /* Ensure no margin between the buttons */
+        margin:0px; /* Ensure no margin between the buttons */
     }
+    
     
     .date-time {
         font-size: 14px;
