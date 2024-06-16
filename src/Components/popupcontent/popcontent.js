@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
@@ -140,7 +140,11 @@ const PopContent = ({ handleClose, audioFile }) => {
         setIsDeleting(false);
       });
   };
-
+  useEffect(() => {
+    if(isDeleting) {
+      window.location.reload(false);
+    }
+  }, [isDeleting]);
   return (
     <div className="popup">
       <div className="popup-content">

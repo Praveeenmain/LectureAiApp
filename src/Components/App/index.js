@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faPlay, faPause, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -59,11 +59,17 @@ const AudioRecorder = () => {
       console.log('Upload successful:', response.data);
       setRecording(null);
       setUploadSuccess(true); // Set upload success state
+      
     } catch (error) {
       console.error('Error uploading to backend:', error);
     }
     setIsUploading(false);
   };
+  useEffect(() => {
+    if (uploadSuccess) {
+      window.location.reload(false);
+    }
+  }, [uploadSuccess]);
 
   const playRecording = () => {
     if (audioElementRef.current) {
@@ -160,8 +166,10 @@ const AudioRecorder = () => {
             <audio ref={audioElementRef} src={recording.src} onEnded={() => setIsPlaying(false)} />
           </div>
         )}
+       
 
         {uploadSuccess && (
+
           <div className="success-message">
             <p>Upload successful!</p>
           </div>
