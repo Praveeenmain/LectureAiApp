@@ -24,7 +24,7 @@ const MenuItem = ({ onClick, audioFile }) => {
   const truncatedTitle = truncateTitle(audioFile.title, 4);
 
   const handleItemClick = () => {
-    onClick(); // Call the onClick function passed from parent (App component)
+    onClick(); 
   };
 
   return (

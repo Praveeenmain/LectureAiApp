@@ -18,20 +18,20 @@ const Lectures = () => {
         const fetchAudioFiles = async () => {
             try {
                 const response = await axios.get('https://lectureaibackend.onrender.com/audios');
-                // Reverse the array received from the server
+               
                 const reversedAudioFiles = response.data.reverse();
                 setAudioFiles(reversedAudioFiles);
-                setIsLoading(false); // Set loading state to false after data is fetched
+                setIsLoading(false); 
             } catch (error) {
                 console.error('Error fetching audio files:', error);
-                setIsLoading(false); // Set loading state to false in case of error
+                setIsLoading(false); 
             }
         };
-
         fetchAudioFiles();
+        
     }, []);
-
-    // Logic to calculate current items to display based on pagination
+  
+    
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = audioFiles.slice(indexOfFirstItem, indexOfLastItem);
@@ -63,7 +63,11 @@ const Lectures = () => {
                         visible={true}
                     />
                 </div>
-            ) : (
+            ) : audioFiles.length === 0 ? (
+                <p className="no-audio-message">
+                    No Lectures available,Please upload.
+                </p>
+            ) :(
                 <>
                     <ul className="menu">
                         {currentItems.map((audioFile, index) => (
@@ -75,7 +79,7 @@ const Lectures = () => {
                             </div>
                         ))}
                     </ul>
-                    {/* Pagination controls */}
+                 
                     <div className="pagination">
                         {[...Array(Math.ceil(audioFiles.length / itemsPerPage)).keys()].map((number) => (
                             <button
