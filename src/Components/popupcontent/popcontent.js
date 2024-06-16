@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisV, faTimes, faTrash, faPlay, faPause, faVolumeUp, faVolumeMute} from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisV, faTimes, faTrash, faPlay, faPause, faVolumeUp, faVolumeMute,faCopy,faShareAlt} from '@fortawesome/free-solid-svg-icons';
 import { Audio } from 'react-loader-spinner';
 import './popup.css';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 
 const PopContent = ({ handleClose, audioFile }) => {
@@ -17,6 +18,10 @@ const PopContent = ({ handleClose, audioFile }) => {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
   const [showSpeedOptions, setShowSpeedOptions] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [copiedSummary, setCopiedSummary] = useState(false);
+
+  
   const audioElementRef = useRef(null);
 
   const API_KEY = 'AIzaSyB5jwfd5r7T4cssflgHmnItKmzCNoOEGlI';
@@ -76,7 +81,21 @@ const PopContent = ({ handleClose, audioFile }) => {
         alert('Failed to delete audio file. Please try again.');
       });
   };
-
+  const handleShare = async (content, contentType) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: contentType === 'notes' ? 'Notes' : 'Summary',
+          text: content,
+        });
+        console.log('Shared successfully');
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      alert('Web Share API is not supported in your browser.');
+    }
+  };
   const playRecording = () => {
     if (audioElementRef.current) {
       audioElementRef.current.play()
@@ -180,6 +199,7 @@ const PopContent = ({ handleClose, audioFile }) => {
   };
 
   const speedOptions = [0.5, 1, 1.5, 2];
+ 
 
   return (
     <div className="popup">
@@ -259,17 +279,42 @@ const PopContent = ({ handleClose, audioFile }) => {
           </button>
         </div>
         {notes && (
-          <div className="generated-notes">
-            <h3>Generated Notes:</h3>
-            <p>{notes}</p>
-          </div>
-        )}
-        {summary && (
-          <div className="generated-summary">
-            <h3>Generated Summary:</h3>
-            <p>{summary}</p>
-          </div>
-        )}
+  <div className="generated-notes">
+    <h3>Generated Notes:</h3>
+    <p>{notes}</p>
+    <CopyToClipboard 
+      text={notes} 
+      onCopy={() => setCopied(true)}
+    >
+      <button>
+        <FontAwesomeIcon icon={faCopy} />
+      </button>
+    </CopyToClipboard>
+    {copied && <span>Copied!</span>}
+    <button onClick={() => handleShare(notes, 'notes')}>
+      <FontAwesomeIcon icon={faShareAlt} /> Share Notes
+    </button>
+  </div>
+)}
+
+          {summary && (
+            <div className="generated-summary">
+              <h3>Generated Summary:</h3>
+              <p>{summary}</p>
+              <CopyToClipboard 
+                text={summary} 
+                onCopy={() => setCopiedSummary(true)}
+              >
+                <button>
+                  <FontAwesomeIcon icon={faCopy} />
+                </button>
+              </CopyToClipboard>
+              {copiedSummary && <span>Copied!</span>}
+              <button onClick={() => handleShare(summary, 'summary')}>
+                <FontAwesomeIcon icon={faShareAlt} /> 
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );
