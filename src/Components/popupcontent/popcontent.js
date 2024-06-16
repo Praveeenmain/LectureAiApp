@@ -20,6 +20,7 @@ const PopContent = ({ handleClose, audioFile }) => {
   const [showSpeedOptions, setShowSpeedOptions] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copiedSummary, setCopiedSummary] = useState(false);
+  const [copiedMessageVisible, setCopiedMessageVisible] = useState(false);
 
   
   const audioElementRef = useRef(null);
@@ -197,6 +198,25 @@ const PopContent = ({ handleClose, audioFile }) => {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
+  useEffect(() => {
+    if (copied) {
+      const timeout = setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [copied]);
+
+  useEffect(() => {
+    if (copiedSummary) {
+      const timeout = setTimeout(() => {
+        setCopiedSummary(false);
+      }, 2000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [copiedSummary]);
 
   const speedOptions = [0.5, 1, 1.5, 2];
  
@@ -284,15 +304,19 @@ const PopContent = ({ handleClose, audioFile }) => {
     <p>{notes}</p>
     <CopyToClipboard 
       text={notes} 
-      onCopy={() => setCopied(true)}
+      onCopy={() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // Show "Copied!" for 2 seconds
+      }}
     >
       <button>
         <FontAwesomeIcon icon={faCopy} />
       </button>
     </CopyToClipboard>
     {copied && <span>Copied!</span>}
+    
     <button onClick={() => handleShare(notes, 'notes')}>
-      <FontAwesomeIcon icon={faShareAlt} /> Share Notes
+      <FontAwesomeIcon icon={faShareAlt} /> 
     </button>
   </div>
 )}
@@ -303,7 +327,10 @@ const PopContent = ({ handleClose, audioFile }) => {
               <p>{summary}</p>
               <CopyToClipboard 
                 text={summary} 
-                onCopy={() => setCopiedSummary(true)}
+                onCopy={() => {
+                  setCopiedSummary(true);
+                  setTimeout(() => setCopiedSummary(false), 2000); // Show "Copied!" for 2 seconds
+                }}
               >
                 <button>
                   <FontAwesomeIcon icon={faCopy} />
