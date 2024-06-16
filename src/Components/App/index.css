@@ -1,8 +1,8 @@
 @media (max-width: 767px) {
     .audio-recorder-container {
         justify-content: flex-start;
-        padding-top: 20px;
-        margin-top: 45px;
+        padding-top: 10px;
+        margin-top: 2px;
         position: relative;
         display: flex;
         flex-direction: column; /* Adjust to column layout for smaller screens */
@@ -10,7 +10,7 @@
         width: 100%; /* Ensure container takes full width of the viewport */
         box-sizing: border-box; /* Include padding and border in width calculation */
         overflow-x: hidden; /* Prevent horizontal scrollbar */
-        padding: 35px;
+        padding: 10px;
       
     }
     .stop-microphone{

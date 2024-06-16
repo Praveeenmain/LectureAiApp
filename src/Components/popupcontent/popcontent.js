@@ -20,7 +20,7 @@ const PopContent = ({ handleClose, audioFile }) => {
   const [showSpeedOptions, setShowSpeedOptions] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copiedSummary, setCopiedSummary] = useState(false);
-  const [copiedMessageVisible, setCopiedMessageVisible] = useState(false);
+
 
   
   const audioElementRef = useRef(null);
@@ -198,25 +198,9 @@ const PopContent = ({ handleClose, audioFile }) => {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
-  useEffect(() => {
-    if (copied) {
-      const timeout = setTimeout(() => {
-        setCopied(false);
-      }, 2000);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [copied]);
 
-  useEffect(() => {
-    if (copiedSummary) {
-      const timeout = setTimeout(() => {
-        setCopiedSummary(false);
-      }, 2000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [copiedSummary]);
+  
 
   const speedOptions = [0.5, 1, 1.5, 2];
  
