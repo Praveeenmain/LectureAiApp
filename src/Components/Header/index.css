@@ -1,66 +1,23 @@
-.navbar {
-    padding: 10px; /* Add padding to the navbar */
-    height: 60px; /* Set a fixed height for the navbar */
-    background-color: #4f5153; /* Light background color for the navbar */
-    color: #343a40; /* Text color for the navbar */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
-    display: flex;
-    justify-content: space-between; /* Space items evenly across the navbar */
-    align-items: center; /* Center items vertically within the navbar */
+/* index.css */
+.header-icon {
+    margin-right: 10px; /* Adjust margin as needed */
 }
 
-.brand {
+.brand, .message-help-icon {
     display: flex;
     align-items: center;
 }
 
-.brand h1 {
-    font-size: 1.5rem; /* Adjust font size for brand/logo */
-    margin-left: 10px; /* Margin between icon and text */
+.help-text {
+    margin-left: auto; /* Push "Help" text to the right */
 }
-
-.actions {
-    display: flex;
-    align-items: center;
+.header-heading{
+    font-size:25px;
+    text-align: center;
+    margin-top: 10px;
 }
-
-.actions svg {
-    margin-right: 8px; /* Margin between icon and text */
-}
-
-.Heading {
-    color: white;
-    font-size: 15px;
-}
-
-.header-icons {
-    color: white;
-    font-size: 25px;
-}
-
-.container-fluid {
-    display: flex;
-    width: 100%;
-    justify-content: space-between; /* Ensures space between brand and message-help-icon */
-}
-
-.message-help-icon {
-    display: flex;
-    align-items: center; /* Center items vertically */
-    margin-left: auto; /* Pushes this div to the right */
-}
-
-.message-help-icon h1 {
-    margin-left: 5px; /* Optional: Space between icon and text */
-}
-
-/* Media Query for smaller devices */
-@media (max-width: 768px) {
-    .brand h1 {
-        font-size: 1.2rem; /* Reduce font size for smaller screens */
-    }
-
-    .actions {
-        display: none; /* Hide actions on smaller screens */
-    }
+.help-heading{
+    font-size:15px;
+    text-align: center;
+    margin-top: 10px;
 }

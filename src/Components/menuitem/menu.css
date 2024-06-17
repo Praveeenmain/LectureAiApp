@@ -20,7 +20,7 @@
   
   .icon {
     margin-right: 10px;
-    font-size: 1.5rem; /* Adjust icon size as needed */
+    font-size: 20px; /* Adjust icon size as needed */
   }
   
   .details {
@@ -28,12 +28,12 @@
   }
   
   .title {
-    font-size: 12px;
+    font-size: 6px;
     font-weight: bold;
   }
   
   .date {
-    font-size: 10px;
+    font-size: 8px;
     color: #777;
   }
   

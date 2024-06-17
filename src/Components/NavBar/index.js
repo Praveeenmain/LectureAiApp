@@ -14,7 +14,7 @@ function Navbar() {
             className="d-inline-block align-top"
             alt="home-logo"
           />
-          Lecture AI
+          Audio AI
         </div>
       </div>
     </nav>

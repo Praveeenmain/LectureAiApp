@@ -27,7 +27,7 @@ const Home=()=>{
                    <div className="classNotes box">
                    <Link className="HomeLinks" to='/classnotes'> 
                    <FontAwesomeIcon class="box-icon" icon={faBook} />
-                   <h1 className='box-heading'> classNotes</h1>
+                   <h1 className='box-heading'> ClassNotes</h1>
                    </Link> 
                    </div>
 
@@ -35,7 +35,7 @@ const Home=()=>{
                    <div className="classTest box">
                    <Link className="HomeLinks" to='/classtest'> 
                    <FontAwesomeIcon class="box-icon" icon={faSquareCheck} />
-                   <h1 className='box-heading'>class Tests</h1>
+                   <h1 className='box-heading'>Class Tests</h1>
                    </Link> 
                    </div>
                    

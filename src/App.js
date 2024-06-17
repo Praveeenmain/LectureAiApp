@@ -11,7 +11,7 @@ function App() {
       <Route path="/" exact component={Home} />
       <Route path="/Audio-lectures" exact component={AudioRecorder} />
       <Route path="*" component={NotFound}/>
-        </Switch>
+      </Switch>
      
         
        

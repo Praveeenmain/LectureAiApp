@@ -13,25 +13,25 @@
 .box {
     width: calc(50% - 20px); /* Each box takes up 50% of the width with some margin */
     max-width: 200px; /* Limit max width of each box */
-    height:200px;
+    height:150px;
     box-sizing: border-box;
     margin: 10px;
     background-color: #272424;
     border-radius: 15px;
-    border: 2px solid white; /* Adding white border */
+    border: 1px solid white; /* Adding white border */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px; /* Added padding to the box */
+    padding: 15px; /* Added padding to the box */
 }
 .Home-page{
     margin-top: auto;
     margin-bottom: auto;
 }
 .box-icon {
-    height: 70px;
-    width: 70px;
+    height: 40px;
+    width: 40px;
     margin-bottom: 10px; /* Added margin to create space between icon and heading */
 
 }
@@ -44,5 +44,5 @@
 .box-heading {
     text-align: center;
     padding: 0 10px; /* Added padding to ensure text does not touch the edges */
-    font-size:20px;
+    font-size:16px;
 }
