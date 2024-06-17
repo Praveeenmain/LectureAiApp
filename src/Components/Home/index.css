@@ -1,0 +1,48 @@
+.AIfeatures {
+    max-height: 1000px;
+    overflow-y: scroll;
+    background-size: cover;
+    display: flex;
+    flex-wrap: wrap; /* Allows the boxes to wrap to the next line */
+    justify-content: center; /* Centers the boxes horizontally */
+    align-items: center; /* Centers the boxes vertically */
+    color: white;
+    margin-top: 105px;
+}
+
+.box {
+    width: calc(50% - 20px); /* Each box takes up 50% of the width with some margin */
+    max-width: 200px; /* Limit max width of each box */
+    height:200px;
+    box-sizing: border-box;
+    margin: 10px;
+    background-color: #272424;
+    border-radius: 15px;
+    border: 2px solid white; /* Adding white border */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px; /* Added padding to the box */
+}
+.Home-page{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.box-icon {
+    height: 70px;
+    width: 70px;
+    margin-bottom: 10px; /* Added margin to create space between icon and heading */
+
+}
+.HomeLinks{
+    text-align: center;
+    color:white;
+    text-decoration:none
+}
+
+.box-heading {
+    text-align: center;
+    padding: 0 10px; /* Added padding to ensure text does not touch the edges */
+    font-size:20px;
+}

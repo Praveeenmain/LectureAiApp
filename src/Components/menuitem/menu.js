@@ -1,7 +1,7 @@
 import React from 'react';
 import './menu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faTrashAlt } from '@fortawesome/free-solid-svg-icons'; // Import the delete icon
 
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric' };
@@ -13,31 +13,39 @@ const truncateTitle = (title, maxLength) => {
   if (title.length <= maxLength) {
     return title;
   }
-  // Split the title into words
+
   const words = title.split(' ');
-  // Join the first 4 words with a space and add ellipsis at the end
-  return words.slice(0, 6).join(' ') + '...';
-};
+  
+  return words.slice(0, 3).join(' ') + '...';
+}
 
 const MenuItem = ({ onClick, audioFile }) => {
   const formattedDate = formatDate(audioFile.date);
   const truncatedTitle = truncateTitle(audioFile.title, 4);
-
+  
   const handleItemClick = () => {
     onClick(); 
+  
   };
 
   return (
     <li className="menu-item" onClick={handleItemClick}>
       <div className="item-content">
-        <div className="icon">
-          <FontAwesomeIcon icon={faPlay} />
+        <div className="icons">
+          <div className="icon">
+            <FontAwesomeIcon icon={faPlay} />
+          </div>
+         
         </div>
         <div className="details">
           <div className="title">{truncatedTitle}</div>
           <div className="date">{formattedDate}</div>
         </div>
+        <div className="icon">
+            <FontAwesomeIcon icon={faTrashAlt} />
+          </div>
       </div>
+      
     </li>
   );
 };

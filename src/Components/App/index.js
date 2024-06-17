@@ -4,6 +4,7 @@ import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faPlay, faPause, fa
 import axios from 'axios';
 import Lectures from '../AllLectures';
 import {Audio} from "react-loader-spinner"
+import Navbar from '../NavBar';
 import './index.css';  // Import the CSS file
 
 const AudioRecorder = () => {
@@ -70,6 +71,7 @@ const AudioRecorder = () => {
       window.location.reload(false);
     }
   }, [uploadSuccess]);
+  
 
   const playRecording = () => {
     if (audioElementRef.current) {
@@ -104,6 +106,7 @@ const AudioRecorder = () => {
 
   return (
     <>
+    <Navbar/>
       <div className="audio-recorder-container">
         <h1 className="record-title">Record</h1>
 

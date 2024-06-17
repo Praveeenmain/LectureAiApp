@@ -23,6 +23,7 @@
   height: 90%;
   max-height: 90%;
   overflow-y: auto;
+  overflow-x: auto;
   position: relative;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
@@ -44,6 +45,26 @@
   color: #000;
   text-decoration: none;
 }
+.speak-stop-button{
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3e3f40; /* Blue background color */
+  color: white; /* White text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 4px;
+
+}
+.Nonotes-summary{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 400px;
+}
 
 .audio-title{
   color: #a09f9f;
@@ -53,6 +74,9 @@
 .audio-transcript {
   color: #fff;
   margin-bottom: 10px;
+  margin-top: 15px;
+  max-height: 600px;
+  overflow-y: scroll;
 }
 
 .audio-player-container {
@@ -110,7 +134,7 @@
   padding: 10px;
   border-radius: 4px;
   color: #fff;
-  max-height: 300px;
+  
   overflow-y: auto;
 }
 
@@ -121,3 +145,54 @@
   width: 100%;
   text-align: center;
 }
+.GenerateButton {
+  
+  background-color: #595c5e; /* Blue background color */
+  color: white; /* White text color */
+  padding: 10px 100px; /* Padding inside the button */
+ 
+  border: none; /* No border */
+  border-radius: 10px; /* Rounded corners */
+  cursor: pointer; /* Cursor on hover */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Drop shadow */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+  width:100%
+}
+
+.GenerateButton:hover {
+  background-color: #2f3031; /* Darker blue on hover */
+}
+
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between; /* Distribute buttons evenly */
+  align-items: center; /* Center items vertically */
+}
+
+.copy-button,
+.share-button,
+.regenerate-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2a2b2c; /* Blue background color */
+  color: white; /* White text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.copy-button:hover,
+.share-button:hover,
+.regenerate-button:hover {
+  background-color: #686869; /* Darker blue on hover */
+}
+
+/* Optional: Adjust margin or spacing between buttons */
+.copy-button + .share-button,
+.share-button + .regenerate-button {
+  margin-left: 10px;
+}
+

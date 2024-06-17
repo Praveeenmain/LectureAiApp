@@ -1,85 +1,62 @@
-/* Assuming you have existing styles */
-
-.edit-input {
-  width: calc(100% - 2rem); /* Allows input to expand while accounting for margins and padding */
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
+.lecture-title {
+  margin-top: 20px;
+  margin-bottom: 40px; /* Example margin for spacing */
 }
 
 .title {
+  position: relative;
+  color: white; 
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif; /* Corrected font family */
+  line-height: 1.5; /* Ensure consistent line height */
+}
+
+.edit-icon {
+  position: absolute;
+  top: 50%; /* Position relative to parent */
+  transform: translateY(-50%); /* Center vertically */
+  right: 10px; /* Add some padding from the right */
+  color: white; /* White text color */
   cursor: pointer;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Truncate text with ellipsis */
-  white-space: nowrap; /* Prevents text wrapping */
-  font-weight: bold;
-  font-size: 10px;
 }
 
-.title:hover {
-  text-decoration: underline;
+.editing-container {
+  display: flex;
+  align-items: center;
 }
 
-.lecture-title {
+.edit-input {
   flex: 1;
-  margin-left: 1rem;
-  max-width: 100%; /* Ensures title doesn't overflow its container */
+  padding: 8px;
+  font-size: 18px;
+  line-height: 1.5; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  box-sizing: border-box; 
+  height: 38px; 
+  width: 100%;
+  background-color: rgb(112, 109, 109);
+  color:white;
 }
 
-/* Media query for devices with a max width of 767px (small smartphones) */
-@media (max-width: 767px) {
-  .edit-input {
-    width: calc(100% - 1rem); /* Adjust width for smaller screens */
-    padding: 0.4rem; /* Adjust padding */
-    font-size: 0.9rem; /* Adjust font size */
-  }
-
-  .title {
-    font-size: 9px; /* Adjust font size for smaller screens */
-  }
-
-  .lecture-title {
-    margin-left: 0.5rem; /* Adjust margin */
-  }
+.save-button, .close-button {
+  background-color: transparent; /* Transparent background */
+  border: none;
+  cursor: pointer;
+  color: white; /* White text color */
+  padding: 8px;
 }
 
-/* Media query for devices with a min width of 768px and max width of 991px (tablets) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .edit-input {
-    width: calc(100% - 2rem); /* Reset width calculation if needed */
-    padding: 0.5rem; /* Reset padding if needed */
-    font-size: 1rem; /* Reset font size if needed */
-
-  }
-
-  .title {
-    font-size: 10px; /* Reset font size if needed */
-  }
-
-  .lecture-title {
-    margin-left: 1rem; /* Reset margin if needed */
-    display: none;
-  }
+.save-button:hover, .close-button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white on hover */
+  transition: background-color 0.3s ease; /* Smooth transition */
 }
 
-/* Media query for devices with a min width of 992px (desktop screens and above) */
-@media (min-width: 992px) {
-  .edit-input {
-    width: calc(100% - 3rem); /* Adjust width for larger screens */
-    padding: 0.6rem; /* Adjust padding */
-    font-size: 1.1rem; /* Adjust font size */
+.close-button {
+  margin-left: 10px; /* Example margin for spacing between buttons */
+}
 
-  }
-
-  .title {
-    font-size: 12px; /* Adjust font size for larger screens */
-  }
-
-  .lecture-title {
-    margin-left: 1.5rem; /* Adjust margin */
-    display: none;
-  }
+.error {
+  color: red; /* Example error text color */
 }

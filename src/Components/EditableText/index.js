@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css'; // Assuming you have a CSS file for styling
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSave, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'; // Import the edit, save, and close icons
 
 const LectureTitle = ({ lecture, id }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(lecture.title);
+  const [originalTitle, setOriginalTitle] = useState(lecture.title); // To keep track of original title
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const truncateTitle = (text) => {
-    const words = text.split(' ');
-    if (words.length <= 4) {
-      return text; // Return full title if it has 4 or fewer words
-    }
-    return words.slice(0, 4).join(' ') + '...'; // Truncate and add ellipsis
-  };
+  const [isSaved, setIsSaved] = useState(false);
+ 
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -23,6 +20,7 @@ const LectureTitle = ({ lecture, id }) => {
 
   const handleEditClick = () => {
     setIsEditing(true);
+    setOriginalTitle(title); // Store the original title when starting to edit
   };
 
   const handleSaveClick = async () => {
@@ -32,14 +30,20 @@ const LectureTitle = ({ lecture, id }) => {
         title,
       });
 
-      if (response.status >= 400) { // Check for HTTP error codes
-        throw new Error(response.data.message || 'Failed to update the title.');
-      } else if (response.data.error) { // Check for specific error property in response data (if applicable)
-        throw new Error(response.data.error);
+      console.log('Response:', response); // Debugging log
+
+      if (response.status >= 400 || response.data.error) {
+        throw new Error(response.data.message || response.data.error || 'Failed to update the title.');
       }
 
-      setTitle(response.data.lecture.title); // Assuming the response contains the updated lecture data
+      // Log the response data structure to understand it
+      console.log('Response data:', response.data);
+
+      // Assuming the response contains the updated lecture data in response.data.lecture
+      const updatedTitle = response.data.lecture?.title || response.data.title || title;
+      setTitle(updatedTitle);
       setIsEditing(false);
+      setIsSaved(true);
     } catch (error) {
       console.error('Error updating the title:', error);
       setError('Failed to update the title. Please try again.'); // Generic message for user
@@ -48,21 +52,42 @@ const LectureTitle = ({ lecture, id }) => {
     }
   };
 
+  const handleCloseClick = () => {
+    setTitle(originalTitle); // Reset title to original title
+    setIsEditing(false);
+    setError(null); // Clear any error messages
+  };
+
+  useEffect(() => {
+    if (isSaved) {
+      window.location.reload(false);
+    }
+  }, [isSaved]);
+
   return (
     <div className="lecture-title">
       {error && <p className="error">{error}</p>}
       {isEditing ? (
-        <input
-          type="text"
-          value={title}
-          onChange={handleTitleChange}
-          onBlur={handleSaveClick} // Save on blur or Enter key press (optional)
-          autoFocus
-          className="edit-input"
-        />
+        <div className="editing-container">
+          <input
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
+            autoFocus
+            className="edit-input"
+          />
+          <button onClick={handleSaveClick} className="save-button">
+            <FontAwesomeIcon icon={faSave} />
+          </button>
+          <button onClick={handleCloseClick} className="close-button">
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+          
+        </div>
       ) : (
-        <h1 className="title" onClick={handleEditClick}>
-          {isLoading ? 'Saving...' : truncateTitle(title)}
+        <h1 className="title">
+          {isLoading ? 'Saving...' : title}
+          <FontAwesomeIcon icon={faEdit} className="edit-icon" onClick={handleEditClick} />
         </h1>
       )}
     </div>
