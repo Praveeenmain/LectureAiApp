@@ -13,8 +13,9 @@
 .additional-button{
   margin-right: 10px;
 }
-.generate-notes-btn,
-.generate-summary-btn,
+
+
+
 .copy-button,
 .share-button,
 .additional-button,
@@ -31,7 +32,18 @@
 }
 
 .generate-summary-btn {
-  background-color: #070f09; /* Darker background for summary button */
+  background-color: #3e413e; /* Darker background for summary button */
+  height:50px;
+  width:120px;
+  margin-left: 15px;
+  color:#fff;
+  border-radius:8px;
+}
+.generate-notes-btn{
+  height:50px;
+  width:120px;
+  margin-left: 15px;
+  border-radius:8px;
 }
 
 .generate-notes-btn:hover,
