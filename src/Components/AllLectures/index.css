@@ -1,13 +1,18 @@
 /* Reset some default browser styles for consistency */
+.pagination {
+  
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
 
+}
   .no-audio-message{
     color:aliceblue;
      text-align: center;
   }
   
-  .lectures-container {
-    
-    height: 100vh; 
+  .lectures-container { 
     background-color: #0b0404;
     background-size: cover;
     display: flex;
@@ -60,9 +65,10 @@
   .pagination {
   
     display: flex;
-    
     justify-content: center;
     align-items: center;
+    margin-left: auto;
+    margin-right: auto;
   
   }
   

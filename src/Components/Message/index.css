@@ -1,0 +1,71 @@
+/* General styles */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Align items to the end of the container */
+  gap: 10px; /* Space between each button and the text */
+}
+
+.act-buttons {
+  display: flex;
+  align-self: flex-start;
+}
+.additional-button{
+  margin-right: 10px;
+}
+.generate-notes-btn,
+.generate-summary-btn,
+.copy-button,
+.share-button,
+.additional-button,
+.regenerate-button {
+  display: inline-block;
+  padding: auto;
+  font-size: 10px;
+  background-color: #292929; 
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.generate-summary-btn {
+  background-color: #070f09; /* Darker background for summary button */
+}
+
+.generate-notes-btn:hover,
+.generate-summary-btn:hover,
+.copy-button:hover,
+.share-button:hover,
+.regenerate-button:hover {
+  background-color: #686869; /* Darker blue on hover */
+  
+}
+
+.copy-button + .share-button,
+.share-button + .additional-button,
+.additional-button + .regenerate-button {
+  margin-left: 10px; /* Adjust spacing between adjacent buttons */
+}
+
+/* Generated notes and summary styles */
+.generated-notes,
+.generated-summary {
+  margin-top: 20px;
+}
+
+.generated-notes h3,
+.generated-summary h3 {
+  margin-bottom: 10px;
+  color: #fff; /* White text color */
+}
+
+.generated-notes p,
+.generated-summary p {
+  background-color: #252424; /* Dark background color */
+  padding: 10px;
+  border-radius: 4px;
+  color: #fff; /* White text color */
+  overflow-y: auto;
+}

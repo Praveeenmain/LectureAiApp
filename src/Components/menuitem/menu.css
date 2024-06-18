@@ -7,6 +7,8 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     width:100%;
+   
+    max-width: 400px;
   }
   
   .menu-item:hover {
@@ -28,7 +30,8 @@
   }
   
   .title {
-    font-size: 6px;
+    font-size: 8px;
+   
     font-weight: bold;
   }
   

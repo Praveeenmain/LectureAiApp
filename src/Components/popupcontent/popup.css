@@ -1,3 +1,4 @@
+/* Popup Overlay */
 .popup {
   display: flex;
   flex-direction: column;
@@ -15,184 +16,187 @@
 
 .popup-content {
   background-color: #212020;
-  margin: 20px;
   padding: 20px;
   border: 1px solid #888;
-  width: 90%;
   max-width: 1000px;
-  height: 90%;
-  max-height: 90%;
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
-  overflow-x: auto;
   position: relative;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
-  color: #aaa;
+  color: #ccc;
 }
 
+/* Close Button */
 .close {
   color: #aaa;
   position: absolute;
-  top: -10px;
-  right: 8px;
-  font-size: 28px;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
   font-weight: bold;
   cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-  color: #000;
-  text-decoration: none;
-}
-.speak-stop-button{
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #3e3f40; /* Blue background color */
-  color: white; /* White text color */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-left: 4px;
-
-}
-.Nonotes-summary{
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 400px;
-}
-
-.audio-title{
-  color: #a09f9f;
-  font-size:18px;
-  
-}
-.audio-transcript {
   color: #fff;
-  margin-bottom: 10px;
-  margin-top: 15px;
-  max-height: 600px;
-  overflow-y: scroll;
 }
 
+/* Audio Player Container */
 .audio-player-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
 }
 
+/* Audio Player */
 .audio-player {
-  background-color: #0a0a0a;
+  background-color: #343131;
   color: #fff;
   border-radius: 5px;
-  margin-top: 15px;
-}
-
-.rhap_time {
-  color: #fff;
-}
-
-.generate-notes-btn,
-.generate-summary-btn {
-  background-color: #a8aeb4;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin-right: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.generate-summary-btn {
-  background-color: #070f09;
-}
-
-.generate-notes-btn:hover,
-.generate-summary-btn:hover {
-  opacity: 0.8;
-}
-
-.generated-notes,
-.generated-summary {
-  margin-top: 20px;
-}
-
-.generated-notes h3,
-.generated-summary h3 {
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.generated-notes p,
-.generated-summary p {
-  background-color: #252424;
-  padding: 10px;
-  border-radius: 4px;
-  color: #fff;
-  
-  overflow-y: auto;
-}
-
-.deletebutton {
-  background-color: red;
-  color: #fff;
-  font-size:15px;
   width: 100%;
-  text-align: center;
-}
-.GenerateButton {
-  
-  background-color: #595c5e; /* Blue background color */
-  color: white; /* White text color */
-  padding: 10px 100px; /* Padding inside the button */
- 
-  border: none; /* No border */
-  border-radius: 10px; /* Rounded corners */
-  cursor: pointer; /* Cursor on hover */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Drop shadow */
-  transition: background-color 0.3s ease; /* Smooth background color transition */
-  width:100%
+  max-width: 500px;
 }
 
-.GenerateButton:hover {
-  background-color: #2f3031; /* Darker blue on hover */
-}
-
-
-.action-buttons {
+/* Title and Voice Section */
+.Title-voice {
   display: flex;
-  justify-content: space-between; /* Distribute buttons evenly */
-  align-items: center; /* Center items vertically */
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.copy-button,
-.share-button,
-.regenerate-button {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #2a2b2c; /* Blue background color */
-  color: white; /* White text color */
-  border: none;
-  border-radius: 5px;
+.audio-title {
+  color: #a09f9f;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.speak-stop-button {
+  background-color: transparent;
+  color: white;
+  border: 0;
+  font-size: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-top: -25px;
 }
 
-.copy-button:hover,
-.share-button:hover,
-.regenerate-button:hover {
-  background-color: #686869; /* Darker blue on hover */
+/* Chat Messages Container */
+.chatmessage-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #1a1a1a;
 }
 
-/* Optional: Adjust margin or spacing between buttons */
-.copy-button + .share-button,
-.share-button + .regenerate-button {
-  margin-left: 10px;
+.user-message {
+  align-self: flex-end;
+  background-color: #d1e7dd;
+  padding: 10px;
+  border-radius: 10px;
+  color: #0f5132;
+  font-size: 10px;
+  max-width: 70%;
+  text-align: right;
 }
 
+.audio-transcript {
+  align-self: flex-start;
+  background-color: #2e2c2c;
+  padding: 10px;
+  border-radius: 10px;
+  color: #dad0d1;
+  font-size: 10px;
+  max-width: 70%;
+}
+.volumeup-icon{
+  height:25px;
+  width:25px;
+  color:white;
+
+  border-radius: 5px;
+  filter: invert(100%);
+  margin-top: -10px;
+}
+.rhap_current-time{
+  color:white;
+}
+/* Input Box Container */
+.input-box-container {
+  position: fixed;
+  margin-bottom:-20px ;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px); /* Adjust based on padding and margin */
+
+  background-color: #141313;
+  color: #ccc;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+
+ 
+}
+
+.input-box {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 3px;
+  font-size: 14px;
+  outline: none;
+  overflow-y: hidden;
+  resize: none;
+  box-sizing: border-box;
+  background-color: #212020;
+  color: white;
+}
+
+.send-button, .voice-button {
+  background-color: #181616;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.send-button {
+  margin-right: 10px;
+}
+
+.voice-button {
+  margin-right: 10px;
+}
+
+/* Ensure message area is visible above the input box */
+
+.input-box-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px); /* Adjust based on padding and margin */
+  max-width: 500px;
+  background-color: #141313;
+  color: #ccc;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  z-index: 1000;
+}

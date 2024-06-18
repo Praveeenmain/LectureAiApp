@@ -1,6 +1,7 @@
 .lecture-title {
   margin-top: 20px;
   margin-bottom: 40px; /* Example margin for spacing */
+  width: 100%;
 }
 
 .title {
