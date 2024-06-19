@@ -2,6 +2,7 @@ import AudioRecorder from './Components/App'
 import Home from './Components/Home';
 import {Route, Switch } from 'react-router-dom';
 import NotFound from './Components/Notfound';
+import AiBot from './Components/AiBot'
 import './App.css';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <Switch>
       <Route path="/" exact component={Home} />
       <Route path="/Audio-lectures" exact component={AudioRecorder} />
+      <Route path="/aichat" exact component={AiBot} />
       <Route path="*" component={NotFound}/>
       </Switch>
      

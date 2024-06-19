@@ -106,7 +106,7 @@ const AudioRecorder = () => {
 
   return (
     <>
-    <Navbar/>
+    <Navbar title="Audio Ai" />
       <div className="audio-recorder-container">
         <h1 className="record-title">Record</h1>
 

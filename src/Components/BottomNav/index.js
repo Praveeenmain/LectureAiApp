@@ -1,18 +1,30 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import HomeIcon from '@mui/icons-material/Home';
-import ChatIcon from '@mui/icons-material/Chat';
 import PeopleIcon from '@mui/icons-material/People';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 
 const LabelBottomNavigation = () => {
-  const [value, setValue] = React.useState('home');
+  const location = useLocation();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  // Determine which tab should be highlighted based on the current path
+  const getValueFromPath = (path) => {
+    switch (path) {
+      case '/aichat':
+        return 'aichat';
+      case '/students':
+        return 'students';
+      case '/profile':
+        return 'profile';
+      default:
+        return 'home';
+    }
   };
+
+  const value = getValueFromPath(location.pathname);
 
   return (
     <BottomNavigation
@@ -28,7 +40,6 @@ const LabelBottomNavigation = () => {
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Box shadow
       }}
       value={value}
-      onChange={handleChange}
     >
       <BottomNavigationAction
         label="HOME"
@@ -41,7 +52,7 @@ const LabelBottomNavigation = () => {
       <BottomNavigationAction
         label="AICHAT"
         value="aichat"
-        icon={<ChatIcon style={{ color: 'white' }} />}
+        icon={<AutoFixHighOutlinedIcon style={{ color: 'white' }} />}
         sx={{ color: 'white' }}
         component={Link}
         to="/aichat"
