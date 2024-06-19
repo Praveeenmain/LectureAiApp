@@ -1,4 +1,4 @@
-import AudioRecorder from './Components/App'
+import AudioRecorder from './Components/AudioAiApp'
 import Home from './Components/Home';
 import {Route, Switch } from 'react-router-dom';
 import NotFound from './Components/Notfound';

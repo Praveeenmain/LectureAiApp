@@ -9,11 +9,24 @@
 .act-buttons {
   display: flex;
   align-self: flex-start;
+  padding-left: 10px;
 }
 .additional-button{
   margin-right: 10px;
 }
-
+.chatbot-message {
+  background-color: #3d3c3c;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 100%; /* Adjust as needed */
+  border-radius: 8px;
+  clear: both; /* Ensures proper float clearing */
+  overflow-wrap: break-word; /* Handles long words */
+  font-size: 23px;
+  margin-top: 10px;
+  
+}
 
 
 .copy-button,
@@ -21,14 +34,17 @@
 .additional-button,
 .regenerate-button {
   display: inline-block;
-  padding: auto;
-  font-size: 15px;
-  background-color: #292929; 
+ 
+  font-size: 23px;
+  background-color: transparent; 
   color: white; 
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  height:10px;
+  width:10px;
+  margin: 15px;
 }
 
 .generate-summary-btn {

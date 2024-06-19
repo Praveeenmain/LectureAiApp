@@ -146,7 +146,7 @@ const Message = ({ text}) => {
 
   return (
     <div className="action-buttons">
-      <p>{text}</p>
+      <div className='chatbot-message '>{text}</div>
       <div className='act-buttons'>
         <CopyToClipboard text={text} onCopy={handleCopy}>
           <button className='copy-button'>

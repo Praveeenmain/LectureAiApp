@@ -1,11 +1,12 @@
 import React, { useState} from 'react';
 import AudioPlayer from 'react-h5-audio-player';
-import LectureTitle from '../EditableText';
+import LectureTitle from '../LectureTitle';
 import 'react-h5-audio-player/lib/styles.css';
+import  UserMessage from '../UserMessage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPaperPlane,faVolumeMute, faMicrophone, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
-import Message from '../Message';
+import Message from '../BotMessage';
 import { TailSpin } from 'react-loader-spinner';
 import './popup.css';
 
@@ -139,9 +140,57 @@ const PopContent = ({ handleClose, audioFile }) => {
       alert('Failed to generate summary. Please try again.');
     }
   };
+  const SendMessage = async (updatedMessage) => {
+    // Check if the message is empty
+    if (updatedMessage.trim() === '') {
+      alert('Please enter a message');
+      return;
+    }
+  
+    // Set loading state to true
+    setIsLoading(true);
+  
+    try {
+      // Start a new chat session with the generative model
+      const chat = model.startChat({
+        generationConfig,
+        safetySettings,
+        history: [],
+      });
+  
+      // Prepare the prompt combining lecture title and user message
+      const prompt = `${audioFile.title}: ${updatedMessage}`;
+  
+      // Send the message to the chat model and await response
+      const result = await chat.sendMessage(prompt);
+      const response = result.response;
+  
+      // Extract the chatbot's response from the result
+      const chatbotMessage = response.candidates[0].content.parts[0].text;
+  
+      // Update conversation with both user message and chatbot response
+      setConversation(prevConversation => [
+        ...prevConversation,
+        { userMessage: updatedMessage, chatbotResponse: chatbotMessage }
+      ]);
+  
+      // Clear message input and set loading state to false
+      setMessage('');
+      setIsLoading(false);
+  
+    } catch (error) {
+      // Handle any errors that occur during the chat interaction
+      console.error('Error generating summary:', error);
+      alert('Failed to generate summary. Please try again.');
+      setIsLoading(false); // Ensure loading state is reset on error
+    }
+  };
+  
  
   return (
+    <>
     <div className="popup">
+  
       <div className="popup-content">
         <div className="audio-player-container">
           <span className="close" onClick={handleClose}>
@@ -170,15 +219,16 @@ const PopContent = ({ handleClose, audioFile }) => {
         </div>
 
         <div className="chatmessage-container">
-          <p className="audio-transcript">
+        
             <Message text={audioFile.chatResponse} />
-          </p>
+       
           {conversation.map((item, index) => (
             <React.Fragment key={index}>
-              <p className="user-message">{item.userMessage}</p>
-              <p className="audio-transcript">
+             
+           
+                <UserMessage  initialMessage={item.userMessage} onSend={SendMessage} />
                 <Message text={item.chatbotResponse}/>
-              </p>
+            
             </React.Fragment>
           ))}
         </div>
@@ -193,7 +243,7 @@ const PopContent = ({ handleClose, audioFile }) => {
             onChange={(e) => setMessage(e.target.value)}
             className="input-box"
           />
-          <button className="send-button" onClick={handleSendMessage}>
+          <button className="send-message-button" onClick={handleSendMessage}>
              {isLoading?(<TailSpin
   visible={true}
   height="20"
@@ -204,14 +254,14 @@ const PopContent = ({ handleClose, audioFile }) => {
   wrapperStyle={{}}
   wrapperClass=""
   />)
-              
-              
+        
               :<FontAwesomeIcon icon= {faPaperPlane}/>
              }
           </button>
         </div>
       </div>
     </div>
+    </>
   );
 };
 
