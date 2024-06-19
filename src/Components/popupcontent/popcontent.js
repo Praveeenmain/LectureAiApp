@@ -1,10 +1,10 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import LectureTitle from '../LectureTitle';
 import 'react-h5-audio-player/lib/styles.css';
-import  UserMessage from '../UserMessage'
+import UserMessage from '../UserMessage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPaperPlane,faVolumeMute, faMicrophone, faStopCircle,faLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faVolumeMute, faMicrophone, faStopCircle, faLeftLong } from '@fortawesome/free-solid-svg-icons';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import Message from '../BotMessage';
 import { TailSpin } from 'react-loader-spinner';
@@ -15,14 +15,14 @@ const PopContent = ({ handleClose, audioFile }) => {
   const [speechUtterance, setSpeechUtterance] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [message, setMessage] = useState('');
-  const [conversation, setConversation] = useState([]); // Combined array of user messages and chatbot responses
-  const [isListening, setIsListening] = useState(false); // State to track if voice recognition is active
-  const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false); // State to manage speech recognition UI
+  const [conversation, setConversation] = useState([]);
+  const [isListening, setIsListening] = useState(false);
+  const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
 
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)(); // Initialize SpeechRecognition object
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
   recognition.continuous = false;
   recognition.interimResults = false;
-  recognition.lang = 'en-US'; // Set language for speech recognition
+  recognition.lang = 'en-US';
 
   const API_KEY = 'AIzaSyB5jwfd5r7T4cssflgHmnItKmzCNoOEGlI';
   const MODEL_NAME = 'gemini-1.0-pro';
@@ -56,7 +56,6 @@ const PopContent = ({ handleClose, audioFile }) => {
     },
   ];
 
-  // Event handler for starting or stopping voice recognition
   const toggleVoiceRecognition = () => {
     if (!isListening) {
       recognition.start();
@@ -99,11 +98,11 @@ const PopContent = ({ handleClose, audioFile }) => {
       handleSpeak(audioFile.chatResponse);
     }
   };
+
   const truncateTitle = (title, maxLength) => {
     if (title.length <= maxLength) {
       return title;
     }
-
     const words = title.split(' ');
     return words.slice(0, maxLength).join(' ');
   };
@@ -120,24 +119,22 @@ const PopContent = ({ handleClose, audioFile }) => {
         safetySettings,
         history: [],
       });
-
       const prompt = `${audioFile.title}: ${message}`;
       const result = await chat.sendMessage(prompt);
       const response = result.response;
-      const chatbotMessage = response.candidates[0].content.parts[0].text;
+      const chatbotMessage = response.text();
 
-      
-      setConversation(prevConversation => [
+      setConversation((prevConversation) => [
         ...prevConversation,
         { userMessage: message, chatbotResponse: chatbotMessage }
       ]);
 
-      // Clear message input
-        setMessage('');
-        setIsLoading(false);
+      setMessage('');
+      setIsLoading(false);
     } catch (error) {
       console.error('Error generating summary:', error);
       alert('Failed to generate summary. Please try again.');
+      setIsLoading(false);
     }
   };
   const SendMessage = async (updatedMessage) => {
@@ -185,18 +182,13 @@ const PopContent = ({ handleClose, audioFile }) => {
       setIsLoading(false); // Ensure loading state is reset on error
     }
   };
-  
- 
   return (
-    <>
     <div className="popup">
-  
       <div className="popup-content">
-      <span className="close" onClick={handleClose}>
-             <FontAwesomeIcon icon={faLeftLong}/>
-          </span>
+        <span className="close" onClick={handleClose}>
+          <FontAwesomeIcon icon={faLeftLong} />
+        </span>
         <div className="audio-player-container">
-         
           {audioFile.audio && (
             <AudioPlayer
               src={`data:audio/wav;base64,${audioFile.audio}`}
@@ -210,30 +202,22 @@ const PopContent = ({ handleClose, audioFile }) => {
         <div className="Title-voice">
           <LectureTitle lecture={{ title: truncateTitle(audioFile.title, 3) }} id={audioFile._id} onClick={toggleSpeakStop} />
           <button className="speak-stop-button" onClick={toggleSpeakStop}>
-  {isSpeaking ? (
-    <FontAwesomeIcon icon={faVolumeMute} />
-  ) : (
-    <img className='volumeup-icon' src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
-  )}
-</button>
-
+            {isSpeaking ? (
+              <FontAwesomeIcon icon={faVolumeMute} />
+            ) : (
+              <img className="volumeup-icon" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
+            )}
+          </button>
         </div>
-
         <div className="chatmessage-container">
-        
-            <Message initialText={audioFile.chatResponse} />
-       
+          <Message initialText={audioFile.chatResponse} />
           {conversation.map((item, index) => (
             <React.Fragment key={index}>
-             
-           
-                <UserMessage  initialMessage={item.userMessage} onSend={SendMessage} />
-                <Message initialText={item.chatbotResponse}/>
-            
+              <UserMessage initialMessage={item.userMessage} onSend={SendMessage} />
+              <Message initialText={item.chatbotResponse} />
             </React.Fragment>
           ))}
         </div>
-
         <div className="input-box-container">
           <button className="voice-button" onClick={toggleVoiceRecognition}>
             <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
@@ -245,24 +229,24 @@ const PopContent = ({ handleClose, audioFile }) => {
             className="input-box"
           />
           <button className="send-message-button" onClick={handleSendMessage}>
-             {isLoading?(<TailSpin
-  visible={true}
-  height="20"
-  width="20"
-  color="white"
-  ariaLabel="tail-spin-loading"
-  radius="1"
-  wrapperStyle={{}}
-  wrapperClass=""
-  />)
-        
-              :<FontAwesomeIcon icon= {faPaperPlane}/>
-             }
+            {isLoading ? (
+              <TailSpin
+                visible={true}
+                height="20"
+                width="20"
+                color="white"
+                ariaLabel="tail-spin-loading"
+                radius="1"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            ) : (
+              <FontAwesomeIcon icon={faPaperPlane} />
+            )}
           </button>
         </div>
       </div>
     </div>
-    </>
   );
 };
 
