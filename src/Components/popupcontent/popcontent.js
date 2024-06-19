@@ -4,7 +4,7 @@ import LectureTitle from '../LectureTitle';
 import 'react-h5-audio-player/lib/styles.css';
 import  UserMessage from '../UserMessage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPaperPlane,faVolumeMute, faMicrophone, faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import {faPaperPlane,faVolumeMute, faMicrophone, faStopCircle,faLeftLong } from '@fortawesome/free-solid-svg-icons';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import Message from '../BotMessage';
 import { TailSpin } from 'react-loader-spinner';
@@ -126,7 +126,7 @@ const PopContent = ({ handleClose, audioFile }) => {
       const response = result.response;
       const chatbotMessage = response.candidates[0].content.parts[0].text;
 
-      // Update conversation with both user message and chatbot response
+      
       setConversation(prevConversation => [
         ...prevConversation,
         { userMessage: message, chatbotResponse: chatbotMessage }
@@ -158,17 +158,17 @@ const PopContent = ({ handleClose, audioFile }) => {
         history: [],
       });
   
-      // Prepare the prompt combining lecture title and user message
+      
       const prompt = `${audioFile.title}: ${updatedMessage}`;
   
-      // Send the message to the chat model and await response
+    
       const result = await chat.sendMessage(prompt);
       const response = result.response;
   
-      // Extract the chatbot's response from the result
+   
       const chatbotMessage = response.candidates[0].content.parts[0].text;
   
-      // Update conversation with both user message and chatbot response
+      
       setConversation(prevConversation => [
         ...prevConversation,
         { userMessage: updatedMessage, chatbotResponse: chatbotMessage }
@@ -192,10 +192,11 @@ const PopContent = ({ handleClose, audioFile }) => {
     <div className="popup">
   
       <div className="popup-content">
-        <div className="audio-player-container">
-          <span className="close" onClick={handleClose}>
-            &times;
+      <span className="close" onClick={handleClose}>
+             <FontAwesomeIcon icon={faLeftLong}/>
           </span>
+        <div className="audio-player-container">
+         
           {audioFile.audio && (
             <AudioPlayer
               src={`data:audio/wav;base64,${audioFile.audio}`}
@@ -220,14 +221,14 @@ const PopContent = ({ handleClose, audioFile }) => {
 
         <div className="chatmessage-container">
         
-            <Message text={audioFile.chatResponse} />
+            <Message initialText={audioFile.chatResponse} />
        
           {conversation.map((item, index) => (
             <React.Fragment key={index}>
              
            
                 <UserMessage  initialMessage={item.userMessage} onSend={SendMessage} />
-                <Message text={item.chatbotResponse}/>
+                <Message initialText={item.chatbotResponse}/>
             
             </React.Fragment>
           ))}

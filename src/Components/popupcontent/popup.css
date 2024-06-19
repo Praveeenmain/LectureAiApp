@@ -1,7 +1,5 @@
-/* Popup Overlay */
 .popup {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: fixed;
@@ -11,29 +9,29 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  overflow: auto;
+  overflow: auto; /* Enable scrolling if content exceeds viewport */
 }
 
+/* Popup Content */
 .popup-content {
   background-color: #030303;
   padding: 20px;
-  border: 1px solid #888;
-  max-width: 1000px;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
+  width: calc(100% - 40px); /* Adjust padding to create space between content and edges */
+  max-width: 600px; /* Optional: Limit maximum width of popup content */
+  height: calc(100% - 40px); /* Adjust padding to create space between content and edges */
+  max-height: calc(100% - 40px); /* Adjust padding to create space between content and edges */
+  overflow-y: auto; /* Enable scrolling if content exceeds popup content height */
   position: relative;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   color: #ccc;
 }
-
 /* Close Button */
 .close {
   color: #aaa;
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px;
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
@@ -50,6 +48,7 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  margin-top: 25px;
 }
 
 /* Audio Player */
@@ -92,44 +91,41 @@
   margin-top: 10px;
   margin-bottom: 65px;
   padding: 10px;
- 
+  max-width: 400px;
+  width: 100%;
   border-radius: 10px;
   background-color: #040404;
 }
 
-
-
-
-.volumeup-icon{
-  height:25px;
-  width:25px;
-  color:white;
-
+.volumeup-icon {
+  height: 25px;
+  width: 25px;
+  color: white;
   border-radius: 5px;
   filter: invert(100%);
   margin-top: -10px;
 }
-.rhap_current-time{
-  color:white;
+
+.rhap_current-time {
+  color: white;
 }
+
 /* Input Box Container */
 .input-box-container {
   position: fixed;
-  margin-bottom:-20px ;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 60px); /* Adjust based on padding and margin */
-
-  background-color: #141313;
+  width: calc(100% - 40px); /* Adjust based on padding and margin */
+  max-width: 1000px; /* Optional: limit the maximum width if needed */
+  background-color: #3a3838;
   color: #ccc;
   border: 1px solid #ccc;
   border-radius: 5px;
   display: flex;
   align-items: center;
   padding: 5px;
-
-
- 
+  z-index: 1000;
 }
 
 .input-box {
@@ -137,25 +133,27 @@
   border: none;
   padding: 8px;
   margin-right: 10px;
-  border-radius: 3px;
-  font-size: 18px;
+  border-radius: 10px;
+  font-size: 15px;
   outline: none;
   overflow-y: hidden;
   resize: none;
   box-sizing: border-box;
-  background-color: #212020;
+  background-color: #3a3838;
   color: white;
+  height: 50px;
+  width: 400px;
 }
 
-.send-message-button, .voice-button {
-  background-color: #1a1818;
+.send-message-button,
+.voice-button {
+  background-color: #3a3838;
   color: white;
   border: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
 .send-button {
@@ -167,20 +165,17 @@
 }
 
 /* Ensure message area is visible above the input box */
-
 .input-box-container {
   position: fixed;
   bottom: 20px;
-  left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 40px); /* Adjust based on padding and margin */
   max-width: 500px;
-  background-color: #141313;
+  background-color: #3a3838;
   color: #ccc;
   border: 1px solid #ccc;
   border-radius: 5px;
   display: flex;
   align-items: center;
-  padding: 10px;
   z-index: 1000;
 }

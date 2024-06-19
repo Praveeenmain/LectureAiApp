@@ -1,65 +1,72 @@
+/* Chat message animation */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%); /* Start off-screen to the left */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0); /* Slide in to the right */
+  }
+}
+
+/* Chat message styling */
+.chatbot-message {
+  background-color: #3d3c3c;
+  color: #fff;
+  padding: 10px;
+ margin-left: -20px;
+  max-width: 100%;
+  border-radius: 8px;
+  overflow-wrap: break-word;
+  font-size: 18px;
+  white-space: pre-wrap;
+  animation: slideInFromLeft 0.5s ease forwards;
+}
+
 /* General styles */
 .action-buttons {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Align items to the end of the container */
-  gap: 10px; /* Space between each button and the text */
+  
 }
 
 .act-buttons {
   display: flex;
   align-self: flex-start;
-  padding-left: 10px;
-}
-.additional-button{
-  margin-right: 10px;
-}
-.chatbot-message {
-  background-color: #3d3c3c;
-  color: #fff;
-  padding: 10px;
-  margin-bottom: 10px;
-  max-width: 100%; /* Adjust as needed */
-  border-radius: 8px;
-  clear: both; /* Ensures proper float clearing */
-  overflow-wrap: break-word; /* Handles long words */
-  font-size: 23px;
-  margin-top: 10px;
+  margin-left: -20px;
   
 }
 
+.additional-button {
+  margin-right: 10px;
+}
 
 .copy-button,
 .share-button,
 .additional-button,
 .regenerate-button {
   display: inline-block;
- 
-  font-size: 23px;
-  background-color: transparent; 
-  color: white; 
+  font-size: 18px;
+  background-color: transparent;
+  color: rgb(199, 195, 195);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  height:10px;
-  width:10px;
+  height: 30px;
+  width: 30px;
   margin: 15px;
 }
 
-.generate-summary-btn {
-  background-color: #3e413e; /* Darker background for summary button */
-  height:50px;
-  width:120px;
+.generate-summary-btn,
+.generate-notes-btn {
+  background-color: #3e413e;
+  height: 50px;
+  width: 120px;
   margin-left: 15px;
-  color:#fff;
-  border-radius:8px;
-}
-.generate-notes-btn{
-  height:50px;
-  width:120px;
-  margin-left: 15px;
-  border-radius:8px;
+  color: #fff;
+  border-radius: 8px;
 }
 
 .generate-notes-btn:hover,
@@ -67,17 +74,15 @@
 .copy-button:hover,
 .share-button:hover,
 .regenerate-button:hover {
-  background-color: #686869; /* Darker blue on hover */
-  
+  background-color: #686869;
 }
 
 .copy-button + .share-button,
 .share-button + .additional-button,
 .additional-button + .regenerate-button {
-  margin-left: 10px; /* Adjust spacing between adjacent buttons */
+  margin-left: 10px;
 }
 
-/* Generated notes and summary styles */
 .generated-notes,
 .generated-summary {
   margin-top: 20px;
@@ -86,14 +91,39 @@
 .generated-notes h3,
 .generated-summary h3 {
   margin-bottom: 10px;
-  color: #fff; /* White text color */
+  color: #fff;
 }
 
 .generated-notes p,
 .generated-summary p {
-  background-color: #252424; /* Dark background color */
+  background-color: #252424;
   padding: 10px;
   border-radius: 4px;
-  color: #fff; /* White text color */
+  color: #fff;
   overflow-y: auto;
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.generate-notes-summary-popup {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  padding: 20px;
+  background-color: #3d3c3c;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.nonotes-summary {
+  font-size: 14px;
+  color: #6c757d;
+  text-align: center;
 }

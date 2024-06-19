@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { faCopy, faShareAlt, faRandom, faCheck, faVolumeUp, faVolumeMute, faBook, faRectangleList, faRotate } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCopy, faShareAlt, faRandom, faCheck,
+ faVolumeMute, faBook,
+  faRectangleList, faRotate,faLeftLong
+} from '@fortawesome/free-solid-svg-icons';
 import Popup from 'reactjs-popup';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import './index.css';
 
-const Message = ({ text}) => {
+const Message = ({ initialText }) => {
+  const [displayedText, setDisplayedText] = useState('');
   const [copied, setCopied] = useState(false);
   const [speechUtterance, setSpeechUtterance] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -47,8 +52,29 @@ const Message = ({ text}) => {
     },
   ];
 
+  useEffect(() => {
+    if (initialText) {
+      let index = 0;
+      const timer = setInterval(() => {
+        setDisplayedText(prev => {
+          if (index < initialText.length) {
+            return prev + initialText[index];
+          }
+          return prev; // Prevent unnecessary state update after typing is complete
+        });
+        index += 1;
+        if (index === initialText.length) {
+          clearInterval(timer); // Stop interval when typing is complete
+        }
+      }, 50); // Adjust speed here
+      return () => clearInterval(timer); // Clean up interval on component unmount
+    }
+  }, [initialText, setDisplayedText]); // Include setDisplayedText in dependencies if not part of useCallback
+  
+  
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(displayedText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -58,7 +84,7 @@ const Message = ({ text}) => {
       try {
         await navigator.share({
           title: 'Chat Response',
-          text: text,
+          text: displayedText,
         });
         console.log('Shared successfully');
       } catch (error) {
@@ -92,7 +118,7 @@ const Message = ({ text}) => {
     if (isSpeaking) {
       handleStopSpeaking();
     } else {
-      handleSpeak(text);
+      handleSpeak(displayedText);
     }
   };
 
@@ -107,7 +133,7 @@ const Message = ({ text}) => {
         history: [],
       });
 
-      const prompt = `Generate notes for the following audio transcript: ${text}`;
+      const prompt = `Generate notes for the following audio transcript: ${displayedText}`;
       const result = await chat.sendMessage(prompt);
       const response = result.response;
 
@@ -131,7 +157,7 @@ const Message = ({ text}) => {
         history: [],
       });
 
-      const prompt = `Generate a summary for the following audio transcript: ${text}`;
+      const prompt = `Generate a summary for the following audio transcript: ${displayedText}`;
       const result = await chat.sendMessage(prompt);
       const response = result.response;
 
@@ -146,11 +172,11 @@ const Message = ({ text}) => {
 
   return (
     <div className="action-buttons">
-      <div className='chatbot-message '>{text}</div>
-      <div className='act-buttons'>
-        <CopyToClipboard text={text} onCopy={handleCopy}>
-          <button className='copy-button'>
-            <FontAwesomeIcon  icon={copied ? faCheck : faCopy} />
+      <div className="chatbot-message">{displayedText}</div>
+      <div className="act-buttons">
+        <CopyToClipboard text={displayedText} onCopy={handleCopy}>
+          <button className="copy-button">
+            <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
           </button>
         </CopyToClipboard>
 
@@ -159,41 +185,46 @@ const Message = ({ text}) => {
         </button>
 
         <button className="additional-button" onClick={toggleSpeakStop}>
-          <FontAwesomeIcon icon={isSpeaking ? faVolumeMute : faVolumeUp} />
-        </button>
-    
+           {isSpeaking?   <FontAwesomeIcon icon= {faVolumeMute} />  :(<img className='volumeup-icon' src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />)}
        
-        
+        </button>
+
         <Popup
           modal
           trigger={
             <button type="button" className="additional-button">
-              <FontAwesomeIcon icon={faRandom} /> 
+              <FontAwesomeIcon icon={faRandom} />
             </button>
           }
         >
-          {close => (
+          {(close) => (
             <>
               <span className="close" onClick={() => close()}>
-                &times;
+              <FontAwesomeIcon icon={faLeftLong}/>
               </span>
 
-              <div>
-                <button className="generate-notes-btn" onClick={generateNotes} disabled={isGeneratingNotes}>
+              <div className="generate-notes-summary-popup">
+                <button
+                  className="generate-notes-btn"
+                  onClick={generateNotes}
+                  disabled={isGeneratingNotes}
+                >
                   <FontAwesomeIcon icon={faBook} />
                   {isGeneratingNotes ? 'Generating' : 'Generate Notes'}
                 </button>
 
-                <button className="generate-summary-btn" onClick={generateSummary} disabled={isGeneratingSummary}>
+                <button
+                  className="generate-summary-btn"
+                  onClick={generateSummary}
+                  disabled={isGeneratingSummary}
+                >
                   <FontAwesomeIcon icon={faRectangleList} />
                   {isGeneratingSummary ? 'Generating Summary...' : 'Generate Summary'}
                 </button>
               </div>
 
               {!notes && !summary && (
-                <div className='Nonotes-summary'>
-                  Generate Notes and summary of Lecture..
-                </div>
+                <div className="Nonotes-summary">Generate Notes and summary of Lecture..</div>
               )}
 
               {notes && (
@@ -203,15 +234,15 @@ const Message = ({ text}) => {
                   <div>
                     <CopyToClipboard text={notes}>
                       <button className="copy-button" onClick={() => handleCopy(notes)}>
-                        <FontAwesomeIcon icon={faCopy} /> 
+                        <FontAwesomeIcon icon={faCopy} />
                       </button>
                     </CopyToClipboard>
                     {copied && <span>Copied!</span>}
                     <button className="share-button" onClick={() => handleShare(notes, 'notes')}>
-                      <FontAwesomeIcon icon={faShareAlt} /> 
+                      <FontAwesomeIcon icon={faShareAlt} />
                     </button>
-                    <button className='regenerate-button' onClick={generateNotes}>
-                      <FontAwesomeIcon icon={faRotate} /> 
+                    <button className="regenerate-button" onClick={generateNotes}>
+                      <FontAwesomeIcon icon={faRotate} />
                     </button>
                   </div>
                 </div>
@@ -224,15 +255,15 @@ const Message = ({ text}) => {
                   <div>
                     <CopyToClipboard text={summary}>
                       <button className="copy-button" onClick={() => handleCopy(summary)}>
-                        <FontAwesomeIcon icon={faCopy} /> 
+                        <FontAwesomeIcon icon={faCopy} />
                       </button>
                     </CopyToClipboard>
                     {copied && <span>Copied!</span>}
                     <button className="share-button" onClick={() => handleShare(summary, 'summary')}>
-                      <FontAwesomeIcon icon={faShareAlt} /> 
+                      <FontAwesomeIcon icon={faShareAlt} />
                     </button>
-                    <button className='regenerate-button' onClick={generateSummary}>
-                      <FontAwesomeIcon icon={faRotate} /> 
+                    <button className="regenerate-button" onClick={generateSummary}>
+                      <FontAwesomeIcon icon={faRotate} />
                     </button>
                   </div>
                 </div>

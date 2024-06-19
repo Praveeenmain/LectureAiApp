@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTimes, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 
 const UserMessage = ({ initialMessage, onSend }) => {
@@ -19,6 +18,7 @@ const UserMessage = ({ initialMessage, onSend }) => {
   const handleSendClick = () => {
     onSend(message);
     setIsEditing(false);
+    setMessage(''); // Clear message after sending
   };
 
   const handleCloseClick = () => {
@@ -28,33 +28,25 @@ const UserMessage = ({ initialMessage, onSend }) => {
 
   return (
     <div className="edit-send-message">
-      <div className={isEditing ? 'edit-actions' : ''}>
-        {isEditing ? (
-          <>
-            <input
-              className='edit-input'
-              type="text"
-              value={message}
-              onChange={handleInputChange}
-            />
-            <button className='edit-send-button' onClick={handleSendClick}>
-              <FontAwesomeIcon  icon={faPaperPlane} />
-            </button>
-            <FontAwesomeIcon
-              icon={faTimes}
-              onClick={handleCloseClick}
-              className="close-icon"
-            />
-          </>
-        ) : (
-          <>
-            <div className='user-message'>
-              <FontAwesomeIcon className='edit-user-icon' onClick={handleEditClick} icon={faEdit} />  
-              {message}
-            </div>
-          </>
-        )}
-      </div>
+      {isEditing ? (
+        <div className='edit-box'>
+          <textarea
+            className='edit-input'
+            value={message}
+            onChange={handleInputChange}
+            placeholder="Type your message..."
+          />
+          <div className='send-cancel-button'>
+            <button className='edit-cancel-button' onClick={handleCloseClick}>Cancel</button>
+            <button className='edit-send-button' onClick={handleSendClick}>Send</button>
+          </div>
+        </div>
+      ) : (
+        <div className='user-message'>
+          <FontAwesomeIcon className='edit-user-icon' icon={faEdit} onClick={handleEditClick} />
+          {message}
+        </div>
+      )}
     </div>
   );
 };
