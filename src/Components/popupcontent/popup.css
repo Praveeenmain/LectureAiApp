@@ -13,7 +13,9 @@
   background-color: rgba(0, 0, 0, 0.8);
   overflow: auto; /* Enable scrolling if content exceeds viewport */
 }
-
+.rhap_total-time{
+  color: #fff;
+}
 
 /* Popup Content */
 .popup-content {
@@ -125,20 +127,20 @@
   max-width: 1000px; /* Optional: limit the maximum width if needed */
   background-color: #3a3838;
   color: #ccc;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 0px;
+  border-radius: 35px;
   display: flex;
   align-items: center;
-  padding: 5px;
+  padding: 15px;
   z-index: 1000;
 }
 
 .input-box {
   flex: 1;
   border: none;
-  padding: 8px;
+  
   margin-right: 10px;
-  border-radius: 10px;
+  
   font-size: 15px;
   outline: none;
   overflow-y: hidden;
@@ -146,7 +148,7 @@
   box-sizing: border-box;
   background-color: #3a3838;
   color: white;
-  height: 50px;
+  height: 30px;
   width: 400px;
 }
 
@@ -179,7 +181,7 @@
   background-color: #3a3838;
   color: #ccc;
   border: 1px solid #ccc;
-  border-radius: 5px;
+ 
   display: flex;
   align-items: center;
   z-index: 1000;

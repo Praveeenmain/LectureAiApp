@@ -238,7 +238,7 @@ const PopContent = ({ handleClose, audioFile }) => {
           <button className="voice-button" onClick={toggleVoiceRecognition}>
             <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
           </button>
-          <textarea
+          <input
             placeholder="Type your message here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
