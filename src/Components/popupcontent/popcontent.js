@@ -123,7 +123,7 @@ const PopContent = ({ handleClose, audioFile }) => {
       const result = await chat.sendMessage(prompt);
       const response = result.response;
       const chatbotMessage = response.text();
-
+       console.log(chatbotMessage)
       setConversation((prevConversation) => [
         ...prevConversation,
         { userMessage: message, chatbotResponse: chatbotMessage }

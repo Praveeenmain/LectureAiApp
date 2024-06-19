@@ -1,19 +1,19 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faPlay, faPause, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Lectures from '../AllLectures';
-import {Audio} from "react-loader-spinner"
+
 import Navbar from '../NavBar';
-import './index.css';  // Import the CSS file
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
+import './index.css';
 
 const AudioRecorder = () => {
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const mediaRecorderRef = useRef(null);
-  const audioElementRef = useRef(null);
   const [showDeleteMenu, setShowDeleteMenu] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
@@ -66,26 +66,12 @@ const AudioRecorder = () => {
     }
     setIsUploading(false);
   };
+
   useEffect(() => {
     if (uploadSuccess) {
       window.location.reload(false);
     }
   }, [uploadSuccess]);
-  
-
-  const playRecording = () => {
-    if (audioElementRef.current) {
-      audioElementRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const pauseRecording = () => {
-    if (audioElementRef.current) {
-      audioElementRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
 
   const deleteRecording = () => {
     setRecording(null);
@@ -106,7 +92,7 @@ const AudioRecorder = () => {
 
   return (
     <>
-    <Navbar title="Audio Ai" />
+      <Navbar title="Audio Ai" />
       <div className="audio-recorder-container">
         <h1 className="record-title">Record</h1>
 
@@ -131,20 +117,16 @@ const AudioRecorder = () => {
         {recording && (
           <div className="recorded-audio-container">
             <div className="audio-controls-and-date">
-              <button className="play-pause-button" onClick={isPlaying ? pauseRecording : playRecording}>
-                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
-                
-              </button>
-              {isPlaying && (
-                   <Audio
-                   height={30}
-                   width={30}
-                   radius={9}
-                   color="white"
-                   ariaLabel="Loading"
-                   visible={isPlaying}
-                 />
-                )}
+              <AudioPlayer
+                src={recording.src}
+                customAdditionalControls={[]} // Remove additional controls
+                customVolumeControls={[]} // Remove volume controls
+                showJumpControls={false}
+                layout="stacked" // Adjusted layout to stacked for smaller size
+                autoPlay={false}
+                showFilledProgress={false}
+                style={{ backgroundColor: 'black', color: 'white', maxWidth: '350px' }} // Added maxWidth style
+              />
               <p className="date-time">{formattedDate}</p>
             </div>
             <div className="upload-and-delete-buttons">
@@ -166,21 +148,17 @@ const AudioRecorder = () => {
                 )}
               </div>
             </div>
-            <audio ref={audioElementRef} src={recording.src} onEnded={() => setIsPlaying(false)} />
           </div>
         )}
-       
 
         {uploadSuccess && (
-
           <div className="success-message">
             <p>Upload successful!</p>
           </div>
         )}
-
       </div>
       <h1 className='Lecture-heading'>Lectures</h1>
-       <Lectures/>
+      <Lectures />
     </>
   );
 };
