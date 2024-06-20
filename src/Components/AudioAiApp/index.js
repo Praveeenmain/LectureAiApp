@@ -116,24 +116,26 @@ const AudioRecorder = () => {
 
         {recording && (
           <div className="recorded-audio-container">
+            
             <div className="audio-controls-and-date">
+              
               <AudioPlayer
                 src={recording.src}
-                customAdditionalControls={[]} // Remove additional controls
-                customVolumeControls={[]} // Remove volume controls
+                customAdditionalControls={[]} 
+                customVolumeControls={[]} 
                 showJumpControls={false}
-                layout="stacked" // Adjusted layout to stacked for smaller size
+                layout="grid" 
                 autoPlay={false}
                 showFilledProgress={false}
                 style={{ backgroundColor: 'black', color: 'white', maxWidth: '350px' }} // Added maxWidth style
               />
-              <p className="date-time">{formattedDate}</p>
+                <p className="date-time">{formattedDate}</p>
             </div>
             <div className="upload-and-delete-buttons">
               <button className="upload-button" onClick={uploadRecording} disabled={isUploading}>
                 {isUploading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faUpload} />}
               </button>
-
+           
               <div className="delete-menu">
                 <button className="delete-menu-button" onClick={toggleDeleteMenu}>
                   <FontAwesomeIcon icon={faEllipsisV} />
@@ -159,6 +161,7 @@ const AudioRecorder = () => {
       </div>
       <h1 className='Lecture-heading'>Lectures</h1>
       <Lectures />
+     
     </>
   );
 };

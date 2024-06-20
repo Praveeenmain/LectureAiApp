@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import LectureTitle from '../LectureTitle';
 import 'react-h5-audio-player/lib/styles.css';
 import UserMessage from '../UserMessage';
+import Navbar from '../NavBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faVolumeMute, faMicrophone, faStopCircle, faLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faVolumeMute, faMicrophone, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import Message from '../BotMessage';
-import { TailSpin } from 'react-loader-spinner';
+import { TailSpin, Circles } from 'react-loader-spinner';
+
+import { useParams } from 'react-router-dom';
 import './popup.css';
 
-const PopContent = ({ handleClose, audioFile }) => {
+const PopContent = () => {
+  const { id } = useParams();
+  const [audioFile, setAudioFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [speechUtterance, setSpeechUtterance] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [message, setMessage] = useState('');
@@ -56,6 +62,25 @@ const PopContent = ({ handleClose, audioFile }) => {
     },
   ];
 
+  useEffect(() => {
+    const fetchAudioDetails = async (_id) => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`https://lectureaibackend.onrender.com/audio-files/${id}`);
+        if (response.ok) {
+          const audioFile = await response.json();
+          setAudioFile(audioFile);
+        } else {
+          console.error('Failed to fetch book details');
+        }
+      } catch (error) {
+        console.error('Error fetching book details:', error);
+      }
+      setIsLoading(false);
+    };
+    fetchAudioDetails(id);
+  }, [id]);
+
   const toggleVoiceRecognition = () => {
     if (!isListening) {
       recognition.start();
@@ -94,7 +119,7 @@ const PopContent = ({ handleClose, audioFile }) => {
   const toggleSpeakStop = () => {
     if (isSpeaking) {
       handleStopSpeaking();
-    } else {
+    } else if (audioFile && audioFile.chatResponse) {
       handleSpeak(audioFile.chatResponse);
     }
   };
@@ -112,7 +137,7 @@ const PopContent = ({ handleClose, audioFile }) => {
       alert('Please enter a message');
       return;
     }
-    setIsLoading(true);
+    setIsSending(true);
     try {
       const chat = model.startChat({
         generationConfig,
@@ -121,129 +146,97 @@ const PopContent = ({ handleClose, audioFile }) => {
       });
       const prompt = `${audioFile.title}: ${message}`;
       const result = await chat.sendMessage(prompt);
-      const response = result.response;
-      const chatbotMessage = response.text();
-       console.log(chatbotMessage)
+      const response = result.response;;
+
       setConversation((prevConversation) => [
         ...prevConversation,
-        { userMessage: message, chatbotResponse: chatbotMessage }
+        { userMessage: message, chatbotResponse: response.text() }
       ]);
 
       setMessage('');
-      setIsLoading(false);
+      setIsSending(false);
     } catch (error) {
       console.error('Error generating summary:', error);
       alert('Failed to generate summary. Please try again.');
-      setIsLoading(false);
+      setIsSending(false);
     }
   };
-  const SendMessage = async (updatedMessage) => {
-    // Check if the message is empty
-    if (updatedMessage.trim() === '') {
-      alert('Please enter a message');
-      return;
-    }
-  
-    // Set loading state to true
-    setIsLoading(true);
-  
-    try {
-      // Start a new chat session with the generative model
-      const chat = model.startChat({
-        generationConfig,
-        safetySettings,
-        history: [],
-      });
-  
-      
-      const prompt = `${audioFile.title}: ${updatedMessage}`;
-  
-    
-      const result = await chat.sendMessage(prompt);
-      const response = result.response;
-  
-   
-      const chatbotMessage = response.candidates[0].content.parts[0].text;
-  
-      
-      setConversation(prevConversation => [
-        ...prevConversation,
-        { userMessage: updatedMessage, chatbotResponse: chatbotMessage }
-      ]);
-  
-      // Clear message input and set loading state to false
-      setMessage('');
-      setIsLoading(false);
-  
-    } catch (error) {
-      // Handle any errors that occur during the chat interaction
-      console.error('Error generating summary:', error);
-      alert('Failed to generate summary. Please try again.');
-      setIsLoading(false); // Ensure loading state is reset on error
-    }
-  };
+
   return (
-    <div className="popup">
-      <div className="popup-content">
-        <span className="close" onClick={handleClose}>
-          <FontAwesomeIcon icon={faLeftLong} />
-        </span>
-        <div className="audio-player-container">
-          {audioFile.audio && (
-            <AudioPlayer
-              src={`data:audio/wav;base64,${audioFile.audio}`}
-              autoPlay={false}
-              showJumpControls={true}
-              customAdditionalControls={[]}
-              className="audio-player"
-            />
-          )}
-        </div>
-        <div className="Title-voice">
-          <LectureTitle lecture={{ title: truncateTitle(audioFile.title, 3) }} id={audioFile._id} onClick={toggleSpeakStop} />
-          <button className="speak-stop-button" onClick={toggleSpeakStop}>
-            {isSpeaking ? (
-              <FontAwesomeIcon icon={faVolumeMute} />
-            ) : (
-              <img className="volumeup-icon" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
-            )}
-          </button>
-        </div>
-        <div className="chatmessage-container">
-          <Message initialText={audioFile.chatResponse} />
-          {conversation.map((item, index) => (
-            <React.Fragment key={index}>
-              <UserMessage initialMessage={item.userMessage} onSend={SendMessage} />
-              <Message initialText={item.chatbotResponse} />
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="input-box-container">
-          <button className="voice-button" onClick={toggleVoiceRecognition}>
-            <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
-          </button>
-          <input
-            placeholder="Type your message here..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="input-box"
-          />
-          <button className="send-message-button" onClick={handleSendMessage}>
-            {isLoading ? (
-              <TailSpin
-                visible={true}
-                height="20"
-                width="20"
+    <div>
+      <Navbar title="Audio Ai" />
+      <div className="popup">
+        <div className="popup-content">
+          {isLoading && (
+            <div className="loader-container">
+              <Circles
+                height="80"
+                width="80"
                 color="white"
-                ariaLabel="tail-spin-loading"
-                radius="1"
-                wrapperStyle={{}}
-                wrapperClass=""
+                ariaLabel="circles-loading"
+                visible={true}
               />
-            ) : (
-              <FontAwesomeIcon icon={faPaperPlane} />
-            )}
-          </button>
+            </div>
+          )}
+          {!isLoading && audioFile && (
+            <>
+              <div className="audio-player-container">
+                {audioFile.audio && (
+                  <AudioPlayer
+                    src={`data:audio/wav;base64,${audioFile.audio}`}
+                    autoPlay={false}
+                    showJumpControls={true}
+                    customAdditionalControls={[]}
+                    className="audio-player"
+                  />
+                )}
+              </div>
+              <div className="Title-voice">
+                <LectureTitle lecture={{ title: truncateTitle(audioFile.title, 3) }} id={audioFile._id} onClick={toggleSpeakStop} />
+                <button className="speak-stop-button" onClick={toggleSpeakStop}>
+                  {isSpeaking ? (
+                    <FontAwesomeIcon className='volume-mute' icon={faVolumeMute} />
+                  ) : (
+                    <img className="volumeup-icon" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
+                  )}
+                </button>
+              </div>
+              <div className="chatmessage-container">
+                <Message initialText={audioFile.chatResponse} />
+                {conversation.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <UserMessage initialMessage={item.userMessage} />
+                    <Message initialText={item.chatbotResponse} />
+                  </React.Fragment>
+                ))}
+                <div className="input-box-container">
+                  <button className="voice-button" onClick={toggleVoiceRecognition}>
+                    <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
+                  </button>
+                  <input
+                    placeholder="Type your message here..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="input-box"
+                  />
+                  <button className="send-message-button" onClick={handleSendMessage}>
+                    {isSending ? (
+                      <TailSpin
+                        visible={true}
+                        height="20"
+                        width="20"
+                        color="white"
+                        ariaLabel="tail-spin-loading"
+                        radius="1"
+                      />
+                    ) : (
+                      <FontAwesomeIcon icon={faPaperPlane} />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

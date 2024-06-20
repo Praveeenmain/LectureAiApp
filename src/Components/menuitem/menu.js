@@ -3,7 +3,7 @@ import axios from 'axios';
 import './menu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-
+import { Link } from 'react-router-dom';
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric' };
   const date = new Date(dateString);
@@ -19,7 +19,7 @@ const truncateTitle = (title, maxLength) => {
   return words.slice(0, 3).join(' ') + '...';
 };
 
-const MenuItem = ({ audioFile, onClick }) => {
+const MenuItem = ({ audioFile}) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const formattedDate = formatDate(audioFile.date);
@@ -41,7 +41,7 @@ const MenuItem = ({ audioFile, onClick }) => {
       .delete(url)
       .then((response) => {
         console.log('Audio file deleted successfully');
-        // Optionally perform any cleanup or state update after successful deletion
+       
       })
       .catch((error) => {
         console.error('Error deleting audio file:', error);
@@ -52,9 +52,7 @@ const MenuItem = ({ audioFile, onClick }) => {
       });
   };
 
-  const handleItemClick = () => {
-    onClick(); 
-  };
+  
 
   useEffect(() => {
     if (isDeleting) {
@@ -63,7 +61,8 @@ const MenuItem = ({ audioFile, onClick }) => {
   }, [isDeleting]);
 
   return (
-    <li className="menu-item" onClick={handleItemClick}>
+    <Link className="menu-link" to={`/audio-files/${audioFile._id}`}>
+    <li className="menu-item" >
       <div className="item-content">
         <div className="icons">
           <div className="icon">
@@ -83,6 +82,7 @@ const MenuItem = ({ audioFile, onClick }) => {
         </div>
       </div>
     </li>
+    </Link>
   );
 };
 

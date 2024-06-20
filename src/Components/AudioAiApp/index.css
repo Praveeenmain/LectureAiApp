@@ -25,6 +25,8 @@
     font-size: 14px;
     color: #ede8e8;
     margin-left: 10px;
+    align-items: center;
+    text-align: center;
   }
   
   .upload-button,
@@ -79,7 +81,7 @@
       box-sizing: border-box;
       overflow-x: hidden;
       padding: 10px;
-      background-color: #101010;
+      
     }
   
     .stop-microphone {
@@ -266,7 +268,14 @@
       margin-left: 20px;
       margin-right: 20px;
     }
-  
+    .rhap_controls-section {
+      margin-left: -100px;
+      order: 1; /* Change the order to make it appear after .rhap_progress-section */
+    }
+    
+    .rhap_progress-section {
+      order: 2; /* Change the order to make it appear before .rhap_controls-section */
+    }
     .audio-controls-and-date {
       margin-right: 20px; /* Space between the two containers */
       display: flex;
@@ -291,8 +300,9 @@
     .date-time {
       font-size: 14px;
       color: #f3ecec;
-      text-align: center;
-      margin: 0 10px; /* Space between the date-time and other elements */
+      
+    
+      margin-left: 95px; /* Space between the date-time and other elements */
     }
   
     .delete-menu {

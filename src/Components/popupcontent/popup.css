@@ -2,54 +2,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  background-color: rgba(0, 0, 0, 0.8);
-  overflow: auto; /* Enable scrolling if content exceeds viewport */
+  margin: 0;
+  padding: 0;
+  background-color:black;
+  overflow: auto;
 }
-.rhap_total-time{
+
+.rhap_total-time, .rhap_current-time {
   color: #fff;
 }
 
-/* Popup Content */
 .popup-content {
-  background-color: #030303;
+  background-color: black;
   padding: 20px;
-  margin: 0; /* Remove default margin */
-  width: calc(100% - 40px); /* Adjust padding to create space between content and edges */
-  max-width: 600px; /* Optional: Limit maximum width of popup content */
-  height: calc(100% - 40px); /* Adjust padding to create space between content and edges */
-  max-height: calc(100% - 40px); /* Adjust padding to create space between content and edges */
-  overflow-y: auto; /* Enable scrolling if content exceeds popup content height */
+  width: 100%;
+ 
+  height: calc(100% - 40px);
+ margin-top:20px;
   position: relative;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   color: #ccc;
 }
 
-/* Close Button */
-.close {
-  color: #aaa;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
 
-.close:hover,
-.close:focus {
-  color: #fff;
-}
 
-/* Audio Player Container */
 .audio-player-container {
   display: flex;
   flex-direction: column;
@@ -58,7 +37,6 @@
   margin-top: 25px;
 }
 
-/* Audio Player */
 .audio-player {
   background-color: #343131;
   color: #fff;
@@ -67,7 +45,6 @@
   max-width: 500px;
 }
 
-/* Title and Voice Section */
 .Title-voice {
   display: flex;
   align-items: center;
@@ -87,80 +64,69 @@
   border: 0;
   font-size: 20px;
   cursor: pointer;
-  margin-top: -25px;
 }
 
-/* Chat Messages Container */
 .chatmessage-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+ 
   margin-top: 10px;
   margin-bottom: 65px;
   padding: 10px;
   max-width: 400px;
   width: 100%;
   border-radius: 10px;
-  background-color: #040404;
+ 
 }
 
 .volumeup-icon {
   height: 25px;
   width: 25px;
-  color: white;
-  border-radius: 5px;
   filter: invert(100%);
-  margin-top: -10px;
+  margin-top:-35px;
 }
 
-.rhap_current-time {
-  color: white;
-}
 
-/* Input Box Container */
 .input-box-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 40px); /* Adjust based on padding and margin */
-  max-width: 1000px; /* Optional: limit the maximum width if needed */
-  background-color: #3a3838;
+  max-width: 1000px;
+  width: 100% ;
+  background-color: #302f2f;
   color: #ccc;
-  border: 0px;
-  border-radius: 25px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
-  padding: 15px;
-  z-index: 1000;
+  padding: 10px 15px;
+  margin-right: 30px;
+ margin-top: 5px;
 }
 
 .input-box {
   flex: 1;
   border: none;
-  
+  padding: 10px;
   margin-right: 10px;
-  
   font-size: 15px;
   outline: none;
-  overflow-y: hidden;
-  resize: none;
-  box-sizing: border-box;
   background-color: #3a3838;
   color: white;
-  height: 30px;
-  width: 400px;
+  border-radius: 15px;
 }
 
 .send-message-button,
 .voice-button {
-  background-color: #3a3838;
+  background-color: #302f2f;
   color: white;
   border: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px;
+  border-radius: 50%;
 }
 
 .send-button {
@@ -169,20 +135,4 @@
 
 .voice-button {
   margin-right: 10px;
-}
-
-/* Ensure message area is visible above the input box */
-.input-box-container {
-  position: fixed;
-  bottom: 20px;
-  transform: translateX(-50%);
-  width: calc(100% - 40px); /* Adjust based on padding and margin */
-  max-width: 500px;
-  background-color: #3a3838;
-  color: #ccc;
-  border: 1px solid #ccc;
- 
-  display: flex;
-  align-items: center;
-  z-index: 1000;
 }

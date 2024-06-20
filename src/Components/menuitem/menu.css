@@ -10,7 +10,9 @@
    
     max-width: 400px;
   }
-  
+  .menu-link{
+    text-decoration: none;
+  }
   .menu-item:hover {
     background-color: #111; /* Darken hover background color */
   }

@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   faCopy, faShareAlt, faRandom, faCheck,
- faVolumeMute, faBook,
-  faRectangleList, faRotate,faLeftLong
+  faVolumeMute, faBook, faRectangleList, faRotate, faLeftLong, faEdit
 } from '@fortawesome/free-solid-svg-icons';
 import Popup from 'reactjs-popup';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
@@ -12,6 +11,8 @@ import './index.css';
 
 const Message = ({ initialText }) => {
   const [displayedText, setDisplayedText] = useState('');
+  const [editedText, setEditedText] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [speechUtterance, setSpeechUtterance] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -60,18 +61,16 @@ const Message = ({ initialText }) => {
           if (index < initialText.length) {
             return prev + initialText[index];
           }
-          return prev; // Prevent unnecessary state update after typing is complete
+          return prev;
         });
         index += 1;
         if (index === initialText.length) {
-          clearInterval(timer); // Stop interval when typing is complete
+          clearInterval(timer);
         }
-      }, 50); // Adjust speed here
-      return () => clearInterval(timer); // Clean up interval on component unmount
+      }, 15);
+      return () => clearInterval(timer);
     }
-  }, [initialText, setDisplayedText]); // Include setDisplayedText in dependencies if not part of useCallback
-  
-  
+  }, [initialText, setDisplayedText]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayedText);
@@ -170,9 +169,46 @@ const Message = ({ initialText }) => {
     }
   };
 
+  const handleEditTextChange = (event) => {
+    setEditedText(event.target.value);
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditedText(displayedText);
+  };
+
+  const handleSaveEdit = () => {
+    setDisplayedText(editedText);
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
   return (
     <div className="action-buttons">
-      <div className="chatbot-message">{displayedText}</div>
+      {isEditing ? (
+        <div className="edit-container">
+          <textarea
+            className="edit-textarea"
+            value={editedText}
+            onChange={handleEditTextChange}
+          />
+          <div className="edit-actions">
+          <button className="bot-save-button" onClick={handleCancelEdit}>
+              Cancel
+            </button>
+            <button className="bot-save-button" onClick={handleSaveEdit}>
+              Save
+            </button>
+           
+          </div>
+        </div>
+      ) : (
+        <div className="chatbot-message">{displayedText}</div>
+      )}
       <div className="act-buttons">
         <CopyToClipboard text={displayedText} onCopy={handleCopy}>
           <button className="copy-button">
@@ -185,8 +221,13 @@ const Message = ({ initialText }) => {
         </button>
 
         <button className="additional-button" onClick={toggleSpeakStop}>
-           {isSpeaking?   <FontAwesomeIcon icon= {faVolumeMute} />  :(<img className='volumeup-icon' src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />)}
-       
+          {isSpeaking ? <FontAwesomeIcon icon={faVolumeMute} /> : (
+            <img className='volumeup-bot-icon' src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
+          )}
+        </button>
+
+        <button className="additional-button" onClick={handleEdit}>
+          <FontAwesomeIcon icon={faEdit} />
         </button>
 
         <Popup
@@ -200,7 +241,7 @@ const Message = ({ initialText }) => {
           {(close) => (
             <>
               <span className="close" onClick={() => close()}>
-              <FontAwesomeIcon icon={faLeftLong}/>
+                <FontAwesomeIcon icon={faLeftLong} />
               </span>
 
               <div className="generate-notes-summary-popup">
