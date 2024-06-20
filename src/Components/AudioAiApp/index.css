@@ -269,10 +269,10 @@
       margin-right: 20px;
     }
     .rhap_controls-section {
-      margin-left: -100px;
+      margin-right: auto;
       order: 1; /* Change the order to make it appear after .rhap_progress-section */
     }
-    
+   
     .rhap_progress-section {
       order: 2; /* Change the order to make it appear before .rhap_controls-section */
     }
@@ -302,7 +302,7 @@
       color: #f3ecec;
       
     
-      margin-left: 95px; /* Space between the date-time and other elements */
+    
     }
   
     .delete-menu {
@@ -313,7 +313,7 @@
       position: absolute;
       bottom: 30px;
       right: -20px;
-      background-color: #fff;
+      background-color: #1a1919;
       border: 1px solid #ccc;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -333,7 +333,7 @@
     }
   
     .delete-menu-option:hover {
-      background-color: #f0f0f0;
+      background-color: #535353;
     }
   
     audio {
@@ -361,4 +361,8 @@
       height: 400px;
     }
   }
-  
+  .date-time{
+    color:rgb(225, 220, 220);
+     text-align: left;
+    font-size: 16px;
+  }

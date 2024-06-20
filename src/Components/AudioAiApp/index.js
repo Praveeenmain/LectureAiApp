@@ -86,8 +86,9 @@ const AudioRecorder = () => {
     day: '2-digit',
     month: '2-digit',
     year: '2-digit',
-    hour: 'numeric',
+     hour: 'numeric',
     minute: 'numeric'
+   
   });
 
   return (
@@ -116,7 +117,7 @@ const AudioRecorder = () => {
 
         {recording && (
           <div className="recorded-audio-container">
-            
+           
             <div className="audio-controls-and-date">
               
               <AudioPlayer
@@ -129,14 +130,15 @@ const AudioRecorder = () => {
                 showFilledProgress={false}
                 style={{ backgroundColor: 'black', color: 'white', maxWidth: '350px' }} // Added maxWidth style
               />
-                <p className="date-time">{formattedDate}</p>
+                
             </div>
             <div className="upload-and-delete-buttons">
               <button className="upload-button" onClick={uploadRecording} disabled={isUploading}>
                 {isUploading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faUpload} />}
               </button>
-           
+              
               <div className="delete-menu">
+             
                 <button className="delete-menu-button" onClick={toggleDeleteMenu}>
                   <FontAwesomeIcon icon={faEllipsisV} />
                 </button>
@@ -146,6 +148,7 @@ const AudioRecorder = () => {
                       <FontAwesomeIcon icon={faTrash} />
                       Delete
                     </button>
+                    <div className="date-time">{formattedDate}</div>
                   </div>
                 )}
               </div>
