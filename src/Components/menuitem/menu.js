@@ -4,6 +4,8 @@ import './menu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import Popup from 'reactjs-popup';
+
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric' };
   const date = new Date(dateString);
@@ -19,19 +21,16 @@ const truncateTitle = (title, maxLength) => {
   return words.slice(0, 3).join(' ') + '...';
 };
 
-const MenuItem = ({ audioFile}) => {
+const MenuItem = ({ audioFile }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const formattedDate = formatDate(audioFile.date);
   const truncatedTitle = truncateTitle(audioFile.title, 2);
 
-  const handleDelete = () => {
-    if (!audioFile) return;
+  const handleDelete = (event) => {
+    event.preventDefault(); // Prevent default action (navigation)
 
-    const confirmDelete = window.confirm('Are you sure you want to delete this Lecture audio?');
-    if (!confirmDelete) {
-      return;
-    }
+    if (!audioFile) return;
 
     const url = `https://lectureaibackend.onrender.com/audio-files/${audioFile._id}`;
 
@@ -41,7 +40,6 @@ const MenuItem = ({ audioFile}) => {
       .delete(url)
       .then((response) => {
         console.log('Audio file deleted successfully');
-       
       })
       .catch((error) => {
         console.error('Error deleting audio file:', error);
@@ -52,37 +50,55 @@ const MenuItem = ({ audioFile}) => {
       });
   };
 
-  
-
   useEffect(() => {
     if (isDeleting) {
-      window.location.reload(false); 
+      window.location.reload(false); // Reloading the page after deletion
     }
   }, [isDeleting]);
 
   return (
-    <Link className="menu-link" to={`/audio-files/${audioFile._id}`}>
-    <li className="menu-item" >
-      <div className="item-content">
-        <div className="icons">
-          <div className="icon">
-            <FontAwesomeIcon icon={faPlay} />
+    <li className="menu-item">
+     
+        <div className="item-content">
+        <Link className="menu-link" to={`/audio-files/${audioFile._id}`}>
+          <div className="icons">
+            <div>
+              <FontAwesomeIcon className="icon" icon={faPlay} />
+            </div>
+          
+          <div className="details">
+            <h1 className="title">{truncatedTitle}</h1>
+            <div className="date">{formattedDate}</div>
           </div>
+          </div>
+          </Link>
+          <Popup
+            trigger={<FontAwesomeIcon icon={faTrashAlt} className="delete-icon" />}
+            position="center"
+            closeOnDocumentClick
+            modal
+          >
+            {close => (
+              <div className="popup-content">
+                <p style={{ color: 'white' }}>Are you sure you want to delete this Lecture audio?</p>
+                <div className="button-container">
+                  <button className="confirm-button" onClick={(event) => {
+                    event.preventDefault(); // Prevent default action (navigation)
+                    handleDelete(event);
+                    close();
+                  }}>
+                    {isDeleting ? 'Deleting...' : 'Confirm'}
+                  </button>
+                  <button className="cancel-button" onClick={close}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </Popup>
         </div>
-        <div className="details">
-          <h1 className="title">{truncatedTitle}</h1>
-          <div className="date">{formattedDate}</div>
-        </div>
-        <div className="icon" onClick={handleDelete}>
-          {isDeleting ? (
-            <span>Deleting...</span>
-          ) : (
-            <FontAwesomeIcon icon={faTrashAlt} />
-          )}
-        </div>
-      </div>
+   
     </li>
-    </Link>
   );
 };
 

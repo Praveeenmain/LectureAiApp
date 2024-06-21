@@ -13,20 +13,20 @@ const Home=()=>{
                 
                  <div className="Audio-lectures box">
                       <Link className="HomeLinks" to='/Audio-lectures'> 
-                       <FontAwesomeIcon class="box-icon" icon={faMicrophoneLines} />
+                       <FontAwesomeIcon className="box-icon" icon={faMicrophoneLines} />
                         <h1 className='box-heading'>Audio Lectures</h1>
                         </Link> 
                    </div>
                    
                    <div className="VideoLectures box">
                    <Link className="HomeLinks" to='/Video-lectures'> 
-                   <FontAwesomeIcon class="box-icon" icon={faVideo} />
+                   <FontAwesomeIcon className="box-icon" icon={faVideo} />
                    <h1 className='box-heading'>Video Lectures</h1>
                    </Link> 
                    </div>
                    <div className="classNotes box">
                    <Link className="HomeLinks" to='/classnotes'> 
-                   <FontAwesomeIcon class="box-icon" icon={faBook} />
+                   <FontAwesomeIcon className="box-icon" icon={faBook} />
                    <h1 className='box-heading'> ClassNotes</h1>
                    </Link> 
                    </div>
@@ -34,13 +34,10 @@ const Home=()=>{
 
                    <div className="classTest box">
                    <Link className="HomeLinks" to='/classtest'> 
-                   <FontAwesomeIcon class="box-icon" icon={faSquareCheck} />
+                   <FontAwesomeIcon className="box-icon" icon={faSquareCheck} />
                    <h1 className='box-heading'>Class Tests</h1>
                    </Link> 
                    </div>
-                   
-
-
                  
             </div>
            
