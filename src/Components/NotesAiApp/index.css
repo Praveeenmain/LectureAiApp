@@ -1,0 +1,133 @@
+/* Container for the entire Notes Ai section */
+/* Reset default margin and padding for body */
+
+
+/* Style for the container */
+.Notes-Ai-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto; /* Centering the container horizontally */
+  padding: 20px;
+  background-color: #0a0a0a; /* Set the background color of the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+  border-radius: 8px; /* Optional: Add some border radius for rounded corners */
+ 
+}
+
+  /* Box containing main content like notes or input */
+  .Notes-content-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    max-height: 450px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #333131;
+  }
+  
+  .note-title {
+    margin-top: 5px;
+    color: white;
+    text-align: center;
+  }
+  
+  .notes-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 5px;
+  }
+  .notes-file-name{
+    color:white;
+    margin-left: 3px;
+    box-sizing: border-box;
+
+  }
+  /* Input field styling */
+  .note-input-title {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: black;
+    color: white;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-sizing: border-box;
+  }
+  
+  .note-input-title:focus {
+    background-color: #333;
+    color: white;
+    border-color: white;
+  }
+  
+  /* File input styling */
+  /* Hide the default file input */
+input[type="file"] {
+    display: none;
+  }
+  
+  /* Style the visible file input element */
+  
+  
+  .notes-pdf-input {
+    
+    margin-top: 10px;
+    padding: 10px;
+    height: 45px;
+    background-color: black;
+    color: #ccc;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+  
+  
+  /* Submit button styling */
+  .Notes-Ai-submit {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top: 20px;
+    box-sizing: border-box;
+  }
+  
+  .Notes-Ai-submit:hover {
+    background-color: white;
+    color: black;
+  }
+  
+  .Notes-Ai-submit:active {
+    transform: translateY(1px);
+  }
+  .note-success-message{
+    color:red;
+  }
+  @media screen and (min-width: 769px) {
+    .Notes-Ai-container {
+      display: none;
+    }
+  }
+  
