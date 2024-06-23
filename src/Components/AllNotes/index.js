@@ -14,8 +14,8 @@ const AllNotes = () => {
     useEffect(() => {
         const fetchAllPdfs = async () => {
             try {
-                const response = await axios.get('https://pdfaibackend.onrender.com/pdf-list');
-                const reversedAllNotes = response.data.pdfFiles.reverse();
+                const response = await axios.get('https://pdfaibackend.onrender.com/notefiles');
+                const reversedAllNotes = response.data;
                 setAllDocuments(reversedAllNotes);
                 setIsLoading(false);
             } catch (error) {
@@ -50,7 +50,7 @@ const AllNotes = () => {
                 </p>
             ) : allDocuments.length === 0 ? (
                 <p className="no-pdf-message">
-                    No PDF documents available. Please upload some.
+                    No documents available. Please upload some.
                 </p>
             ) : (
                 <>

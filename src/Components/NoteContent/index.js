@@ -22,7 +22,7 @@ const NoteDetails = () => {
     const fetchNoteDetails = async (id) => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://pdfaibackend.onrender.com/pdf/${id}`);
+        const response = await fetch(`https://pdfaibackend.onrender.com/notefile/${id}`);
         if (response.ok) {
           const noteDetails = await response.json();
           setNoteFile(noteDetails.pdfFile);
@@ -83,12 +83,9 @@ const NoteDetails = () => {
           <>
            <div className="NotesAi-chatbot-container">
             <div className="NoteAi-content">
-                <div className="Note-Title-voice">
-                      <h1 className="NotesAi-title"> {noteFile.title}</h1>
-                      {/* voice button */}
-                </div>
+                
                 <div className="chatmessage-container">
-              <Message initialText={`Ask me about anything ${noteFile.title}`} />
+              <Message initialText={`Ask me about ${noteFile.title}`} />
                {conversation.map((item, index) => (
                 <React.Fragment key={index}>
                   <UserMessage initialMessage={item.userMessage} />

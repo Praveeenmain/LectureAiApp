@@ -25,10 +25,10 @@ const NotesAi = () => {
       <Navbar title="Notes Ai" />
 
       <div className='Notes-Ai-container'>
-        <h1 className="note-title">Upload Notes</h1>
+
         <div className='Notes-content-box'>
         <button className='NoteAi-Plus-button' onClick={handleOpenPopup}> <FontAwesomeIcon icon={faPlus} /> </button>
-          <h1 className='Add-file-heading'> Add Files</h1>
+          <h1 className='Add-file-heading'> Upload Notes</h1>
         </div>
         {showPopup && <AddedFileContainer onClose={handleClosePopup}  />}
         <AllNotes />

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 import './index.css';
 import { pdfjs } from "react-pdf";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faLeftLong,faTimes } from '@fortawesome/free-solid-svg-icons';
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
@@ -13,8 +14,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const AddedFileContainer = ({ onClose }) => {
   const [title, setTitle] = useState('');
-  const [pdfFile, setPdfFile] = useState(null);
-  const [fileName, setFileName] = useState('');
+  const [files, setFiles] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
   const [category, setCategory] = useState('');
   const [exam, setExam] = useState('');
   const [paper, setPaper] = useState('');
@@ -25,10 +26,17 @@ const AddedFileContainer = ({ onClose }) => {
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
   const handleFileChange = (e) => {
-    const chosenFile = e.target.files[0];
-    setPdfFile(chosenFile);
-    setFileName(chosenFile ? chosenFile.name : '');
+    const chosenFiles = Array.from(e.target.files);
+    if (chosenFiles.length > 2) {
+      setError('You can upload a maximum of 3 files.');
+      return;
+    }
+    setFiles(chosenFiles);
+    setFileNames(chosenFiles.map(file => file.name));
+    setError(null); // Clear error message on new file selection
+    setUploadSuccess(false); // Clear success message on new file selection
   };
+  
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
@@ -50,49 +58,14 @@ const AddedFileContainer = ({ onClose }) => {
     setTopics(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('pdfFile', pdfFile);
-      formData.append('category', category);
-      formData.append('exam', exam);
-      formData.append('paper', paper);
-      formData.append('subject', subject);
-      if (topics.trim() !== '') {
-        formData.append('topics', topics);
-      }
-      
-      // Log the formData before making the POST request
-      console.log('Form Data:', formData);
-      onClose()
-      // Make the POST request using Axios or fetch here
-      // Example with Axios:
-      // const response = await axios.post('/api/upload', formData);
-      // console.log('Upload successful!', response.data);
-      
-      // For now, simulate successful upload
-      setUploadSuccess(true);
-    } catch (error) {
-      console.error('Upload failed:', error);
-      setError(error.message || 'Upload failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
 
   const handleCancel = () => {
     setTitle('');
-    setPdfFile(null);
-    setFileName('');
+    setFiles([]);
+    setFileNames([]);
     setCategory('');
     setExam('');
     setPaper('');
@@ -103,6 +76,51 @@ const AddedFileContainer = ({ onClose }) => {
     setUploadSuccess(false);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (files.length === 0) {
+      setError('Please select files to upload.');
+      return;
+    }
+  
+    setIsLoading(true);
+  
+    try {
+      const formData = new FormData();
+      formData.append('title', title);
+      files.forEach(file => formData.append('files', file));
+      formData.append('category', category);
+      formData.append('exam', exam);
+      formData.append('paper', paper);
+      formData.append('subject', subject);
+      if (topics.trim() !== '') {
+        formData.append('topics', topics);
+      }
+  
+      // Log the formData entries before making the POST request
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+  
+      const response = await axios.post('https://pdfaibackend.onrender.com/uploadnotes', formData);
+      console.log('Upload successful!', response.data);
+  
+      setUploadSuccess(true);
+      onClose()
+      window.location.reload(false);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setError(error.message || 'Upload failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (uploadSuccess) {
+      window.location.reload(false);
+    }
+  }, [uploadSuccess]);
+
   return (
     <div className="Added-file-container">
       <nav className="navbar navbar-light bg-dark d-flex justify-content-between align-items-center px-3">
@@ -110,28 +128,35 @@ const AddedFileContainer = ({ onClose }) => {
           <button onClick={onClose} className="Popup-navbar navbar-brand" style={{ color: 'white', textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faLeftLong} style={{ color: 'white' }} />
           </button>
-         
+          <h1 className='dataset-heading'>Add Dataset</h1>
         </div>
       </nav>
 
       <div className="Add-content">
-      <h1 className='dataset-heading'>Add Dataset</h1>
         <div className='notefile-upload-container'>
           <form className='notes-form-container' onSubmit={handleSubmit}>
             {error && <div className="error-message">{error}</div>}
             {uploadSuccess && <div className="success-message">Upload successful!</div>}
-             
+
             <div className='note-input-choose'>
               <label className='notes-pdf-input'>
                 <input
                   type="file"
-                  id="pdfFile"
+                  id="files"
                   onChange={handleFileChange}
+                  multiple
                   required
                 />
                 Upload Files
               </label>
-              {pdfFile && <span>{fileName}</span>}
+              {fileNames.length > 0 && (
+  <div className="file-names-container">
+  <span>{fileNames.map(name => name.slice(-10)).join(', ')}</span>
+
+    <button className="close-button" onClick={() => setFileNames([])}><FontAwesomeIcon icon={faTimes}/></button>
+  </div>
+)}
+
             </div>
             <input
               className='note-input-title'
@@ -140,7 +165,6 @@ const AddedFileContainer = ({ onClose }) => {
               value={title}
               onChange={handleTitleChange}
               placeholder='Enter Title'
-             
               required
             />
             <select
@@ -152,9 +176,9 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="" disabled>Select Category</option>
               <option value="Legal">Legal</option>
               <option value="Health">Health</option>
-              <option value="education">Education</option>
+              <option value="Education">Education</option>
               <option value="Finance">Finance</option>
-              <option value="other">Other</option>
+              <option value="Other">Other</option>
             </select>
             <select
               className='note-input-category'
@@ -166,7 +190,6 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="Prelims">Prelims</option>
               <option value="Mains">Mains</option>
               <option value="Personality Test">Personality Test</option>
-              {/* Add more options as needed */}
             </select>
             <select
               className='note-input-category'
@@ -179,10 +202,9 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="English">English</option>
               <option value="Essay">Essay</option>
               <option value="GS Paper 1">GS Paper 1</option>
-              <option value="Gs Paper 2">Gs Paper 2</option>
-              <option value="Gs Paper 3">Gs Paper 3</option>
-              <option value="Gs Paper 4">Gs Paper 4</option>
-              {/* Add more options as needed */}
+              <option value="GS Paper 2">GS Paper 2</option>
+              <option value="GS Paper 3">GS Paper 3</option>
+              <option value="GS Paper 4">GS Paper 4</option>
             </select>
             <select
               className='note-input-category'
@@ -191,12 +213,11 @@ const AddedFileContainer = ({ onClose }) => {
               required
             >
               <option value="" disabled>Select Subject</option>
-              <option value="Indian history">Indian history</option>
+              <option value="Indian History">Indian History</option>
               <option value="Science">Science</option>
               <option value="Agriculture">Agriculture</option>
               <option value="History">History</option>
-              <option value="others">others</option>
-              {/* Add more options as needed */}
+              <option value="Others">Others</option>
             </select>
             <input
               className='note-input-title'
@@ -204,7 +225,7 @@ const AddedFileContainer = ({ onClose }) => {
               id="topics"
               value={topics}
               onChange={handleTopicsChange}
-              placeholder='Enter Topics (optional)'
+              placeholder='Enter Topics'
               style={{ marginTop: '20px' }}
             />
             {isLoading ? (
@@ -212,7 +233,7 @@ const AddedFileContainer = ({ onClose }) => {
             ) : (
               <div className='Notes-Ai-submit-cancel'>
                 <button className='Notes-Ai-cancel' type="button" onClick={handleCancel}>Cancel</button>
-                <button className='Notes-Ai-submit' type="submit" onClick={handleSubmit}>Submit</button>
+                <button className='Notes-Ai-submit' type="submit">Submit</button>
               </div>
             )}
           </form>

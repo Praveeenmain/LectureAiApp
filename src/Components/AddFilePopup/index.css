@@ -30,16 +30,16 @@
 }
 .notefile-upload-container{
 
-    background-color: rgb(53, 51, 51);
+    background-color: rgb(38, 37, 37);
     max-width: 600px; /* Adjust max-width as needed */
-    margin-top: 10px;
+   
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 80vh;
     padding-top: 85px;
     border-radius: 10px;
-    
+   
 }
 .add-close-button {
     position: absolute;
@@ -62,6 +62,7 @@
     max-width: 300px;
     max-height: 300px;
     border-radius: 5px;
+    padding: 15px;
   }
   .notes-file-name{
     color:white;
@@ -72,7 +73,7 @@
   .note-input-choose{
     border-radius: 9px;
     width: 100%;
-    padding: 10px;
+    padding: 7px;
     font-size: 16px;
     background-color: black;
     color: white;
@@ -81,12 +82,13 @@
    margin-top: 15px;
     box-sizing: border-box;
     margin-bottom: 15px;
+    display: flex;
   }
   /* Input field styling */
   .note-input-title {
     border-radius: 9px;
     width: 100%;
-    padding: 10px;
+    padding: 7px;
     font-size: 16px;
     background-color: black;
     color: white;
@@ -96,7 +98,12 @@
     box-sizing: border-box;
     
   }
-  
+  .close-file-button{
+    background-color: transparent;
+    color: #fff;
+    border:0px;
+    margin-left:8px;
+  }
   .note-input-title:focus {
     background-color: #333;
     color: white;
@@ -158,12 +165,14 @@ input[type="file"] {
   }
   .dataset-heading{
     text-align: center;
-    color:white
+    color:white;
+    font-size:15px;
+    justify-self: center;
   }
   .note-input-category{
     margin-top: 10px;
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     font-size: 16px;
     background-color: black;
     color: white;
@@ -176,7 +185,7 @@ input[type="file"] {
   .notes-file-name{
     margin-top: 20px;
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     font-size: 16px;
     background-color: black;
     color: white;
@@ -213,3 +222,7 @@ input[type="file"] {
     }
   }
   
+  .note-input-category{
+    font-weight: normal;
+    color:#ccc
+  }

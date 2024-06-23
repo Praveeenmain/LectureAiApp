@@ -95,7 +95,7 @@ const AudioRecorder = () => {
     <>
       <Navbar title="Audio Ai" />
       <div className="audio-recorder-container">
-        <h1 className="record-title">Record</h1>
+       
 
         <div className="audio-content-box">
           <button
@@ -104,6 +104,7 @@ const AudioRecorder = () => {
           >
             {isRecording ? <FontAwesomeIcon className='stop-microphone' icon={faStop} /> : <FontAwesomeIcon className='stop-microphone' icon={faMicrophone} />}
           </button>
+          <h1 className="record-title">Record</h1>
           {isRecording && (
             <div className="waves">
               <div></div>

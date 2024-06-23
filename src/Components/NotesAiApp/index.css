@@ -25,8 +25,8 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 400px;
-    
+    max-width: 200px;
+    min-height: 200px;
     height: 100%;
     padding: 20px;
     margin-bottom: 20px;
@@ -40,12 +40,14 @@
     margin-top:15px;
   }
   .NoteAi-Plus-button {
-    padding: 15px;
+    padding: 5px;
     background-color: #333;
     color: white;
     border: 3px solid #aeabab;
     border-radius:3px;
-    font-size: 25px;
+    font-size: 15px;
+    height:35px;
+    width: 35px;
     font-weight: bold;
     animation: zoomInOut 2s infinite alternate; /* Animation settings */
 }
