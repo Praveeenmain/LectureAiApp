@@ -1,167 +1,130 @@
-/* Chat message animation */
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100%); /* Start off-screen to the left */
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0); /* Slide in to the right */
-  }
-}
+/* index.css */
 
-/* Chat message styling */
-.chatbot-message {
-  background-color: #3d3c3c;
-  color: #fff;
-  padding: 10px;
-  margin-left: -20px;
-  border-radius: 8px;
-  width:100%;
-  overflow-wrap: break-word;
-  font-size: 18px;
-  white-space: pre-wrap;
-  width:100%;
-  animation: slideInFromLeft 0.5s ease forwards;
-}
-.edit-textarea{
-  background-color: #3d3c3c;
-  color: #fff;
-  padding: 10px;
-  margin-left: -20px;
-
-  border-radius: 8px;
-  width:100%;
-  overflow-wrap: break-word;
-  font-size: 18px;
-  white-space: pre-wrap;
-  width:100%;
-  height: 350px;
-}
-.volumeup-bot-icon{
-  height:25px;
-  width:25px;
-  filter: invert(100%);
-  margin-top: -10px;
-  
-}
-/* General styles */
 .action-buttons {
   display: flex;
   flex-direction: column;
-  
+  align-items: flex-start;
+  background-color: #0a0909;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  border:1px solid #fff;
+}
+
+.chatbot-message {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  color: #cccc;
+  overflow-wrap: break-word;
+  font-size: 18px;
+  white-space: pre-wrap;
+ 
+}
+.volumeup-bot{
+  height:18px;
+  width:18px;
+  filter: invert(100%);
+}
+.edit-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.edit-textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.bot-save-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.bot-save-button:hover {
+  background-color: #45a049;
 }
 
 .act-buttons {
   display: flex;
-  align-self: flex-start;
-  margin-left: -20px;
-  
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
 }
 
-.additional-button {
-  margin-right: 10px;
-}
-
-.copy-button,
-.share-button,
-.additional-button,
-.regenerate-button {
-  display: inline-block;
-  font-size: 18px;
-  background-color: transparent;
-  color: rgb(199, 195, 195);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  height: 30px;
-  width: 30px;
-  margin: 15px;
-}
-.bot-save-button{
-  
-  background-color: #2c2e2c;
+.copy-button, .share-button, .additional-button {
+  background-color: #262627;
   color: white;
   border: none;
   padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin: 4px 2px;
+  border-radius: 50%;
   cursor: pointer;
-  border-radius: 4px;
-  width:120px;
-  height:60px;
-  transition-duration: 0.4s;
-}
-
-.generate-summary-btn,
-.generate-notes-btn {
-  background-color: #3e413e;
-  height: 50px;
-  width: 120px;
-  margin-left: 15px;
-  color: #fff;
-  border-radius: 8px;
-}
-
-.generate-notes-btn:hover,
-.generate-summary-btn:hover,
-.copy-button:hover,
-.share-button:hover,
-.regenerate-button:hover {
-  background-color: #686869;
-}
-
-.copy-button + .share-button,
-.share-button + .additional-button,
-.additional-button + .regenerate-button {
-  margin-left: 10px;
-}
-
-.generated-notes,
-.generated-summary {
-  margin-top: 20px;
-}
-
-.generated-notes h3,
-.generated-summary h3 {
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.generated-notes p,
-.generated-summary p {
-  background-color: #252424;
-  padding: 10px;
-  border-radius: 4px;
-  color: #fff;
-  overflow-y: auto;
-}
-
-.close {
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 20px;
-  color: #fff;
-}
-
-.generate-notes-summary-popup {
+  font-size: 15px;
   display: flex;
-  flex-direction: row;
-  gap: 15px;
-  padding: 20px;
-  background-color: #3d3c3c;
-  border-radius: 8px;
-  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
-.nonotes-summary {
+.copy-button:hover, .share-button:hover, .additional-button:hover {
+  background-color: #a9a9aa;
+}
+
+.volumeup-bot-icon {
+  width: 24px;
+  height: 24px;
+  filter: invert(100%);
+  margin-top: -45px;
+}
+
+/* Add this CSS at the end of your current index.css file */
+
+.options-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  background-color: #000000;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+ 
+}
+
+.option-button {
+  background-color: #090909;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 14px;
-  color: #6c757d;
-  text-align: center;
+  text-align: left;
+  border:1px solid #fff;
+}
+
+.option-button:hover {
+  background-color: #9a9a9a;
 }

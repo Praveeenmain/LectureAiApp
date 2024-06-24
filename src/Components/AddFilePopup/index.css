@@ -224,5 +224,6 @@ input[type="file"] {
   
   .note-input-category{
     font-weight: normal;
-    color:#ccc
+    color:#ccc;
+    max-width:350px;
   }

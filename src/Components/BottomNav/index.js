@@ -32,7 +32,7 @@ const LabelBottomNavigation = () => {
         width: '100%', // Take full width of the viewport
         position: 'fixed', // Fixed positioning to keep it at the bottom
         bottom: 0, // Align at the bottom
-        backgroundColor: '#4f5153',
+        backgroundColor: '#212020',
         color: 'white',
         '& .Mui-selected': {
           color: 'white', // Text color for selected item

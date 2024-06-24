@@ -1,14 +1,15 @@
 import Navbar from "../NavBar";
 import UserMessage from '../UserMessage';
 import Message from '../BotMessage';
-import { TailSpin } from 'react-loader-spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faMicrophone, faStopCircle } from '@fortawesome/free-solid-svg-icons';
-import { Circles } from "react-loader-spinner";
+import {  faMicrophone, faStopCircle ,faArrowCircleUp,faStop} from '@fortawesome/free-solid-svg-icons';
+import { Circles } from 'react-loader-spinner';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './index.css'
+import IntialMessage from "../IntialMessage";
+import './index.css';
+
 const NoteDetails = () => {
   const { id } = useParams();
   const [noteFile, setNoteFile] = useState({});
@@ -19,7 +20,7 @@ const NoteDetails = () => {
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
 
   useEffect(() => {
-    const fetchNoteDetails = async (id) => {
+    const fetchNoteDetails = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(`https://pdfaibackend.onrender.com/notefile/${id}`);
@@ -34,7 +35,7 @@ const NoteDetails = () => {
       }
       setIsLoading(false);
     };
-    fetchNoteDetails(id);
+    fetchNoteDetails();
   }, [id]);
 
   const handleSendMessage = async () => {
@@ -58,6 +59,40 @@ const NoteDetails = () => {
     setIsSending(false);
   };
 
+  const handlePredefinedQuestion = async (questionType) => {
+    if (!noteFile?.text) return;
+    setIsSending(true);
+    let question;
+    switch (questionType) {
+      case 'summary':
+        question = 'Generate summary';
+        break;
+      case 'notes':
+        question = 'Notes: Point 1, Point 2, ...';
+        break;
+      case 'qanda':
+        question = 'Write a question and answer for this file';
+        break;
+      default:
+        question = questionType; // In case custom types are passed
+        break;
+    }
+    try {
+      const response = await axios.post(`https://pdfaibackend.onrender.com/ask/${id}`, { question });
+      if (response.status === 200) {
+        const data = response.data;
+        setConversation((prev) => [...prev, { userMessage: question, chatbotResponse: data.answer }]);
+      } else {
+        console.error('Failed to send message:', response.statusText);
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
+    }
+    setIsSending(false);
+  };
+
   const toggleVoiceRecognition = () => {
     setSpeechRecognitionActive(!speechRecognitionActive);
     // Add logic for speech recognition if required
@@ -69,75 +104,56 @@ const NoteDetails = () => {
       <div>
         {isLoading ? (
           <div className="loader-container">
-          <Circles
+            <Circles
               height="80"
               width="80"
               color="white"
               ariaLabel="circles-loading"
-              wrapperStyle={{}}
-              wrapperClass=""
               visible={true}
-          />
-      </div>
+            />
+          </div>
         ) : (
-          <>
-           <div className="NotesAi-chatbot-container">
+          <div className="NotesAi-chatbot-container">
             <div className="NoteAi-content">
-                
-                <div className="chatmessage-container">
-              <Message initialText={`Ask me about ${noteFile.title}`} />
-               {conversation.map((item, index) => (
-                <React.Fragment key={index}>
-                  <UserMessage initialMessage={item.userMessage} />
-                  <Message initialText={item.chatbotResponse} />
-                </React.Fragment>
-               ))}
-              <div className="input-box-container">
-                <button className="voice-button" onClick={toggleVoiceRecognition}>
-                  <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
-                </button>
-                <input
-                  placeholder="Type your message here..."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="input-box"
+              <div className="chatmessage-container">
+                <IntialMessage
+                  initialText={`Ask me about ${noteFile.title}`}
+                  GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')}
+                  AssitantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')}
+                  challenges={() => handlePredefinedQuestion('What can we learn from this file?')}
                 />
-                <button className="send-message-button" onClick={handleSendMessage}>
-                  {isSending ? (
-                    <TailSpin
-                      visible={true}
-                      height="20"
-                      width="20"
-                      color="white"
-                      ariaLabel="tail-spin-loading"
-                      radius="1"
+                {conversation.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <UserMessage initialMessage={item.userMessage} />
+                    <Message
+                      initialText={item.chatbotResponse}
+                      generateSummary={() => handlePredefinedQuestion('summary')}
+                      generateNotes={() => handlePredefinedQuestion('notes')}
+                      generateQA={() => handlePredefinedQuestion('qanda')}
                     />
-                  ) : (
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                  )}
-                </button>
+                  </React.Fragment>
+                ))}
+                <div className="input-box-container">
+                  <button className="voice-button" onClick={toggleVoiceRecognition}>
+                    <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
+                  </button>
+                  <input
+                    placeholder="Type your message here..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="input-box"
+                  />
+                  <button className="send-message-button" onClick={handleSendMessage}>
+                    {isSending ? (
+                      <FontAwesomeIcon icon={faStop}/>
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowCircleUp} />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
-           
-            </div>
-          </>
+          </div>
         )}
       </div>
     </>

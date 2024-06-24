@@ -1,0 +1,29 @@
+.intial-messages-container{
+    list-style-type: none;
+    display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  background-color: #000000;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+  
+}
+.question-button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    border:1px solid #fff;
+  }
+  
+  .question-button:hover {
+    background-color: #9a9a9a;
+  }

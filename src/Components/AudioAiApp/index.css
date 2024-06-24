@@ -163,10 +163,11 @@
       font-size: 20px;
       color: white;
     }
-  
+ 
+ 
     .recorded-audio-container {
       max-width: 100%;
-      width: 100%;
+      width: 90%;
       margin-top: 20px;
       display: flex;
       background-color: #0b0404;

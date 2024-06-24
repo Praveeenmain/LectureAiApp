@@ -32,7 +32,7 @@ const MenuItem = ({ audioFile }) => {
 
     if (!audioFile) return;
 
-    const url = `https://lectureaibackend.onrender.com/audio-files/${audioFile._id}`;
+    const url = `https://lectureaibackend.onrender.com/audiofile/${audioFile.id}`;
 
     setIsDeleting(true);
 
@@ -60,7 +60,7 @@ const MenuItem = ({ audioFile }) => {
     <li className="menu-item">
      
         <div className="item-content">
-        <Link className="menu-link" to={`/audio-files/${audioFile._id}`}>
+        <Link className="menu-link" to={`/audio-files/${audioFile.id}`}>
           <div className="icons">
             <div>
               <FontAwesomeIcon className="icon" icon={faPlay} />

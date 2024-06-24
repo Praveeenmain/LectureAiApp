@@ -147,7 +147,7 @@ const AddedFileContainer = ({ onClose }) => {
                   multiple
                   required
                 />
-                Upload Files
+                Upload File
               </label>
               {fileNames.length > 0 && (
   <div className="file-names-container">
@@ -164,7 +164,7 @@ const AddedFileContainer = ({ onClose }) => {
               id="title"
               value={title}
               onChange={handleTitleChange}
-              placeholder='Enter Title'
+              placeholder='Book Name'
               required
             />
             <select
@@ -173,12 +173,9 @@ const AddedFileContainer = ({ onClose }) => {
               onChange={handleCategoryChange}
               required
             >
-              <option value="" disabled>Select Category</option>
-              <option value="Legal">Legal</option>
-              <option value="Health">Health</option>
-              <option value="Education">Education</option>
-              <option value="Finance">Finance</option>
-              <option value="Other">Other</option>
+              <option value="" disabled>Exam Category</option>
+              <option value="UPSC">UPSC</option>
+              
             </select>
             <select
               className='note-input-category'
@@ -186,10 +183,10 @@ const AddedFileContainer = ({ onClose }) => {
               onChange={handleExamChange}
               required
             >
-              <option value="" disabled>Select Exam</option>
-              <option value="Prelims">Prelims</option>
-              <option value="Mains">Mains</option>
-              <option value="Personality Test">Personality Test</option>
+              <option value="" disabled>Exam Stage</option>
+              <option value="Prelims">UPSC Prelims</option>
+              <option value="Mains"> UPSC Mains GS</option>
+              
             </select>
             <select
               className='note-input-category'
@@ -205,6 +202,7 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="GS Paper 2">GS Paper 2</option>
               <option value="GS Paper 3">GS Paper 3</option>
               <option value="GS Paper 4">GS Paper 4</option>
+              <option value="GS Paper 4">GS Paper 2-CSAT</option>
             </select>
             <select
               className='note-input-category'
@@ -213,11 +211,32 @@ const AddedFileContainer = ({ onClose }) => {
               required
             >
               <option value="" disabled>Select Subject</option>
-              <option value="Indian History">Indian History</option>
-              <option value="Science">Science</option>
-              <option value="Agriculture">Agriculture</option>
               <option value="History">History</option>
-              <option value="Others">Others</option>
+              <option value="Science">Science</option>
+              <option value="Geography">Geography</option>
+              <option value="Economics">Economics</option>
+              <option value="Polity">Polity</option>
+              <option value="Environment">Environment</option>
+              <option value="General Science">General Science</option>
+              <option value="Current Affairs">Current Affairs</option>
+              <option value="Quantitative Aptitude">Quantitative Aptitude</option>
+              <option value="Verbal Aptitude">Verbal Aptitude</option>
+              <option value="Reasoning">Reasoning</option>
+              <option value="Indian History">Indian History</option>
+              <option value="World History">World History</option>
+              <option value="Indian Geography">Indian Geography</option>
+              <option value="World Geography">World Geography</option>
+              <option value="Art and Culture">Art and Culture</option>
+              <option value="Society">Society</option>
+              <option value="Indian Polity & Governance">Indian Polity & Governance</option>
+              <option value="Public Administration">Public Administration</option>
+              <option value="International Relations and Security">International Relations and Security</option>
+              <option value="Social Justice">Social Justice</option>
+              <option value="Disaster Management">Disaster Management</option>
+              <option value="Internal Security">Internal Security</option>
+              <option value="Ethics">Ethics</option>
+              <option value="Integrity">Integrity</option>
+              <option value="Emotional Intelligence">Emotional Intelligence</option>
             </select>
             <input
               className='note-input-title'

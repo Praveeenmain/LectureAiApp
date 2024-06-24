@@ -3,55 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   faCopy, faShareAlt, faRandom, faCheck,
-  faVolumeMute, faBook, faRectangleList, faRotate, faLeftLong, faEdit
+  faVolumeMute, faEdit
 } from '@fortawesome/free-solid-svg-icons';
-import Popup from 'reactjs-popup';
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import './index.css';
 
-const Message = ({ initialText }) => {
+const Message = ({ initialText, generateSummary, generateNotes, generateQA }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [editedText, setEditedText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [speechUtterance, setSpeechUtterance] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isGeneratingNotes, setIsGeneratingNotes] = useState(false);
-  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
-  const [notes, setNotes] = useState('');
-  const [summary, setSummary] = useState('');
-
-  const API_KEY = 'AIzaSyB5jwfd5r7T4cssflgHmnItKmzCNoOEGlI';
-  const MODEL_NAME = 'gemini-1.0-pro';
-
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
-  const generationConfig = {
-    temperature: 0.75,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
+  const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     if (initialText) {
@@ -66,16 +29,39 @@ const Message = ({ initialText }) => {
         index += 1;
         if (index === initialText.length) {
           clearInterval(timer);
+          // Scroll to top when the message is fully displayed
+          window.scrollTo({ down: 0, behavior: 'smooth' });
         }
-      }, 15);
+      }, 20);
       return () => clearInterval(timer);
     }
-  }, [initialText, setDisplayedText]);
+  }, [initialText]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayedText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleGenerateSummary = () => {
+    // Logic for generating summary
+    // Replace this alert with actual logic or API call
+    alert('Generating summary...');
+    generateSummary();
+  };
+
+  const handleGenerateNotes = () => {
+    // Logic for generating notes
+    // Replace this alert with actual logic or API call
+    alert('Generating notes...');
+    generateNotes();
+  };
+
+  const handleGenerateQA = () => {
+    // Logic for generating Q/A
+    // Replace this alert with actual logic or API call
+    alert('Generating Q/A...');
+    generateQA();
   };
 
   const handleShare = async () => {
@@ -121,54 +107,6 @@ const Message = ({ initialText }) => {
     }
   };
 
-  const generateNotes = async () => {
-    setIsGeneratingNotes(true);
-    setNotes('');
-
-    try {
-      const chat = model.startChat({
-        generationConfig,
-        safetySettings,
-        history: [],
-      });
-
-      const prompt = `Generate notes for the following audio transcript: ${displayedText}`;
-      const result = await chat.sendMessage(prompt);
-      const response = result.response;
-
-      setNotes(response.text());
-    } catch (error) {
-      console.error('Error generating notes:', error);
-      alert('Failed to generate notes. Please try again.');
-    } finally {
-      setIsGeneratingNotes(false);
-    }
-  };
-
-  const generateSummary = async () => {
-    setIsGeneratingSummary(true);
-    setSummary('');
-
-    try {
-      const chat = model.startChat({
-        generationConfig,
-        safetySettings,
-        history: [],
-      });
-
-      const prompt = `Generate a summary for the following audio transcript: ${displayedText}`;
-      const result = await chat.sendMessage(prompt);
-      const response = result.response;
-
-      setSummary(response.text());
-    } catch (error) {
-      console.error('Error generating summary:', error);
-      alert('Failed to generate summary. Please try again.');
-    } finally {
-      setIsGeneratingSummary(false);
-    }
-  };
-
   const handleEditTextChange = (event) => {
     setEditedText(event.target.value);
   };
@@ -187,6 +125,10 @@ const Message = ({ initialText }) => {
     setIsEditing(false);
   };
 
+  const toggleOptions = () => {
+    setShowOptions(!showOptions);
+  };
+
   return (
     <div className="action-buttons">
       {isEditing ? (
@@ -197,13 +139,12 @@ const Message = ({ initialText }) => {
             onChange={handleEditTextChange}
           />
           <div className="edit-actions">
-          <button className="bot-save-button" onClick={handleCancelEdit}>
+            <button className="bot-save-button" onClick={handleCancelEdit}>
               Cancel
             </button>
             <button className="bot-save-button" onClick={handleSaveEdit}>
               Save
             </button>
-           
           </div>
         </div>
       ) : (
@@ -222,7 +163,7 @@ const Message = ({ initialText }) => {
 
         <button className="additional-button" onClick={toggleSpeakStop}>
           {isSpeaking ? <FontAwesomeIcon icon={faVolumeMute} /> : (
-            <img className='volumeup-bot-icon' src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
+            <img className='volumeup-bot' src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
           )}
         </button>
 
@@ -230,89 +171,23 @@ const Message = ({ initialText }) => {
           <FontAwesomeIcon icon={faEdit} />
         </button>
 
-        <Popup
-          modal
-          trigger={
-            <button type="button" className="additional-button">
-              <FontAwesomeIcon icon={faRandom} />
-            </button>
-          }
-        >
-          {(close) => (
-            <>
-              <span className="close" onClick={() => close()}>
-                <FontAwesomeIcon icon={faLeftLong} />
-              </span>
-
-              <div className="generate-notes-summary-popup">
-                <button
-                  className="generate-notes-btn"
-                  onClick={generateNotes}
-                  disabled={isGeneratingNotes}
-                >
-                  <FontAwesomeIcon icon={faBook} />
-                  {isGeneratingNotes ? 'Generating' : 'Generate Notes'}
-                </button>
-
-                <button
-                  className="generate-summary-btn"
-                  onClick={generateSummary}
-                  disabled={isGeneratingSummary}
-                >
-                  <FontAwesomeIcon icon={faRectangleList} />
-                  {isGeneratingSummary ? 'Generating Summary...' : 'Generate Summary'}
-                </button>
-              </div>
-
-              {!notes && !summary && (
-                <div className="Nonotes-summary">Generate Notes and summary of Lecture..</div>
-              )}
-
-              {notes && (
-                <div className="generated-notes">
-                  <h3>Generated Notes:</h3>
-                  <p>{notes}</p>
-                  <div>
-                    <CopyToClipboard text={notes}>
-                      <button className="copy-button" onClick={() => handleCopy(notes)}>
-                        <FontAwesomeIcon icon={faCopy} />
-                      </button>
-                    </CopyToClipboard>
-                    {copied && <span>Copied!</span>}
-                    <button className="share-button" onClick={() => handleShare(notes, 'notes')}>
-                      <FontAwesomeIcon icon={faShareAlt} />
-                    </button>
-                    <button className="regenerate-button" onClick={generateNotes}>
-                      <FontAwesomeIcon icon={faRotate} />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {summary && (
-                <div className="generated-summary">
-                  <h3>Generated Summary:</h3>
-                  <p>{summary}</p>
-                  <div>
-                    <CopyToClipboard text={summary}>
-                      <button className="copy-button" onClick={() => handleCopy(summary)}>
-                        <FontAwesomeIcon icon={faCopy} />
-                      </button>
-                    </CopyToClipboard>
-                    {copied && <span>Copied!</span>}
-                    <button className="share-button" onClick={() => handleShare(summary, 'summary')}>
-                      <FontAwesomeIcon icon={faShareAlt} />
-                    </button>
-                    <button className="regenerate-button" onClick={generateSummary}>
-                      <FontAwesomeIcon icon={faRotate} />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </Popup>
+        <button className="additional-button" onClick={toggleOptions}>
+          <FontAwesomeIcon icon={faRandom} />
+        </button>
       </div>
+      {showOptions && (
+        <div className="options-menu">
+          <button className="option-button" onClick={handleGenerateSummary}>
+            Summary
+          </button>
+          <button className="option-button" onClick={handleGenerateNotes}>
+            Notes
+          </button>
+          <button className="option-button" onClick={handleGenerateQA}>
+            Q/A
+          </button>
+        </div>
+      )}
     </div>
   );
 };

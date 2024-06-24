@@ -52,21 +52,25 @@ const AudioRecorder = () => {
   const uploadRecording = async () => {
     setIsUploading(true);
     try {
+      if (!recording) {
+        console.error('No recording to upload');
+        return;
+      }
+  
       const blob = await fetch(recording.src).then((response) => response.blob());
       const formData = new FormData();
       formData.append('audio', blob, 'recording.mp3');
-
-      const response = await axios.post('https://lectureaibackend.onrender.com/upload-transcribe', formData);
+  
+      const response = await axios.post('https://pdfaibackend.onrender.com/upload-transcribe', formData);
       console.log('Upload successful:', response.data);
       setRecording(null);
       setUploadSuccess(true); // Set upload success state
-      
     } catch (error) {
       console.error('Error uploading to backend:', error);
     }
     setIsUploading(false);
   };
-
+  
   useEffect(() => {
     if (uploadSuccess) {
       window.location.reload(false);

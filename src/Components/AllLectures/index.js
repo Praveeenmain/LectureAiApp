@@ -16,9 +16,10 @@ const Lectures = () => {
     useEffect(() => {
         const fetchAudioFiles = async () => {
             try {
-                const response = await axios.get('https://lectureaibackend.onrender.com/audios');
+                const response = await axios.get('https://pdfaibackend.onrender.com/audiofiles');
                
                 const reversedAudioFiles = response.data.reverse();
+                
                 setAudioFiles(reversedAudioFiles);
                 setIsLoading(false); 
             } catch (error) {

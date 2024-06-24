@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
-import LectureTitle from '../LectureTitle';
 import 'react-h5-audio-player/lib/styles.css';
+import LectureTitle from '../LectureTitle';
 import UserMessage from '../UserMessage';
 import Navbar from '../NavBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faVolumeMute, faMicrophone, faStopCircle } from '@fortawesome/free-solid-svg-icons';
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
+import { faArrowCircleUp, faVolumeMute, faMicrophone, faStopCircle,faStop } from '@fortawesome/free-solid-svg-icons';
 import Message from '../BotMessage';
-import { TailSpin, Circles } from 'react-loader-spinner';
-
+import {Circles } from 'react-loader-spinner';
 import { useParams } from 'react-router-dom';
+import IntialMessage from '../IntialMessage';
 import './popup.css';
 
 const PopContent = () => {
@@ -18,63 +17,30 @@ const PopContent = () => {
   const [audioFile, setAudioFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [speechUtterance, setSpeechUtterance] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
   const [isListening, setIsListening] = useState(false);
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
   recognition.continuous = false;
   recognition.interimResults = false;
   recognition.lang = 'en-US';
 
-  const API_KEY = 'AIzaSyB5jwfd5r7T4cssflgHmnItKmzCNoOEGlI';
-  const MODEL_NAME = 'gemini-1.0-pro';
-
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
-  const generationConfig = {
-    temperature: 0.75,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
-
   useEffect(() => {
-    const fetchAudioDetails = async (_id) => {
+    const fetchAudioDetails = async (id) => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://lectureaibackend.onrender.com/audio-files/${id}`);
+        const response = await fetch(`https://pdfaibackend.onrender.com/audiofile/${id}`);
         if (response.ok) {
           const audioFile = await response.json();
           setAudioFile(audioFile);
         } else {
-          console.error('Failed to fetch book details');
+          console.error('Failed to fetch audio details');
         }
       } catch (error) {
-        console.error('Error fetching book details:', error);
+        console.error('Error fetching audio details:', error);
       }
       setIsLoading(false);
     };
@@ -101,35 +67,29 @@ const PopContent = () => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       window.speechSynthesis.speak(utterance);
-      setSpeechUtterance(utterance);
       setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
     } else {
       alert('Speech synthesis is not supported in your browser.');
     }
   };
 
   const handleStopSpeaking = () => {
-    if (speechUtterance) {
-      window.speechSynthesis.cancel();
-      setSpeechUtterance(null);
-      setIsSpeaking(false);
-    }
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
   };
 
   const toggleSpeakStop = () => {
     if (isSpeaking) {
       handleStopSpeaking();
-    } else if (audioFile && audioFile.chatResponse) {
-      handleSpeak(audioFile.chatResponse);
+    } else if (audioFile?.AudioFile?.transcription) {
+      handleSpeak(audioFile.AudioFile.transcription);
     }
   };
 
   const truncateTitle = (title, maxLength) => {
-    if (title.length <= maxLength) {
-      return title;
-    }
-    const words = title.split(' ');
-    return words.slice(0, maxLength).join(' ');
+    if (title.length <= maxLength) return title;
+    return title.split(' ').slice(0, maxLength).join(' ');
   };
 
   const handleSendMessage = async () => {
@@ -139,27 +99,61 @@ const PopContent = () => {
     }
     setIsSending(true);
     try {
-      const chat = model.startChat({
-        generationConfig,
-        safetySettings,
-        history: [],
+      const response = await fetch(`https://pdfaibackend.onrender.com/audioask/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: message }),
       });
-      const prompt = `${audioFile.title}: ${message}`;
-      const result = await chat.sendMessage(prompt);
-      const response = result.response;;
-
-      setConversation((prevConversation) => [
-        ...prevConversation,
-        { userMessage: message, chatbotResponse: response.text() }
-      ]);
-
-      setMessage('');
-      setIsSending(false);
+      if (response.ok) {
+        const data = await response.json();
+        setConversation((prev) => [...prev, { userMessage: message, chatbotResponse: data.answer }]);
+        setMessage('');
+      } else {
+        console.error('Failed to send message:', response.statusText);
+        alert('Failed to send message. Please try again.');
+      }
     } catch (error) {
-      console.error('Error generating summary:', error);
-      alert('Failed to generate summary. Please try again.');
-      setIsSending(false);
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
     }
+    setIsSending(false);
+  };
+
+  const bufferToBase64 = (buffer) => {
+    const binary = Array.from(new Uint8Array(buffer)).map((byte) => String.fromCharCode(byte)).join('');
+    return window.btoa(binary);
+  };
+
+  const handlePredefinedQuestion = async (question) => {
+    if (!audioFile?.AudioFile?.transcription) return;
+   
+
+    // Create a new AbortController
+  
+
+    setIsSending(true);
+    try {
+      const response = await fetch(`https://pdfaibackend.onrender.com/audioask/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setConversation((prev) => [...prev, { userMessage: question, chatbotResponse: data.answer }]);
+      } else {
+        console.error('Failed to send message:', response.statusText);
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
+    }
+    setIsSending(false);
   };
 
   return (
@@ -167,75 +161,51 @@ const PopContent = () => {
       <Navbar title="Audio Ai" />
       <div className="popup">
         <div className="popup-content">
-          {isLoading && (
+          {isLoading ? (
             <div className="loader-container">
-              <Circles
-                height="80"
-                width="80"
-                color="white"
-                ariaLabel="circles-loading"
-                visible={true}
-              />
+              <Circles height="80" width="80" color="white" ariaLabel="circles-loading" visible={true} />
             </div>
-          )}
-          {!isLoading && audioFile && (
-            <>
-              <div className="audio-player-container">
-                {audioFile.audio && (
-                  <AudioPlayer
-                    src={`data:audio/wav;base64,${audioFile.audio}`}
-                    autoPlay={false}
-                    showJumpControls={true}
-                    customAdditionalControls={[]}
-                    className="audio-player"
-                  />
-                )}
-              </div>
-              <div className="Title-voice">
-                <LectureTitle lecture={{ title: truncateTitle(audioFile.title, 3) }} id={audioFile._id} onClick={toggleSpeakStop} />
-                <button className="speak-stop-button" onClick={toggleSpeakStop}>
-                  {isSpeaking ? (
-                    <FontAwesomeIcon className='volume-mute' icon={faVolumeMute} />
-                  ) : (
-                    <img className="volumeup-icon" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
+          ) : (
+            audioFile && (
+              <>
+                <div className="audio-player-container">
+                  {audioFile.AudioFile?.audio?.data && (
+                    <AudioPlayer
+                      src={`data:audio/wav;base64,${bufferToBase64(audioFile.AudioFile.audio.data)}`}
+                      autoPlay={false}
+                      showJumpControls={true}
+                      customAdditionalControls={[]}
+                      className="audio-player"
+                    />
                   )}
-                </button>
-              </div>
-              <div className="chatmessage-container">
-                <Message initialText={audioFile.chatResponse} />
-                {conversation.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <UserMessage initialMessage={item.userMessage} />
-                    <Message initialText={item.chatbotResponse} />
-                  </React.Fragment>
-                ))}
-                <div className="input-box-container">
-                  <button className="voice-button" onClick={toggleVoiceRecognition}>
-                    <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
-                  </button>
-                  <input
-                    placeholder="Type your message here..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="input-box"
-                  />
-                  <button className="send-message-button" onClick={handleSendMessage}>
-                    {isSending ? (
-                      <TailSpin
-                        visible={true}
-                        height="20"
-                        width="20"
-                        color="white"
-                        ariaLabel="tail-spin-loading"
-                        radius="1"
-                      />
-                    ) : (
-                      <FontAwesomeIcon icon={faPaperPlane} />
-                    )}
+                </div>
+                <div className="Title-voice">
+                  <LectureTitle lecture={{ title: truncateTitle(audioFile.AudioFile.title, 3) }} id={audioFile?.id} onClick={toggleSpeakStop} />
+                  <button className="speak-stop-button" onClick={toggleSpeakStop}>
+                    <FontAwesomeIcon className={isSpeaking ? 'volume-mute' : 'volumeup-icon'} icon={isSpeaking ? faVolumeMute : faMicrophone} />
+                    {!isSpeaking && <img className="volumeup-icon" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />}
                   </button>
                 </div>
-              </div>
-            </>
+                <div className="chatmessage-container">
+                  <IntialMessage initialText={audioFile.AudioFile.transcription} GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} AssitantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} challenges={() => handlePredefinedQuestion('What we can learn from this file?')} />
+                  {conversation.map((item, index) => (
+                    <React.Fragment key={index}>
+                      <UserMessage initialMessage={item.userMessage} />
+                      <Message initialText={item.chatbotResponse} generateSummary={() => handlePredefinedQuestion('Generate summary')} generateNotes={() => handlePredefinedQuestion('Notes: Point 1, Point 2, ...')} generateQA={() => handlePredefinedQuestion('Write a question and answer for this file')} />
+                    </React.Fragment>
+                  ))}
+                  <div className="input-box-container">
+                    <button className="voice-button" onClick={toggleVoiceRecognition}>
+                      <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
+                    </button>
+                    <input placeholder="Type your message here..." value={message} onChange={(e) => setMessage(e.target.value)} className="input-box" />
+                    <button className="send-message-button" onClick={handleSendMessage}>
+                      {isSending ? <FontAwesomeIcon icon={faStop}/> : <FontAwesomeIcon icon={faArrowCircleUp} />}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )
           )}
         </div>
       </div>
