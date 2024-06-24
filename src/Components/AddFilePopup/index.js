@@ -228,14 +228,14 @@ const AddedFileContainer = ({ onClose }) => {
               placeholder='Enter Topics'
               style={{ marginTop: '20px' }}
             />
-            {isLoading ? (
-              <div className="loader">Loading...</div>
-            ) : (
+            
               <div className='Notes-Ai-submit-cancel'>
                 <button className='Notes-Ai-cancel' type="button" onClick={handleCancel}>Cancel</button>
-                <button className='Notes-Ai-submit' type="submit">Submit</button>
-              </div>
-            )}
+                <button className='Notes-Ai-submit' type="submit">
+  {isLoading ? "submitting" : "Submit"}
+</button>
+          </div>
+            
           </form>
         </div>
       </div>
