@@ -25,7 +25,7 @@ const Videomenu = ({ Video }) => {
         event.preventDefault(); // Prevent default action (navigation)
         if (!Video) return;
 
-        const url = `https://pdfaibackend.onrender.com/notefile/${Video.id}`;
+        const url = `https://pdfaibackend.onrender.com/videos/${Video.id}`;
         setIsDeleting(true);
 
         axios
