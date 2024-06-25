@@ -31,8 +31,9 @@ const NotesAi = () => {
           <h1 className='Add-file-heading'> Upload Notes</h1>
         </div>
         {showPopup && <AddedFileContainer onClose={handleClosePopup}  />}
-        <AllNotes />
+        
       </div>
+      <AllNotes />
     </>
   );
 };

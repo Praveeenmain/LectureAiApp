@@ -47,7 +47,7 @@ const IntialMessage = ({ initialText ,GoalQuestion,AssitantQuestion,challenges})
 
   return (
     <div className='action-buttons'>
-      <p>{displayedText}</p>
+      <p className='intial-text'>{displayedText}</p>
       <div className="predefined-questions">
         {showQuestions && (
           <ul className='intial-messages-container'>
