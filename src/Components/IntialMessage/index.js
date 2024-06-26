@@ -53,7 +53,7 @@ const IntialMessage = ({ initialText ,GoalQuestion,AssitantQuestion,challenges})
           <ul className='intial-messages-container'>
             <li className='question-button' onClick={handleGoalQuestion}>What is main goal with this File?</li>
             <li className='question-button' onClick={handleAssistanceQuestion}>Explain this in 10 lines?</li>
-            <li className='question-button' onClick={handleChallengesQuestion}>what we can learn from this file?</li>
+            <li className='question-button' onClick={handleChallengesQuestion}>what we can get from this file?</li>
             
            
           </ul>

@@ -124,7 +124,7 @@ const NoteDetails = () => {
                 />
                 {conversation.map((item, index) => (
                   <React.Fragment key={index}>
-                    <UserMessage initialMessage={item.userMessage} />
+                    <UserMessage initialMessage={item.userMessage} onSend={handleSendMessage} />
                     <Message
                       initialText={item.chatbotResponse}
                       generateSummary={() => handlePredefinedQuestion('summary')}

@@ -190,7 +190,7 @@ const PopContent = () => {
                   <IntialMessage initialText={audioFile.AudioFile.transcription} GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} AssitantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} challenges={() => handlePredefinedQuestion('What we can learn from this file?')} />
                   {conversation.map((item, index) => (
                     <React.Fragment key={index}>
-                      <UserMessage initialMessage={item.userMessage} />
+                      <UserMessage initialMessage={item.userMessage} onSend={handleSendMessage} />
                       <Message initialText={item.chatbotResponse} generateSummary={() => handlePredefinedQuestion('Generate summary')} generateNotes={() => handlePredefinedQuestion('Notes: Point 1, Point 2, ...')} generateQA={() => handlePredefinedQuestion('Write a question and answer for this file')} />
                     </React.Fragment>
                   ))}

@@ -9,10 +9,12 @@ import PopContent from './Components/AudioContent/popcontent';
 import NoteDetails from './Components/NoteContent/index'
 import VideoAi from './Components/VideoAiApp/index'
 import VideoContent from './Components/VideoContent/index'
+import ClassTestAi from './Components/ClassTestAi/index'
+import ClassAsk from './Components/classAsk/index'
 import './App.css';
 
 function App() {
-  return (
+  return (                      
     <div className="App">
       <Router>
         <Switch>
@@ -22,8 +24,10 @@ function App() {
           <Route path="/audio-files/:id" exact component={PopContent} />
           <Route path="/classnotes" exact component={NotesAi} />
           <Route path="/Video-lectures" exact component={VideoAi} />
+          <Route path="/classtest" exact component={ClassTestAi} />
           <Route path="/notes/:id" exact component={NoteDetails} />
           <Route path="/Videos/:id" exact component={VideoContent} />
+          <Route path="/pqs/:id" exact component={ClassAsk} />
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>

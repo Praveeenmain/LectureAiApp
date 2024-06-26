@@ -1,0 +1,76 @@
+.classTest-ai-container{
+    justify-content: flex-start;
+    padding-top: 10px;
+    margin-top: 2px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    padding: 10px;
+}
+.classTest-content-box{
+    max-width: 250px;
+    width: 100%;
+    max-height: 250px;
+    height: 100vh;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #333131;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.classTest-ai-container {
+    padding: 20px;
+}
+
+.classTest-content-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.custom-file-upload {
+    font-size: 1em;
+    margin: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #2f2e2e;
+    color: #fff;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.upload-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #4d504d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background-color: #606060;
+}
+
+.class-test-file-name{
+    color:#ccc
+}
+.Class-Test-heading{
+    color:white;
+}
