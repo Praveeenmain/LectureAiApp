@@ -47,7 +47,7 @@ const LabelBottomNavigation = () => {
         icon={<HomeIcon style={{ color: 'white' }} />}
         sx={{ color: 'white' }}
         component={Link}
-        to="/"
+        to="/home"
       />
       <BottomNavigationAction
         label="AICHAT"

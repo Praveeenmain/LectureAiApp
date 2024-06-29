@@ -5,29 +5,37 @@ import AudioRecorder from './Components/AudioAiApp';
 import NotFound from './Components/Notfound';
 import AiBot from './Components/AiBot';
 import NotesAi from './Components/NotesAiApp'
-import PopContent from './Components/AudioContent/popcontent';
+import PopContent from './Components/AudioContent/popcontent'
 import NoteDetails from './Components/NoteContent/index'
 import VideoAi from './Components/VideoAiApp/index'
 import VideoContent from './Components/VideoContent/index'
 import ClassTestAi from './Components/ClassTestAi/index'
 import ClassAsk from './Components/classAsk/index'
+import GoogleLoginComponent from './Components/GoogleLogin'
+import ProtectedRoute from './Components/ProtectedRoute'
+import PrivateRoute from './Components/PrivateRoute';
+
 import './App.css';
+import Profile from './Components/Profile';
 
 function App() {
   return (                      
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/Audio-lectures" exact component={AudioRecorder} />
-          <Route path="/aichat" exact component={AiBot} />
-          <Route path="/audio-files/:id" exact component={PopContent} />
-          <Route path="/classnotes" exact component={NotesAi} />
-          <Route path="/Video-lectures" exact component={VideoAi} />
-          <Route path="/classtest" exact component={ClassTestAi} />
-          <Route path="/notes/:id" exact component={NoteDetails} />
-          <Route path="/Videos/:id" exact component={VideoContent} />
-          <Route path="/pqs/:id" exact component={ClassAsk} />
+          {/* <Route path="/login" exact component={GoogleLoginComponent} /> */}
+          <PrivateRoute path="/" exact component={GoogleLoginComponent} />
+          <ProtectedRoute path="/profile" exact component={Profile} />
+          <ProtectedRoute path="/Home" exact component={Home} />
+          <ProtectedRoute path="/Audio-lectures" exact component={AudioRecorder} />
+          <ProtectedRoute path="/aichat" exact component={AiBot} />
+          <ProtectedRoute path="/audio-files/:id" exact component={PopContent} />
+          <ProtectedRoute path="/classnotes" exact component={NotesAi} />
+          <ProtectedRoute path="/Video-lectures" exact component={VideoAi} />
+          <ProtectedRoute path="/classtest" exact component={ClassTestAi} />
+          <ProtectedRoute path="/notes/:id" exact component={NoteDetails} />
+          <ProtectedRoute path="/Videos/:id" exact component={VideoContent} />
+          <ProtectedRoute path="/pqs/:id" exact component={ClassAsk} />
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
