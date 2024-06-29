@@ -3,7 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
-
+import { jwtDecode } from 'jwt-decode';
 import './index.css';
 
 const GoogleLoginComponent = () => {
@@ -33,8 +33,25 @@ const GoogleLoginComponent = () => {
     const onSuccess = async (credentialResponse) => {
         try {
             const token = credentialResponse.credential;
-             
-              Cookies.set('jwt_token', token, { expires: 30 ,secure: true, sameSite: 'strict'});
+           
+            const decodedToken = jwtDecode(token);
+
+            const { name, email } = decodedToken; // Extract name and email from decoded token
+    
+            
+            // Set the JWT token in cookies
+            Cookies.set('jwt_token', token, { expires: 30, secure: true, sameSite: 'strict' });
+    
+            // Post the decoded token details to the server
+            await fetch('https://pdfaibackend.onrender.com/api/store-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                   
+                },
+                body: JSON.stringify({ name, email }) // Use name and email variables here
+            });
+    
             // Navigate to the home page after successful login
             history.push('/home');
         } catch (error) {
