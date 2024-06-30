@@ -14,9 +14,6 @@ const Profile = () => {
   // console.log(jwtToken)
   const decodedToken = jwtDecode(jwtToken);
 
- 
-
-  
   const { name, email, picture } = decodedToken;
   const history = useHistory();
 
