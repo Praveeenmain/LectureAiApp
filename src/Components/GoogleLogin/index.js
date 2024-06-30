@@ -75,7 +75,7 @@ const GoogleLoginComponent = () => {
             <div className='google-button-email-container'>
                 <h1 className='ai-create-heading' > Create Your Ai Assitant</h1>
                 <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-                    <GoogleLogin onSuccess={onSuccess} onError={onError} />
+                    <GoogleLogin onSuccess={onSuccess} onError={onError}  text="continue_with" />
                 </GoogleOAuthProvider>
                  <button className='Whatapp-button'>
                  <FaWhatsapp className='Whatapp-icon' />
