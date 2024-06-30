@@ -17,6 +17,7 @@ import PrivateRoute from './Components/PrivateRoute';
 
 import './App.css';
 import Profile from './Components/Profile';
+import AddStudents from './Components/AddStudents';
 
 function App() {
   return (                      
@@ -26,6 +27,7 @@ function App() {
           {/* <Route path="/login" exact component={GoogleLoginComponent} /> */}
           <PrivateRoute path="/" exact component={GoogleLoginComponent} />
           <ProtectedRoute path="/profile" exact component={Profile} />
+          <ProtectedRoute path="/students" exact component={AddStudents} />
           <ProtectedRoute path="/Home" exact component={Home} />
           <ProtectedRoute path="/Audio-lectures" exact component={AudioRecorder} />
           <ProtectedRoute path="/aichat" exact component={AiBot} />

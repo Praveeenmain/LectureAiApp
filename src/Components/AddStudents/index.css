@@ -1,0 +1,107 @@
+.student-add-container {
+    height: 100%;
+    width: 100%;
+    padding: 15px;
+}
+.student-close{
+    background-color: transparent;
+    border:0px;
+}
+
+.student-form-container {
+    width: 100%;
+    height: 50px;
+    background-color: #3e3d3d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.student-add-file-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:black; /* Semi-transparent background */
+    z-index: 1000; /* Ensures the container is on top of other content */
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden; /* Prevents scrolling within the container */
+ 
+}
+
+.student-form {
+    background-color: #000000;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin: 40px;
+}
+
+.student-form label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.student-form input[type="text"],
+.student-form input[type="tel"],
+.student-form input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.student-form input[type="text"]:focus,
+.student-form input[type="tel"]:focus,
+.student-form input[type="email"]:focus {
+    outline: none;
+    border-color: #2d2d2d;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.student-form .form-actions {
+    margin-top: 16px;
+}
+
+.student-form .form-actions button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.student-form .form-actions .student-cancel {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+}
+
+.student-form .form-actions .student-submit {
+    background-color: #3a3a3a;
+    color: #fff;
+    border: none;
+}
+
+.student-form .form-actions .student-submit:disabled {
+    background-color: #313131;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.form-group-address{
+    margin-top: 10px;
+}
