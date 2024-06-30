@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
+import { FaWhatsapp } from "react-icons/fa";
+
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
@@ -12,7 +14,7 @@ const GoogleLoginComponent = () => {
     const [bgColor, setBgColor] = useState('#ffffff');
     const [showText, setShowText] = useState(false); // Initial state to hide text
 
-    const texts = ["Teacher Assitant Ai","Explore taai.", "Upload doc and chat.", "Generate questions", "Upload Youtube url and chat.","Record auido and Chat"];
+    const texts = ["Introducing TaAi","Teacher Assitant Ai","Lecture to Notes", "Notes to Tests", "Tests to Lecture", "Anything to Everything","Your Content your control","Your Assitant Ai"];
     
     // Using useMemo to initialize colors array
     const colors = useMemo(() => ['#f28b82', '#fbbc04', '#34a853', '#4285f4'], []);
@@ -25,7 +27,7 @@ const GoogleLoginComponent = () => {
                 setBgColor(colors[Math.floor(Math.random() * colors.length)]);
                 setShowText(true); // Show next text
             }, 200); // Delay before showing the next text
-        }, 2000); // Change every 3 seconds
+        }, 5000); // Change every 3 seconds
 
         return () => clearInterval(intervalId);
     }, [texts.length, colors]); // Include texts.length and colors in the dependency array
@@ -71,10 +73,14 @@ const GoogleLoginComponent = () => {
                 )}
             </div>
             <div className='google-button-email-container'>
+                <h1 className='ai-create-heading' > Create Your Ai Assitant</h1>
                 <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
                     <GoogleLogin onSuccess={onSuccess} onError={onError} />
                 </GoogleOAuthProvider>
-
+                 <button className='Whatapp-button'>
+                 <FaWhatsapp className='Whatapp-icon' />
+                    <span className='Whatapp-text'>Talk to us</span>
+                 </button>
             </div>
         </div>
     );
