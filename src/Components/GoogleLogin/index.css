@@ -10,6 +10,13 @@
     justify-content: center;
 
 }
+.main-taAi{
+    justify-self: flex-start;
+    padding-bottom: 65px;
+}
+.text-showing{
+    justify-self: center;
+}
 .google-button-email-container{
     height:40%;
     background-color: rgb(0, 0, 0);
@@ -17,7 +24,9 @@
     align-items: center;
     flex-direction: column;
     padding:10px;
+    justify-content: center;
 }
+
 .Whatapp-icon{
     color:green;
     font-size:18px;
@@ -36,6 +45,7 @@
    
     font-size:18px;
 }
+
 .Whatapp-text{
     font-family:"Google Sans", arial, sans-serif;
     margin-right: auto;

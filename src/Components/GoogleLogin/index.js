@@ -13,8 +13,8 @@ const GoogleLoginComponent = () => {
     const [showText, setShowText] = useState(false);
 
     const texts = [
-        "Introducing <br/> <span class='Taai-span'>Taai</span>",
-        "Introducing <br/> <span class='Taai-span'>Taai</span>",
+       
+       
         "Teacher Assistant Ai",
         "Lecture to Notes",
         "Notes to Tests",
@@ -77,13 +77,15 @@ const GoogleLoginComponent = () => {
     return (
         <div className='Login-bg-container'>
             <div className='Login-text-container' style={{ backgroundColor: bgColor, padding: '20px', fontSize: '25px', fontFamily: "Roboto", fontWeight: "bold" }}>
-              
-                {showText && <span dangerouslySetInnerHTML={{ __html: texts[currentTextIndex] }} />}
+                 <h1 className='main-taAi'>Introducing <br/> <span className='Taai-span'>TaAi</span></h1>
+                {showText && <span className="text-showing"  dangerouslySetInnerHTML={{ __html: texts[currentTextIndex] }} />}
             </div>
             <div className='google-button-email-container'>
                 <h1 className='ai-create-heading'>Create Your Ai Assistant</h1>
                 <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-                    <GoogleLogin onSuccess={onSuccess} onError={onError} text="continue_with" />
+                
+                <GoogleLogin  onSuccess={onSuccess} onError={onError} text="continue_with" />
+         
                 </GoogleOAuthProvider>
                 <button className='Whatapp-button'  onClick={() => {
     const message = encodeURIComponent("Hello, I want to know more about TaAi. My name is [Your Name]");
