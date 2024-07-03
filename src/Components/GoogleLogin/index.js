@@ -3,7 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { FaWhatsapp } from "react-icons/fa";
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'; // corrected import
+import {jwtDecode} from 'jwt-decode';
 import './index.css';
 
 const GoogleLoginComponent = () => {
@@ -11,11 +11,9 @@ const GoogleLoginComponent = () => {
     const [currentTextIndex, setCurrentTextIndex] = useState(0);
     const [bgColor, setBgColor] = useState('#ffffff');
     const [showText, setShowText] = useState(false);
+    const [isFirstCycle, setIsFirstCycle] = useState(true);
 
     const texts = [
-       
-       
-        "Teacher Assistant Ai",
         "Lecture to Notes",
         "Notes to Tests",
         "Tests to Lecture",
@@ -31,18 +29,21 @@ const GoogleLoginComponent = () => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setShowText(false); 
+            setShowText(false);
 
             setTimeout(() => {
                 setCurrentTextIndex(prevIndex => (prevIndex + 1) % texts.length);
                 setBgColor(colors[Math.floor(Math.random() * colors.length)]);
-                setShowText(true); 
-            }, prevIndex => (prevIndex <= 3 ? 600 : 100)); 
+                setShowText(true);
 
-        }, 3000); 
+                if (isFirstCycle && currentTextIndex === 0) {
+                    setIsFirstCycle(false);
+                }
+            }, 600);
+        }, 3000);
 
         return () => clearInterval(intervalId);
-    }, [texts.length, colors]); 
+    }, [texts.length, colors, currentTextIndex, isFirstCycle]);
 
     const onSuccess = async (credentialResponse) => {
         try {
@@ -50,11 +51,9 @@ const GoogleLoginComponent = () => {
             const decodedToken = jwtDecode(token);
 
             const { name, email } = decodedToken;
-    
-           
+
             Cookies.set('jwt_token', token, { expires: 30, secure: true, sameSite: 'strict' });
-    
-            
+
             await fetch('https://pdfaibackend.onrender.com/api/store-token', {
                 method: 'POST',
                 headers: {
@@ -62,8 +61,7 @@ const GoogleLoginComponent = () => {
                 },
                 body: JSON.stringify({ name, email })
             });
-    
-           
+
             history.push('/home');
         } catch (error) {
             console.error('Error decoding token:', error);
@@ -77,20 +75,24 @@ const GoogleLoginComponent = () => {
     return (
         <div className='Login-bg-container'>
             <div className='Login-text-container' style={{ backgroundColor: bgColor, padding: '20px', fontSize: '25px', fontFamily: "Roboto", fontWeight: "bold" }}>
-                 <h1 className='main-taAi'>Introducing <br/> <span className='Taai-span'>TaAi</span></h1>
-                {showText && <span className="text-showing"  dangerouslySetInnerHTML={{ __html: texts[currentTextIndex] }} />}
+                {isFirstCycle && currentTextIndex === 0 ? (
+                    <h1 className='main-taAi'>Introducing <br/> <span className='Taai-span-1'>TaAi</span></h1>
+                ) : (
+                    <h1 className='main-taAi'><span className='Taai-span'>TaAi</span> <br/> Teacher Assistant Ai</h1>
+                )}
+                {showText && <span className="text-showing" dangerouslySetInnerHTML={{ __html: texts[currentTextIndex] }} />}
             </div>
             <div className='google-button-email-container'>
                 <h1 className='ai-create-heading'>Create Your Ai Assistant</h1>
                 <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-                
-                <GoogleLogin  onSuccess={onSuccess} onError={onError} text="continue_with" />
-         
+                    <div className="google-button-wrapper">
+                        <GoogleLogin size='large'  onSuccess={onSuccess} onError={onError} text="continue_with" />
+                    </div>
                 </GoogleOAuthProvider>
-                <button className='Whatapp-button'  onClick={() => {
-    const message = encodeURIComponent("Hello, I want to know more about TaAi. My name is [Your Name]");
-    window.open(`https://wa.me/919972968390?text=${message}`, '_blank');
-}}>
+                <button className='Whatapp-button custom-whatsapp-button' onClick={() => {
+                    const message = encodeURIComponent("Hello, I want to know more about TaAi. My name is [Your Name]");
+                    window.open(`https://wa.me/919972968390?text=${message}`, '_blank');
+                }}>
                     <FaWhatsapp className='Whatapp-icon' />
                     <span className='Whatapp-text'>Talk to us</span>
                 </button>

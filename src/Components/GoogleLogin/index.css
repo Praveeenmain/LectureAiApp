@@ -12,13 +12,13 @@
 }
 .main-taAi{
     justify-self: flex-start;
-    padding-bottom: 65px;
+    padding-bottom: 95px;
 }
 .text-showing{
     justify-self: center;
 }
 .google-button-email-container{
-    height:30%;
+    height:35%;
     background-color: rgb(0, 0, 0);
     display: flex;
     align-items: center;
@@ -31,19 +31,6 @@
     color:green;
     font-size:18px;
     margin-left:4px;
-}
-.Whatapp-button{
-    max-width:200px;
-    width:100%;
-    display: flex;
-    align-items: center;
-    padding:7px;
-    margin-top: 10px;
-    text-align: center;
-    border-radius:5px;
-    color:rgb(49, 48, 48);
-   
-    font-size:18px;
 }
 
 .Whatapp-text{
@@ -61,4 +48,49 @@
 .Taai-span{
     font-size:60px;
     font-weight:bold;
+    text-align: center;
+    margin-left:58px;
+}
+.Taai-span-1{
+    font-size:60px;
+    font-weight:bold;
+    text-align: center;
+}
+.google-button-wrapper {
+    height: 60px; /* Increase height */
+    display: flex;
+    align-items: center;
+}
+
+
+
+.Whatapp-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4a4a4a;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    max-width:200px;
+    width:100%;
+    margin-top: 15px;
+}
+
+.Whatapp-button:hover {
+    background-color: #9fa6a2;
+}
+
+.Whatapp-icon {
+    margin-right: 8px;
+}
+
+.Whatapp-text {
+    font-size: 15px;
+    
 }
