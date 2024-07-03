@@ -74,19 +74,25 @@ const GoogleLoginComponent = () => {
 
     return (
         <div className='Login-bg-container'>
-            <div className='Login-text-container' style={{ backgroundColor: bgColor, padding: '20px', fontSize: '25px', fontFamily: "Roboto", fontWeight: "bold" }}>
-                {isFirstCycle && currentTextIndex === 0 ? (
-                    <h1 className='main-taAi'>Introducing <br/> <span className='Taai-span-1'>TaAi</span></h1>
-                ) : (
-                    <h1 className='main-taAi'><span className='Taai-span'>TaAi</span> <br/> Teacher Assistant Ai</h1>
-                )}
+            <div className='Login-text-container' style={{ backgroundColor: bgColor, padding: '20px', fontSize: '25px', fontFamily: "Roboto", fontWeight: "bold", position: 'relative' }}>
+                <h1 className='main-taAi' style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', width: '100%' }}>
+                    {isFirstCycle && currentTextIndex === 0 ? (
+                               <span className='Taai-span'>TaAi <br/> </span>
+                    ) : (
+                        <div>
+                        <span className='Taai-span'>TaAi <br/> </span>
+                        <p className='t-2'> <span className='bold'>T</span>eacher <span className='bold'>a</span>ssistant <span className='bold'>A</span>i</p>
+                        </div>
+
+                    )}
+                </h1>
                 {showText && <span className="text-showing" dangerouslySetInnerHTML={{ __html: texts[currentTextIndex] }} />}
             </div>
             <div className='google-button-email-container'>
-                <h1 className='ai-create-heading'>Create Your Ai Assistant</h1>
+                <h1 className='ai-create-heading'>Signup</h1>
                 <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
                     <div className="google-button-wrapper">
-                        <GoogleLogin size='large'  onSuccess={onSuccess} onError={onError} text="continue_with" />
+                        <GoogleLogin size='large' onSuccess={onSuccess} onError={onError} text="continue_with" />
                     </div>
                 </GoogleOAuthProvider>
                 <button className='Whatapp-button custom-whatsapp-button' onClick={() => {
