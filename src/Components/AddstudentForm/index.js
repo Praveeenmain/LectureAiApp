@@ -1,16 +1,39 @@
 import React, { useState } from 'react';
-const AddStudentForm = ({ onSubmit, onCancel, isLoading }) => {
+import axios from 'axios';
+
+const AddStudentForm = ({ onCancel }) => {
     const [name, setName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [studentNumber, setStudentNumber] = useState('');
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false); // State to manage loading state
 
     const handleNameChange = (e) => setName(e.target.value);
-    const handlePhoneNumberChange = (e) => setPhoneNumber(e.target.value);
+    const handleStudentNumberChange = (e) => setStudentNumber(e.target.value);
     const handleEmailChange = (e) => setEmail(e.target.value);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit({ name, phoneNumber, email });
+        setLoading(true); // Start loading
+
+        try {
+            const response = await axios.post('https://pdfaibackend.onrender.com/students', {
+                name,
+                studentNumber,
+                email
+            });
+            console.log(response);
+            // Reset form fields after successful submission
+            setName('');
+            setStudentNumber('');
+            setEmail('');
+            
+            // Close the popup or perform other actions after success
+            onCancel();
+        } catch (error) {
+            console.error('Error submitting the form', error);
+        } finally {
+            setLoading(false); // Stop loading
+        }
     };
 
     return (
@@ -31,13 +54,13 @@ const AddStudentForm = ({ onSubmit, onCancel, isLoading }) => {
                     </div>
                     <div className="form-group">
                         <input
-                            type="tel"
+                            type="text"
                             className="form-control"
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={phoneNumber}
-                            placeholder="Student Phone Number"
-                            onChange={handlePhoneNumberChange}
+                            id="studentNumber"
+                            name="studentNumber"
+                            value={studentNumber}
+                            placeholder="Student Number"
+                            onChange={handleStudentNumberChange}
                             required
                         />
                     </div>
@@ -55,8 +78,8 @@ const AddStudentForm = ({ onSubmit, onCancel, isLoading }) => {
                     </div>
                     <div className="form-actions">
                         <button className="btn btn-secondary student-cancel" type="button" onClick={onCancel}>Cancel</button>
-                        <button className="btn btn-primary student-submit" type="submit" disabled={isLoading}>
-                            {isLoading ? 'Adding..' : 'Add'}
+                        <button className="btn btn-primary student-submit" type="submit" disabled={loading}>
+                            {loading ? 'Adding...' : 'Add'}
                         </button>
                     </div>
                 </form>

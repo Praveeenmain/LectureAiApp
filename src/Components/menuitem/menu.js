@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './menu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import {faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 
@@ -32,7 +32,7 @@ const MenuItem = ({ audioFile }) => {
 
     if (!audioFile) return;
 
-    const url = `https://lectureaibackend.onrender.com/audiofile/${audioFile.id}`;
+    const url = `https://pdfaibackend.onrender.com/audiofile/${audioFile.id}`;
 
     setIsDeleting(true);
 
@@ -62,9 +62,7 @@ const MenuItem = ({ audioFile }) => {
         <div className="item-content">
         <Link className="menu-link" to={`/audio-files/${audioFile.id}`}>
           <div className="icons">
-            <div>
-              <FontAwesomeIcon className="icon" icon={faPlay} />
-            </div>
+           
           
           <div className="details">
             <h1 className="title">{truncatedTitle}</h1>

@@ -17,11 +17,11 @@ const GoogleLoginComponent = () => {
         "Lecture to Notes",
         "Notes to Tests",
         "Tests to Lecture",
-        "Lecture to Test",
+        "Lecture to Tests",
         "Test to Notes",
         "Anything to Everything",
         "Your Content",
-        "Your control",
+        "Your Control",
         "Your Assistant Ai"
     ];
 
@@ -89,7 +89,7 @@ const GoogleLoginComponent = () => {
                 {showText && <span className="text-showing" dangerouslySetInnerHTML={{ __html: texts[currentTextIndex] }} />}
             </div>
             <div className='google-button-email-container'>
-                <h1 className='ai-create-heading'>Signup</h1>
+              
                 <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
                     <div className="google-button-wrapper">
                         <GoogleLogin size='large' onSuccess={onSuccess} onError={onError} text="continue_with" />

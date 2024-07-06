@@ -7,10 +7,12 @@
 
 .App {
   background-color: black;
-  height: 100vh;
+  height:100vh;
   background-size: cover;
   max-width: 768px; /* Set max-width for elements with class App */
   margin: 0 auto; /* Center align within the viewport */
+  overflow-y: auto;
+
 }
 
 @media (min-width: 768px) {

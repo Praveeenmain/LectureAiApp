@@ -50,7 +50,7 @@ const LabelBottomNavigation = () => {
         to="/home"
       />
       <BottomNavigationAction
-        label="AICHAT"
+        label="Assitant"
         value="aichat"
         icon={<AutoFixHighOutlinedIcon style={{ color: 'white' }} />}
         sx={{ color: 'white' }}

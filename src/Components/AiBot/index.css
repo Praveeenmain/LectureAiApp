@@ -1,66 +1,142 @@
-.AiBot-container {
+/* General styles */
+.Aichat-chatmessage-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-
+    justify-content: center;
+    width: 100%;
+    padding:10px;
+    margin: 0;
+    padding:15px;
+    background-color:black;
+    
 }
 
-
-.messages-container {
-    width: 90%;
-    border-radius:10px;
-    max-height: 700px;
-    height:70%;
-    border: 1px solid #ccc;
-    padding: 10px;
-    overflow-y: scroll;
+/* Initial message styles */
+.Aichat-initial-message {
+    font-size: 16px;
+    font-weight: bold;
     margin-bottom: 20px;
-    margin-top: 20px;
-    background-color: #4a4848;
+    color: #ffffff; /* White text */
 }
 
-.message {
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.message.user {
-    background-color: #d1e7dd;
-    align-self: flex-end;
-}
-
-.message.bot {
-    background-color: #e2e3e5;
-    align-self: flex-start;
-}
-
-.input-container {
+/* Input box container */
+.Aichat-input-box-container {
     display: flex;
-    width: 90%;
-    max-width: 700px;
-
+    align-items: center;
+    margin-top: 20px;
 }
 
-.message-input {
+/* Voice button */
+.Aichat-voice-button {
+    background-color:transparent; /* Dark gray */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.Aichat-voice-button:hover {
+    background-color: #0056b3; /* Dark blue on hover */
+}
+
+/* Input box */
+
+
+.Aichat-input-box {
     flex: 1;
     padding: 10px;
+    font-size: 14px;
     border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-    outline: none;
+    border-radius: 4px;
+    color: #ffffff;
+    background-color: #333333;
 }
 
-.send-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 0 5px 5px 0;
-    background-color: #29292a;
+
+/* Send message button */
+.Aichat-send-message-button {
+    background-color:transparent; /* Green */
     color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.send-button:hover {
-    background-color: #303030;
+
+/* User message */
+.Aichat-user-message {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: right;
+    font-size: 14px;
+    color: #aaa; /* Light gray */
+}
+
+/* Bot message */
+.Aichat-bot-message {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #aaa; /* Light gray */
+}
+
+/* Navbar styles */
+.Aichat-navbar {
+    background-color: #007bff; /* Blue */
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Aichat-navbar-title {
+    margin: 0;
+}
+
+/* Responsive adjustments */
+
+/* Fixed input box container */
+.Aichat-fixed-input-box-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #000000; /* Black background */
+    border-top: 1px solid #ddd;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Input box for fixed container */
+.Aichat-fixed-input-box {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #ffffff; /* White text */
+    background-color: #333333; /* Darker background for input */
+}
+
+/* Send message button for fixed container */
+.Aichat-fixed-send-message-button {
+    background-color: #000000; /* Black */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.Aichat-fixed-send-message-button:hover {
+    background-color: #232323; /* Darker black on hover */
 }
