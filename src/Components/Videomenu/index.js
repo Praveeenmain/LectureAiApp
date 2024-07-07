@@ -43,7 +43,7 @@ const Videomenu = ({ Video }) => {
             });
     };
 
-    console.log(Video);
+    
 
     return (
         <div className="Video-menu-item">

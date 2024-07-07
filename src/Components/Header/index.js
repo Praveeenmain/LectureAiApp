@@ -12,8 +12,11 @@ const Header = () => {
                     <FontAwesomeIcon className='header-icon' icon={faBars} />
                     <h1 className="header-heading">TaAi</h1>
                 </div>
-                <div className='message-help-icon'>
-                    <WhatsAppIcon className='header-icon' /> {/* Replace FontAwesomeIcon with WhatsAppIcon */}
+                <div className='message-help-icon' onClick={() => {
+                    const message = encodeURIComponent("Hello, I want to know more about TaAi. My name is [Your Name]");
+                    window.open(`https://wa.me/919972968390?text=${message}`, '_blank');
+                }}>
+                    <WhatsAppIcon className='header-icon' />
                     <div className="help-text">
                         <h1 className='help-heading'>Help</h1>
                     </div>

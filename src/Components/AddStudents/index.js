@@ -22,7 +22,7 @@ const AddStudents = () => {
             .then(data => setStudents(data.students)) // Assuming data is an array of students
             .catch(error => console.error('Error fetching students:', error));
     }, []); // Empty dependency array to run once on component mount
-
+   
     const handleAddFileClick = () => {
         setShowPopup(true);
     };
@@ -39,7 +39,7 @@ const AddStudents = () => {
                 {/* Render student info fetched from API */}
             
                 {students.map(student => (
-                    <StudentInfo key={student.id} name={student.name} phoneNumber={student.phoneNumber} email={student.email} id={student.id} />
+                    <StudentInfo key={student.id} name={student.name} phoneNumber={student.student_number} email={student.email} id={student.id} />
                 ))}
                 <div className='add-file-button' onClick={handleAddFileClick}>
                     <FontAwesomeIcon icon={faCirclePlus} />

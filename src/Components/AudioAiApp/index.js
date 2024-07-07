@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faEllipsisV,faGlobe } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Lectures from '../AllLectures';
 
@@ -16,6 +16,7 @@ const AudioRecorder = () => {
   const mediaRecorderRef = useRef(null);
   const [showDeleteMenu, setShowDeleteMenu] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [language, setLanguage] = useState('en'); // Default language is English
 
   const startRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true })
@@ -47,6 +48,10 @@ const AudioRecorder = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
     }
+  };
+  const handleLanguageChange = (event) => {
+    setLanguage(event.target.value);
+    // Add your language change logic here
   };
 
   const uploadRecording = async () => {
@@ -107,6 +112,9 @@ const AudioRecorder = () => {
             onClick={isRecording ? stopRecording : startRecording}
           >
             {isRecording ? <FontAwesomeIcon className='stop-microphone' icon={faStop} /> : <FontAwesomeIcon className='stop-microphone' icon={faMicrophone} />}
+          
+          
+          
           </button>
           <h1 className="record-title">Record</h1>
           {isRecording && (
@@ -118,6 +126,14 @@ const AudioRecorder = () => {
               <div></div>
             </div>
           )}
+            <div className="language-selector">
+        <FontAwesomeIcon className="language-icon" icon={faGlobe} />
+        <select value={language} onChange={handleLanguageChange}>
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          {/* Add more language options as needed */}
+        </select>
+      </div>
         </div>
 
         {recording && (

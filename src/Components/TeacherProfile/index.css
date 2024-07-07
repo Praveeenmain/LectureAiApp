@@ -1,0 +1,153 @@
+/* General Styles */
+
+  .teacherprofile-upload-pdf-section {
+    padding: 20px;
+    background-color: #312d2d;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+    margin:15px;
+   
+  }
+  
+  .teacher-profile-container {
+    padding: 20px;
+    color:white;
+  }
+  
+  .teacher-p-heading {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #e7e2e2;
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+  }
+  
+  .profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .profile-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f3f1f1;
+  }
+  
+  .details-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .details-column {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+  
+  .save-button {
+    display: inline-block;
+    background-color: #29292a;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: right; /* Align to the right */
+    text-decoration: none;
+  }
+  
+  .save-button:hover {
+    background-color: #3e3f3f;
+  }
+  
+  hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+  }
+  
+  .document-upload-section {
+    margin-top: 20px;
+  }
+  
+  .upload-label {
+    display: inline-block;
+    background-color: #474947;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: right; /* Align to the right */
+    text-decoration: none;
+
+  }
+  
+  .upload-label:hover {
+    background-color: #585958;
+  }
+  
+  .no-documents {
+    margin-top: 10px;
+    color: #888;
+    text-align: center;
+  }
+  
+  .document-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .document-list li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .document-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .document-list li svg {
+    margin-right: 10px;
+    color: #007bff;
+  }
+  
+  .document-list li span {
+    font-size: 16px;
+    color: #f1eeee;
+  }
+  
+  .section-title{
+    color: #e7e2e2;
+  }

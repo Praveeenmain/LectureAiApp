@@ -17,6 +17,7 @@ const StudentInfo = ({ name, phoneNumber, email, id }) => {
                 // Add headers or credentials if needed
             }).then(response => {
                 // Handle success or error as per your application's needs
+                window.location.reload();
             }).catch(error => {
                 console.error('Error deleting student:', error);
             });

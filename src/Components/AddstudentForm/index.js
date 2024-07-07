@@ -29,6 +29,7 @@ const AddStudentForm = ({ onCancel }) => {
             
             // Close the popup or perform other actions after success
             onCancel();
+            window.location.reload();
         } catch (error) {
             console.error('Error submitting the form', error);
         } finally {

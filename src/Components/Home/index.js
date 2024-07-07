@@ -1,6 +1,6 @@
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faMicrophoneLines,faBook,faSquareCheck,faVideo} from '@fortawesome/free-solid-svg-icons';
+import {faMicrophoneLines,faBook,faSquareCheck,faVideo,faUser,faRobot} from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header';
 import { Link } from 'react-router-dom';
 import LabelBottomNavigation from '../BottomNav';
@@ -10,6 +10,22 @@ const Home=()=>{
         <div className='Home-page'>
             <Header/>
             <div className="AIfeatures">
+                   <div className="Audio-lectures box">
+                      <Link className="HomeLinks" to='/teacherprofile'> 
+                       <FontAwesomeIcon className="box-icon" icon={faUser} />    
+                        <h1 className='box-heading'>Profile</h1>
+                        </Link> 
+                   </div>
+                   
+                   <div className="VideoLectures box">
+                   <Link className="HomeLinks" to='/aichat'> 
+                   <FontAwesomeIcon className="box-icon" icon={faRobot} />   
+                   <h1 className='box-heading'>Assitant</h1>
+                   </Link> 
+                   </div>
+
+
+
                 
                  <div className="Audio-lectures box">
                       <Link className="HomeLinks" to='/Audio-lectures'> 

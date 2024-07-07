@@ -140,3 +140,8 @@
 .Aichat-fixed-send-message-button:hover {
     background-color: #232323; /* Darker black on hover */
 }
+
+
+.size-fit{
+    margin-bottom: 88px;
+}

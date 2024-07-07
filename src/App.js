@@ -18,13 +18,14 @@ import PrivateRoute from './Components/PrivateRoute';
 import './App.css';
 import Profile from './Components/Profile';
 import AddStudents from './Components/AddStudents';
+import TeacherProfile from './Components/TeacherProfile';
 
 function App() {
   return (                      
-    <div className="App">
+    <div className="App">                
       <Router>
         <Switch>
-          {/* <Route path="/login" exact component={GoogleLoginComponent} /> */}
+
           <PrivateRoute path="/" exact component={GoogleLoginComponent} />
           <ProtectedRoute path="/profile" exact component={Profile} />
           <ProtectedRoute path="/students" exact component={AddStudents} />
@@ -38,6 +39,8 @@ function App() {
           <ProtectedRoute path="/notes/:id" exact component={NoteDetails} />
           <ProtectedRoute path="/Videos/:id" exact component={VideoContent} />
           <ProtectedRoute path="/pqs/:id" exact component={ClassAsk} />
+          <ProtectedRoute path="/teacherprofile" exact component={TeacherProfile} />
+       
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
