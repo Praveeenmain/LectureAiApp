@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../NavBar';
@@ -14,42 +14,33 @@ const AiBot = () => {
     const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
     const [conversation, setConversation] = useState([]);
     const [isSending, setIsSending] = useState(false);
-    // useEffect(() => {
-    //     // Define a function to load PlayAI script dynamically
-    //     const loadPlayAI = () => {
-    //         const existingScript = document.querySelector('script[src="https://cdn.jsdelivr.net/npm/play-ai-embed@beta"]');
-    //         if (!existingScript) {
-    //             const script = document.createElement('script');
-    //             script.src = 'https://cdn.jsdelivr.net/npm/play-ai-embed@beta';
-    //             script.async = true;
-    //             document.body.appendChild(script);
 
-    //             script.onload = () => {
-    //                 if (window.PlayAI) {
-    //                     window.PlayAI.open('1HKyvLxio89Uq2VDvWzNm', { voice: true, container: '#Teacherai-chatbot-container' });
-    //                 }
-    //             };
-    //         } else {
-    //             // Initialize PlayAI if script is already loaded
-    //             if (window.PlayAI) {
-    //                 window.PlayAI.open('1HKyvLxio89Uq2VDvWzNm', { voice: true, container: '#Teacherai-chatbot-container' });
-    //             }
-    //         }
-    //     };
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/play-ai-embed@beta";
+        script.type = "text/javascript";
+        script.async = true;
+        script.onload = () => {
+            if (typeof window.PlayAI !== 'undefined') {
+                window.PlayAI.open('1HKyvLxio89Uq2VDvWzNm');
+            }
+        };
 
-    //     // Load PlayAI script when component mounts
-    //     loadPlayAI();
+        document.body.appendChild(script);
 
-    //     // Cleanup: remove the script when component unmounts
-    //     return () => {
-    //         const script = document.querySelector('script[src="https://cdn.jsdelivr.net/npm/play-ai-embed@beta"]');
-    //         if (script) {
-    //             document.body.removeChild(script);
-    //         }
-    //     };
-    // }, []);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
-    
+    useEffect(() => {
+        const elements = document.querySelectorAll("*:not(script):not(style)");
+        elements.forEach(element => {
+            if (element.textContent.includes("powered by play.ai")) {
+                console.log("Found element:", element);
+            }
+        });
+    }, []);
 
     const handleSendMessage = async () => {
         if (message.trim()) {
