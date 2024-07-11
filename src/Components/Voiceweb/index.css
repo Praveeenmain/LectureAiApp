@@ -1,0 +1,107 @@
+.voice-ai-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #ffff;
+}
+
+.voice-ai-controls {
+  margin-top: 20px;
+}
+
+.voice-ai-connect-button,
+.voice-ai-talk-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.voice-ai-connect-button:hover,
+.voice-ai-talk-button:hover {
+  background-color: #0056b3;
+}
+
+.voice-ai-talk-button.voice-ai-recording {
+  background-color: #dc3545;
+}
+
+.voice-ai-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  animation: voice-ai-fadeIn 0.3s ease-in-out;
+}
+
+.voice-ai-popup-content {
+  text-align: center;
+}
+
+.voice-ai-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.voice-ai-speaker-animation {
+  width: 24px;
+  height: 24px;
+
+  background-size: cover;
+  animation: voice-ai-speakerBlink 1s infinite;
+}
+
+@keyframes voice-ai-speakerBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.voice-ai-cancel-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.voice-ai-cancel-button:hover {
+  background-color: #c82333;
+}
+
+@keyframes voice-ai-fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes voice-ai-fadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}

@@ -12,6 +12,7 @@ import VideoContent from './Components/VideoContent/index'
 import ClassTestAi from './Components/ClassTestAi/index'
 import ClassAsk from './Components/classAsk/index'
 import GoogleLoginComponent from './Components/GoogleLogin'
+import VoiceAIComponent  from './Components/Voiceweb'
 import ProtectedRoute from './Components/ProtectedRoute'
 import PrivateRoute from './Components/PrivateRoute';
 
@@ -40,6 +41,7 @@ function App() {
           <ProtectedRoute path="/Videos/:id" exact component={VideoContent} />
           <ProtectedRoute path="/pqs/:id" exact component={ClassAsk} />
           <ProtectedRoute path="/teacherprofile" exact component={TeacherProfile} />
+          <ProtectedRoute path="/voice" exact component={VoiceAIComponent} />
        
           <Route path="*" component={NotFound} />
         </Switch>

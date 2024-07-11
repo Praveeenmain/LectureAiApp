@@ -91,6 +91,7 @@ const GoogleLoginComponent = () => {
             <div className='google-button-email-container'>
               
                 <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+                    
                     <div className="google-button-wrapper">
                         <GoogleLogin size='large' onSuccess={onSuccess} onError={onError} text="continue_with" />
                     </div>
