@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../NavBar';
 import UserMessage from '../UserMessage';
 import Message from '../BotMessage';
 import InitialMessage from '../IntialMessage'; // Assuming corrected import
+import VoiceAIComponent from '../Voiceweb';
 import './index.css';
 import axios from 'axios';
 
@@ -15,32 +16,7 @@ const AiBot = () => {
     const [conversation, setConversation] = useState([]);
     const [isSending, setIsSending] = useState(false);
 
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = "https://cdn.jsdelivr.net/npm/play-ai-embed@beta";
-        script.type = "text/javascript";
-        script.async = true;
-        script.onload = () => {
-            if (typeof window.PlayAI !== 'undefined') {
-                window.PlayAI.open('1HKyvLxio89Uq2VDvWzNm');
-            }
-        };
-
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-    useEffect(() => {
-        const elements = document.querySelectorAll("*:not(script):not(style)");
-        elements.forEach(element => {
-            if (element.textContent.includes("powered by play.ai")) {
-                console.log("Found element:", element);
-            }
-        });
-    }, []);
+  
 
     const handleSendMessage = async () => {
         if (message.trim()) {
@@ -80,6 +56,7 @@ const AiBot = () => {
         <>
             <Navbar title="Ai Assistant" />
             <div className="Aichat-chatmessage-container">
+                    
                 <InitialMessage 
                     initialText="Hello I am Ai Assistant" 
                     GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} 
@@ -92,6 +69,7 @@ const AiBot = () => {
                         <Message initialText={item.botResponse} />
                     </React.Fragment>
                 ))}
+                <VoiceAIComponent/>
                 <div className="Aichat-fixed-input-box-container">
                     <button className="Aichat-voice-button" onClick={toggleVoiceRecognition}>
                         <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />

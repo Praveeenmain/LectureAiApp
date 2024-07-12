@@ -3,6 +3,8 @@ import AudioPlayer from 'react-h5-audio-player';
 import axios from 'axios';
 import 'react-h5-audio-player/lib/styles.css';
 import './index.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 
 const agentId = process.env.REACT_APP_AGENT_ID;
 const apiKey = process.env.REACT_APP_API_KEY;
@@ -48,53 +50,45 @@ const VoiceAIComponent = () => {
   }, []);
 
   const handleAudioStream = useCallback(async () => {
-    
     const base64Data = accumulatedAudioData.current;
     const blob = base64toBlob(base64Data);
-
     const url = URL.createObjectURL(blob);
     setAudioURL(url);
-
     accumulatedAudioData.current = ''; // Clear accumulated data
-     setIsResponding(false)
-     setIsListening(true)
+    setIsResponding(false);
+    setIsListening(true);
   }, []);
 
-  useEffect(() => {
-    if (isConnected) {
+  const connectWebSocket = useCallback(() => {
+    if (!isConnected) {
       wsRef.current = new WebSocket(wsUrl);
 
       wsRef.current.onopen = () => {
         console.log('WebSocket connected');
+        setIsConnected(true);
         wsRef.current.send(JSON.stringify({ type: 'setup', apiKey: apiKey, outputFormat: 'mp3', outputSampleRate: 24000 }));
         console.log('Setup message sent');
       };
 
       wsRef.current.onmessage = (event) => {
         const message = JSON.parse(event.data);
-
         switch (message.type) {
           case 'voiceActivityStart':
             console.log('Voice activity started');
-            setIsListening(true); // Set listening status
+            setIsListening(true);
             setIsResponding(false);
             break;
-            case 'audioStream':
-              setIsListening(false); // Set listening status
-              setIsResponding(true);
+          case 'audioStream':
+            setIsListening(false);
+            setIsResponding(true);
             accumulatedAudioData.current += message.data;
-                
             break;
           case 'voiceActivityEnd':
             console.log('Voice activity ended');
-          
             setIsResponding(false);
-           
             handleAudioStream();
-            setIsListening(true); // Reset listening status
-           
+            setIsListening(true);
             break;
-         
           case 'error':
             console.error('Error from server:', message.message);
             setError(message.message);
@@ -118,7 +112,11 @@ const VoiceAIComponent = () => {
   }, [isConnected, handleAudioStream]);
 
   const handleStartRecording = async () => {
-    if (!isConnected) return;
+    connectWebSocket(); // Connect WebSocket when starting recording
+
+    if (!isConnected) {
+      return;
+    }
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -135,7 +133,7 @@ const VoiceAIComponent = () => {
       mediaRecorder.start(100);
       setIsRecording(true);
       startTimer();
-    
+
     } catch (error) {
       console.error('Error starting recording:', error);
       setError('Failed to start recording.');
@@ -199,24 +197,19 @@ const VoiceAIComponent = () => {
 
   return (
     <div className="voice-ai-container">
-      <h2>Voice AI Interaction</h2>
-      <div className="voice-ai-controls">
-        {!isConnected && (
-          <button className="voice-ai-connect-button" onClick={() => setIsConnected(true)}>
-            Connect
-          </button>
-        )}
-        {isConnected && (
-          <>
-            <button
-              className={`voice-ai-talk-button ${isRecording ? 'voice-ai-recording' : ''}`}
-              onClick={isRecording ? handleStopRecording : handleStartRecording}
-              disabled={!isConnected}
-            >
-              {isRecording ? 'Stop' : 'Talk'}
-            </button>
-          </>
-        )}
+      
+      <div className="voice-ai-controls ">
+        {!isRecording &&
+        <div>
+        <button
+          className={`voice-ai-talk-button ${isRecording ? 'voice-ai-recording' : ''}`}
+          onClick={isRecording ? handleStopRecording : handleStartRecording}
+          disabled={false}
+        >
+          <FontAwesomeIcon icon={faMicrophone} />
+        </button>
+        </div> }
+
         {isRecording && (
           <div className="voice-ai-popup">
             <div className="voice-ai-popup-content">
@@ -224,7 +217,7 @@ const VoiceAIComponent = () => {
                 <img className={`voice-ai-profile-image ${isPlaying ? 'blink-animation' : ''}`} src={profileDetails.avatarPhotoUrl} alt="Profile" />
                 <div>
                   <p className="voice-ai-profile-name">{profileDetails.displayName}</p>
-                  <p className="voice-ai-profile-greeting">{profileDetails.greeting}</p>
+                  <p className="voice-ai-profile-greeting">Hello, I am the AI Assistant of {profileDetails.displayName}</p>
                 </div>
                 {isListening && <div className="voice-ai-status">Listening...</div>}
                 {isResponding && <div className="voice-ai-status">Responding...</div>}
@@ -239,14 +232,19 @@ const VoiceAIComponent = () => {
                 onEnded={() => setIsPlaying(false)}
                 style={{ display: 'none' }}
               />
-              <p className="voice-ai-powered-by">Powered by Mobishala</p>
+              <p className="voice-ai-powered-by">
+                <span>
+                  <img className='company-logo' src="https://play-lh.googleusercontent.com/nPFp9nxBxCdnfiKHfW3dOwPrchqIoXr0c2ujvEhIAqXdXa4H1rRN9iUBKeXD2SMNreWV" alt="logo" />
+                </span>
+                Powered by Mobishala
+              </p>
               <button className="voice-ai-cancel-button" onClick={handleStopRecording}>
                 Cancel
               </button>
             </div>
           </div>
         )}
-     
+
         {error && <div className="voice-ai-error-message">{error}</div>}
       </div>
     </div>

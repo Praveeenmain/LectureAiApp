@@ -1,11 +1,17 @@
 .voice-ai-container {
+  margin-top: 170px;
   text-align: center;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ 
 }
 
 .voice-ai-controls {
   margin-top: 20px;
+  order: 2;
 }
 
 .voice-ai-connect-button,
@@ -31,14 +37,21 @@
 
 .voice-ai-popup {
   position: fixed;
-  bottom: 20px;
+  bottom: 70px;
   right: 20px;
-  background-color: #ffffff;
+  left: 20px;
+  background-color: #1e1d1d;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
   z-index: 1000;
+  color:#fff;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  order: 1;
 }
 
 .voice-ai-popup-content {
@@ -134,4 +147,66 @@
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+.company-logo{
+  height:25px;
+  width:25px;
+}
+.voice-ai-talk-button {
+  background-color: #343434; /* Primary color */
+  border: none;
+  border-radius: 50%; /* Circle shape */
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.voice-ai-talk-button:hover {
+  background-color: #4d4f4d; /* Darker shade on hover */
+  transform: scale(1.1); /* Slightly enlarge */
+}
+
+.voice-ai-talk-button.voice-ai-recording {
+  background-color: #e74c3c; /* Red color when recording */
+  animation: pulse 1.5s infinite; /* Pulsing effect */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.blink-animation {
+  animation: blink 1.5s infinite; /* Blinking effect */
+}
+
+@keyframes blink {
+  0%, 20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.voice-ai-status {
+  font-size: 14px;
+  color: #fff; /* White text for visibility */
+  margin-top: 5px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Text shadow */
 }
