@@ -214,14 +214,17 @@ const VoiceAIComponent = () => {
           <div className="voice-ai-popup">
             <div className="voice-ai-popup-content">
               <div className="voice-ai-popup-header">
-                <img className={`voice-ai-profile-image ${isPlaying ? 'blink-animation' : ''}`} src={profileDetails.avatarPhotoUrl} alt="Profile" />
-                <div>
+              <div>
                   <p className="voice-ai-profile-name">{profileDetails.displayName}</p>
                   <p className="voice-ai-profile-greeting">Hello, I am the AI Assistant of {profileDetails.displayName}</p>
                 </div>
+                <div className={`circle-animation`}>
+                <img className={`voice-ai-profile-image ${isPlaying ? 'blink-animation' : ''}`} src={profileDetails.avatarPhotoUrl} alt="Profile" />
+                </div>
                 {isListening && <div className="voice-ai-status">Listening...</div>}
                 {isResponding && <div className="voice-ai-status">Responding...</div>}
-                <span className="voice-ai-recording-time">{formatTime(recordingTime)}</span>
+                <div>{formatTime(recordingTime)} </div>
+              
               </div>
               <AudioPlayer
                 autoPlay
@@ -239,7 +242,7 @@ const VoiceAIComponent = () => {
                 Powered by Mobishala
               </p>
               <button className="voice-ai-cancel-button" onClick={handleStopRecording}>
-                Cancel
+                Close
               </button>
             </div>
           </div>
