@@ -1,6 +1,4 @@
-import React, { useState, useRef, useEffect,useCallback  } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import axios from 'axios';
 import 'react-h5-audio-player/lib/styles.css';
@@ -9,69 +7,104 @@ import './index.css';
 const agentId = process.env.REACT_APP_AGENT_ID;
 const apiKey = process.env.REACT_APP_API_KEY;
 
-
-
-
 const wsUrl = `wss://api.play.ai/v1/talk/${agentId}`;
 
 const VoiceAIComponent = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isResponding, setIsResponding] = useState(null);
   const [error, setError] = useState(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioURL, setAudioURL] = useState(null);
+  const [profileDetails, setProfileDetails] = useState({});
+  const [isPlaying, setIsPlaying] = useState(false);
   const wsRef = useRef(null);
   const mediaRecorderRef = useRef(null);
+  const audioPlayerRef = useRef(null);
   const timerRef = useRef(null);
-  const accumulatedAudioData = useRef(''); 
+  const accumulatedAudioData = useRef('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const options = {
+        headers: {
+          Authorization: apiKey,
+          'X-USER-ID': process.env.REACT_APP_USER_ID,
+          accept: 'application/json'
+        }
+      };
+
+      try {
+        const response = await axios.get(`http://localhost:3000/api/v1/agents/${agentId}`, options);
+        setProfileDetails(response.data);
+      } catch (error) {
+        console.error('Axios error:', error);
+        setError('Failed to fetch profile details.');
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleAudioStream = useCallback(async () => {
+    
     const base64Data = accumulatedAudioData.current;
     const blob = base64toBlob(base64Data);
 
-  
     const url = URL.createObjectURL(blob);
-
-   
     setAudioURL(url);
 
     accumulatedAudioData.current = ''; // Clear accumulated data
+     setIsResponding(false)
+     setIsListening(true)
   }, []);
+
   useEffect(() => {
     if (isConnected) {
       wsRef.current = new WebSocket(wsUrl);
 
       wsRef.current.onopen = () => {
         console.log('WebSocket connected');
-        wsRef.current.send(JSON.stringify({ type: "setup", apiKey: apiKey, outputFormat: "mp3", outputSampleRate: 24000 }));
+        wsRef.current.send(JSON.stringify({ type: 'setup', apiKey: apiKey, outputFormat: 'mp3', outputSampleRate: 24000 }));
         console.log('Setup message sent');
       };
 
       wsRef.current.onmessage = (event) => {
         const message = JSON.parse(event.data);
-          
+
         switch (message.type) {
           case 'voiceActivityStart':
             console.log('Voice activity started');
+            setIsListening(true); // Set listening status
+            setIsResponding(false);
+            break;
+            case 'audioStream':
+              setIsListening(false); // Set listening status
+              setIsResponding(true);
+            accumulatedAudioData.current += message.data;
+                
             break;
           case 'voiceActivityEnd':
             console.log('Voice activity ended');
-            // After voice activity ends, play the accumulated audio
+          
+            setIsResponding(false);
+           
             handleAudioStream();
+            setIsListening(true); // Reset listening status
+           
             break;
-          case 'audioStream':
-            // Append the received audio data to accumulatedAudioData
-            accumulatedAudioData.current += message.data;
-            break;
+         
           case 'error':
             console.error('Error from server:', message.message);
             setError(message.message);
             break;
           default:
-            console.log("new Audio", message.type);
+            console.log('New message type:', message.type);
             break;
         }
       };
-     
+
       wsRef.current.onerror = (error) => {
         console.error('WebSocket error:', error);
         setError('WebSocket error occurred.');
@@ -82,7 +115,7 @@ const VoiceAIComponent = () => {
         setIsConnected(false);
       };
     }
-  }, [isConnected,handleAudioStream]);
+  }, [isConnected, handleAudioStream]);
 
   const handleStartRecording = async () => {
     if (!isConnected) return;
@@ -102,6 +135,7 @@ const VoiceAIComponent = () => {
       mediaRecorder.start(100);
       setIsRecording(true);
       startTimer();
+    
     } catch (error) {
       console.error('Error starting recording:', error);
       setError('Failed to start recording.');
@@ -113,22 +147,19 @@ const VoiceAIComponent = () => {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
       stopTimer();
+      window.location.reload();
     }
   };
 
-
-  
-  
-
-  function base64toBlob(base64Data) {
+  const base64toBlob = (base64Data) => {
     const sliceSize = 512;
     const byteCharacters = atob(base64Data);
     const byteArrays = [];
 
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-
       const byteNumbers = new Array(slice.length);
+
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
@@ -138,7 +169,7 @@ const VoiceAIComponent = () => {
     }
 
     return new Blob(byteArrays, { type: 'audio/mpeg' });
-  }
+  };
 
   const blobToBase64 = (blob) => {
     return new Promise((resolve, reject) => {
@@ -165,33 +196,6 @@ const VoiceAIComponent = () => {
     const seconds = time % 60;
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const options = {
-        headers: {
-          Authorization: apiKey,
-          'X-USER-ID': process.env.REACT_APP_USER_ID,
-          accept: 'application/json'
-        }
-      };
-
-      try {
-        const response = await axios.get(`http://localhost:3000/api/v1/agents/${agentId}`, options);  // Use the proxied endpoint
-        console.log(response.data);
-      
-        // You can set state or update UI with fetched data here
-      } catch (error) {
-        console.error('Axios error:', error);
-        // Handle error state or display error message
-      }
-    };
-
-    fetchData();
-  }, []); // Empty array as second argument ensures useEffect runs only once
-
- 
-
-
 
   return (
     <div className="voice-ai-container">
@@ -217,28 +221,32 @@ const VoiceAIComponent = () => {
           <div className="voice-ai-popup">
             <div className="voice-ai-popup-content">
               <div className="voice-ai-popup-header">
-                <FontAwesomeIcon icon={faVolumeUp} className="voice-ai-speaker-icon" />
-                <span>Recording: {formatTime(recordingTime)}</span>
+                <img className={`voice-ai-profile-image ${isPlaying ? 'blink-animation' : ''}`} src={profileDetails.avatarPhotoUrl} alt="Profile" />
+                <div>
+                  <p className="voice-ai-profile-name">{profileDetails.displayName}</p>
+                  <p className="voice-ai-profile-greeting">{profileDetails.greeting}</p>
+                </div>
+                {isListening && <div className="voice-ai-status">Listening...</div>}
+                {isResponding && <div className="voice-ai-status">Responding...</div>}
+                <span className="voice-ai-recording-time">{formatTime(recordingTime)}</span>
               </div>
+              <AudioPlayer
+                autoPlay
+                ref={audioPlayerRef}
+                src={audioURL}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnded={() => setIsPlaying(false)}
+                style={{ display: 'none' }}
+              />
+              <p className="voice-ai-powered-by">Powered by Mobishala</p>
               <button className="voice-ai-cancel-button" onClick={handleStopRecording}>
                 Cancel
               </button>
             </div>
           </div>
         )}
-        <div className="voice-ai-audio-player">
-          {audioURL && (
-           <AudioPlayer
-           autoPlay
-           src={audioURL}
-           onPlay={(e) => console.log("onPlay")}
-           customAdditionalControls={[]}  // Remove additional controls
-           customVolumeControls={[]}  // Remove volume controls
-           showJumpControls={false}  // Remove jump controls
-         />
-         
-          )}
-        </div>
+     
         {error && <div className="voice-ai-error-message">{error}</div>}
       </div>
     </div>
