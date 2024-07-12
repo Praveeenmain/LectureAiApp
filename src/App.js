@@ -43,6 +43,7 @@ function App() {
           <ProtectedRoute path="/teacherprofile" exact component={TeacherProfile} />
           <ProtectedRoute path="/voice" exact component={VoiceAIComponent} />
        
+       
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>

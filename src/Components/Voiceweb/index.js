@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect,useCallback  } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import AudioPlayer from 'react-h5-audio-player';
+import axios from 'axios';
 import 'react-h5-audio-player/lib/styles.css';
 import './index.css';
 
@@ -115,6 +116,8 @@ const VoiceAIComponent = () => {
     }
   };
 
+
+  
   
 
   function base64toBlob(base64Data) {
@@ -162,6 +165,33 @@ const VoiceAIComponent = () => {
     const seconds = time % 60;
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const options = {
+        headers: {
+          Authorization: apiKey,
+          'X-USER-ID': process.env.REACT_APP_USER_ID,
+          accept: 'application/json'
+        }
+      };
+
+      try {
+        const response = await axios.get(`http://localhost:3000/api/v1/agents/${agentId}`, options);  // Use the proxied endpoint
+        console.log(response.data);
+      
+        // You can set state or update UI with fetched data here
+      } catch (error) {
+        console.error('Axios error:', error);
+        // Handle error state or display error message
+      }
+    };
+
+    fetchData();
+  }, []); // Empty array as second argument ensures useEffect runs only once
+
+ 
+
+
 
   return (
     <div className="voice-ai-container">
