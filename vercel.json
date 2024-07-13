@@ -2,8 +2,7 @@
     "rewrites": [
       {
         "source": "/api",
-        "destination": "https://api.play.ai/"
-     
+        "destination": "https://api.play.ai"
       }
     ]
   }
