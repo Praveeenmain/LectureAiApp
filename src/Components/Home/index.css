@@ -12,8 +12,8 @@
 
 .box {
     width: calc(50% - 20px); /* Each box takes up 50% of the width with some margin */
-    max-width: 200px; /* Limit max width of each box */
-    height:150px;
+    max-width: 140px; /* Limit max width of each box */
+    height:120px;
     box-sizing: border-box;
     margin: 10px;
     background-color: #272424;
@@ -30,8 +30,8 @@
     margin-bottom: auto;
 }
 .box-icon {
-    height: 40px;
-    width: 40px;
+    height: 28px;
+    width: 28px;
     margin-bottom: 10px; /* Added margin to create space between icon and heading */
 
 }

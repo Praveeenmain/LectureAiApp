@@ -59,7 +59,14 @@ const IntialMessage = ({ initialText ,GoalQuestion,AssitantQuestion,challenges})
           </ul>
         )}
       </div>
-      <FontAwesomeIcon icon={faCompass} onClick={toggleQuestions} />
+   
+  <FontAwesomeIcon 
+    icon={faCompass} 
+    onClick={toggleQuestions} 
+    className="icon-compass" 
+  />
+
+
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faLeftLong,faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 
 function Navbar({ title }) {
@@ -13,10 +13,14 @@ function Navbar({ title }) {
 
 
 
-           <FontAwesomeIcon icon={faLeftLong} style={{ color: 'white' }} />
+           {/* <FontAwesomeIcon icon={faLeftLong} style={{ color: 'white' }} /> */}
 
 
           <span className="ms-2">{title}</span>
+
+         
+        <FontAwesomeIcon icon={faEllipsisVertical} className="threedots-icon" />
+    
         </Link>
       </div>
     </nav>

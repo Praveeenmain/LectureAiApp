@@ -4,16 +4,25 @@ import Navbar from '../NavBar';
 import { useHistory } from 'react-router-dom';
 import { googleLogout } from '@react-oauth/google';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import LabelBottomNavigation from '../BottomNav'
+import LabelBottomNavigation from '../BottomNav';
 import { jwtDecode } from 'jwt-decode';
-import { faEnvelope, faFileAlt, faLock, faBalanceScale, faSignOutAlt, faQuestionCircle,faUsers,faArchive} from '@fortawesome/free-solid-svg-icons';
+import { 
+  faRobot, 
+  faLock, 
+  faBalanceScale, 
+  faSignOutAlt, 
+  faFileAlt, 
+  faCreditCard, 
+  faComments, 
+  faLifeRing, 
+  faUsers, 
+  faArchive 
+} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 
 const Profile = () => {
   const jwtToken = Cookies.get('jwt_token');
-  // console.log(jwtToken)
   const decodedToken = jwtDecode(jwtToken);
-
   const { name, email, picture } = decodedToken;
   const history = useHistory();
 
@@ -23,52 +32,47 @@ const Profile = () => {
     history.push('/');
   };
 
+  const menuItems = [
+    { icon: faUsers, label: 'Documents' },
+    { icon: faArchive, label: 'Knowledge' },
+    { icon: faRobot, label: 'Assistant' },
+    { icon: faLock, label: 'Activity' },
+    { icon: faBalanceScale, label: 'Settings' },
+    { icon: faFileAlt, label: 'Account' },
+    { icon: faCreditCard, label: 'Payment' },
+    { icon: faComments, label: 'Feedback' },
+    { icon: faLifeRing, label: 'Help' },
+  ];
+
   return (
     <>
       <Navbar title="Profile" />
       <div className="profile-container">
-        <div className='Profile-name-container'>
-          <img className='profile-image' src={picture} alt="Profile" />
-          <p className='profile-name-email'>{name}</p>
+        <div className="profile-name-container">
+          <img className="profile-image" src={picture} alt="Profile" />
+          <div className="profile-name-email">
+            <p className="profile-name">{name}</p>
+            <p className="profile-email">{email}</p>
+          </div>
         </div>
+        
         <hr />
-        <p className='Account-About-heading'>Accounts</p>
-        <div className='email-icon-container'>
-          <FontAwesomeIcon icon={faEnvelope} className="message-icon" />
-          <p className='profile-name-email'>{email}</p>
-        </div>
-        <div className='email-icon-container'>
-          <FontAwesomeIcon icon={faUsers} className="message-icon" />
-          <p className='profile-name-email'>Subscription</p>
-        </div>
-        <div className='email-icon-container'>
-          <FontAwesomeIcon icon={faArchive} className="message-icon" />
-          <p className='profile-name-email'>Archived Chats</p>
-        </div>
+        
+        <p className="profile-about-heading">About</p>
 
-        <p className='Account-About-heading'>About</p>
-        <div className='email-icon-container'>
-          <FontAwesomeIcon icon={faFileAlt} className="message-icon" />
-          <p className='profile-name-email'>Terms of Use</p>
-        </div>
-        <div className='email-icon-container'>
-          <FontAwesomeIcon icon={faLock} className="message-icon" />
-          <p className='profile-name-email'>Privacy Policy</p>
-        </div>
-        <div className='email-icon-container'>
-          <FontAwesomeIcon icon={faBalanceScale} className="message-icon" />
-          <p className='profile-name-email'>Licenses</p>
-        </div>
-        <div className='email-icon-container'>
-          <FontAwesomeIcon icon={faQuestionCircle} className="message-icon" />
-          <p className='profile-name-email'>Help</p>
-        </div>
-        <div className='email-icon-container' onClick={handleSignOut}>
-          <FontAwesomeIcon icon={faSignOutAlt} className="message-icon" />
-          <p className='profile-name-email'>Signout</p>
+        {menuItems.map((item, index) => (
+          <div className="profile-email-icon-container" key={index}>
+            <FontAwesomeIcon icon={item.icon} className="profile-message-icon" />
+            <span className="profile-name-email">{item.label}</span>
+          </div>
+        ))}
+        
+        <div className="profile-signout-container" onClick={handleSignOut}>
+          <FontAwesomeIcon icon={faSignOutAlt} className="profile-message-icon" />
+          <span className="profile-name-email">Sign Out</span>
         </div>
       </div>
-      <LabelBottomNavigation/>
+      <LabelBottomNavigation />
     </>
   );
 };

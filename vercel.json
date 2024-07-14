@@ -1,9 +1,0 @@
-{
-    "rewrites": [
-      {
-        "source": "/api/(.*)",
-        "destination": "https://api.play.ai/api/v1/$1"
-      }
-    ]
-  }
-  

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './Components/Home';
 import AudioRecorder from './Components/AudioAiApp';
 import NotFound from './Components/Notfound';
-import AiBot from './Components/AiBot';
+import AiBot from './Components/AiBot'
 import NotesAi from './Components/NotesAiApp'
 import PopContent from './Components/AudioContent/popcontent'
 import NoteDetails from './Components/NoteContent/index'
@@ -32,7 +32,7 @@ function App() {
           <ProtectedRoute path="/students" exact component={AddStudents} />
           <ProtectedRoute path="/Home" exact component={Home} />
           <ProtectedRoute path="/Audio-lectures" exact component={AudioRecorder} />
-          <ProtectedRoute path="/aichat" exact component={AiBot} />
+          <ProtectedRoute path="/voice" exact component={VoiceAIComponent} />
           <ProtectedRoute path="/audio-files/:id" exact component={PopContent} />
           <ProtectedRoute path="/classnotes" exact component={NotesAi} />
           <ProtectedRoute path="/Video-lectures" exact component={VideoAi} />
@@ -41,7 +41,8 @@ function App() {
           <ProtectedRoute path="/Videos/:id" exact component={VideoContent} />
           <ProtectedRoute path="/pqs/:id" exact component={ClassAsk} />
           <ProtectedRoute path="/teacherprofile" exact component={TeacherProfile} />
-          <ProtectedRoute path="/voice" exact component={VoiceAIComponent} />
+          <ProtectedRoute path="/chat" exact component={AiBot} />
+          
        
        
           <Route path="*" component={NotFound} />

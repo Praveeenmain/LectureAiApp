@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
+import { RiRobot3Fill } from "react-icons/ri";
+import { Link } from 'react-router-dom';
 import Navbar from '../NavBar';
 import UserMessage from '../UserMessage';
 import Message from '../BotMessage';
 import InitialMessage from '../IntialMessage'; // Assuming corrected import
-import VoiceAIComponent from '../Voiceweb';
+
 import './index.css';
 import axios from 'axios';
 
@@ -54,11 +56,11 @@ const AiBot = () => {
 
     return (
         <>
-            <Navbar title="Ai Assistant" />
+            <Navbar title="Chat Ai" />
             <div className="Aichat-chatmessage-container">
                     
                 <InitialMessage 
-                    initialText="Hello I am Ai Assistant" 
+                    initialText="  Hello I am Your Ai Assitant" 
                     GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} 
                     AssistantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} 
                     challenges={() => handlePredefinedQuestion('What we can learn from this file?')} 
@@ -69,7 +71,9 @@ const AiBot = () => {
                         <Message initialText={item.botResponse} />
                     </React.Fragment>
                 ))}
-                <VoiceAIComponent/>
+                 <Link to="/voice" className="voice-add-file-button">
+                 <RiRobot3Fill />
+    </Link>
                 <div className="Aichat-fixed-input-box-container">
                     <button className="Aichat-voice-button" onClick={toggleVoiceRecognition}>
                         <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />

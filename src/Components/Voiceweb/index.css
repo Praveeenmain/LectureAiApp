@@ -1,17 +1,26 @@
 .voice-ai-container {
-  margin-top: 170px;
+ 
   text-align: center;
   padding: 20px;
   background-color: transparent;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
- 
+  height:80vh;
+  background-size: cover;
+  width: 100%;
 }
 
 .voice-ai-controls {
-  margin-top: 20px;
-  order: 2;
+  
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+  align-items: center;
+  max-width:600px;
+  width:100%;
+  
 }
 
 .voice-ai-connect-button,
@@ -26,18 +35,29 @@
   margin: 10px;
 }
 
-.voice-ai-connect-button:hover,
-.voice-ai-talk-button:hover {
-  background-color: #0056b3;
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 71, 87, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+  }
 }
 
-.voice-ai-talk-button.voice-ai-recording {
-  background-color: #dc3545;
-}
+
+
+
+
+.voice-ai-connect-button:hover,
+
 
 .voice-ai-popup {
   position: fixed;
-  bottom: 70px;
+  bottom: 180px;
   right: 20px;
   left: 20px;
   background-color: #201f1f;
@@ -106,7 +126,7 @@
   background-color: #dc3545;
   color: #fff;
   border: none;
-  padding: 8px 16px;
+  padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -162,40 +182,23 @@
   margin-right: 8px;
 }
 .voice-ai-talk-button {
-  background-color: #343434; /* Primary color */
+  background-color: transparent; /* Primary color */
   border: none;
   border-radius: 50%; /* Circle shape */
-  width: 60px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  animation: pluse;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  font-size:40px;
 }
 
-.voice-ai-talk-button:hover {
-  background-color: #4d4f4d; /* Darker shade on hover */
-  transform: scale(1.1); /* Slightly enlarge */
-}
 
-.voice-ai-talk-button.voice-ai-recording {
-  background-color: #e74c3c; /* Red color when recording */
-  animation: pulse 1.5s infinite; /* Pulsing effect */
-}
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+
 
 .blink-animation {
   
@@ -252,4 +255,126 @@
   100% {
     opacity: 1;
   }
+}
+
+/* index.css */
+
+.connect-button {
+  margin-top: 15px;
+  font-size: 13px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  padding: 8px;
+
+}
+
+
+.connect-button.disconnected {
+  background-color: #a2a29e;
+  color: white;
+ 
+}
+
+
+
+
+.connect-button.connecting {
+  background-color: #932007;
+  color: black;
+}
+
+.connect-button.connected {
+  background-color: #46ca09;
+  color: white;
+  cursor: default;
+
+}
+
+
+.voice-ai-controls-container{
+  
+  padding:20px;
+  border-radius: 20px;
+   max-width:400px;
+   display:flex;
+   flex-direction:column;
+   justify-content: center;
+   align-items: center;
+   width:100%;
+
+}
+
+.voice-ai-talk-button {
+  background-color: transparent; /* Primary color */
+  border: none;
+  border-radius: 50%; /* Circle shape */
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: pulse 1s infinite; /* Pulse animation */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  font-size: 40px;
+  position: relative; /* Needed for pseudo-elements */
+}
+
+.voice-ai-talk-button::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%; /* Match the circle shape */
+  border: 2px solid white; /* White border */
+  opacity: 0;
+  animation: blink 1s infinite; /* Blink animation */
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+
+.click-buttton{
+  margin-top: 15px;
+ background-color: transparent;
+ border:0px;
+ color:white;
+ font-size:13px;
+}
+.voice-add-file-button {
+  background-color: black;
+  color: grey;
+  padding: 0; /* Remove padding to center text */
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  bottom: 85px;
+  right: 20px;
+  border: 1px solid #2b2f33;
+  width: 50px;
+  height: 50px; /* Make height equal to width for perfect circle */
+  display: flex; /* Enable flexbox */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
 }

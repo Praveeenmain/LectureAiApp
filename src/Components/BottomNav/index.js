@@ -2,18 +2,18 @@ import * as React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import HomeIcon from '@mui/icons-material/Home';
+
 import PeopleIcon from '@mui/icons-material/People';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
-
+import SchoolIcon from '@mui/icons-material/School';
 const LabelBottomNavigation = () => {
   const location = useLocation();
 
   // Determine which tab should be highlighted based on the current path
   const getValueFromPath = (path) => {
     switch (path) {
-      case '/aichat':
+      case '/voice':
         return 'aichat';
       case '/students':
         return 'students';
@@ -41,21 +41,22 @@ const LabelBottomNavigation = () => {
       }}
       value={value}
     >
-      <BottomNavigationAction
-        label="HOME"
-        value="home"
-        icon={<HomeIcon style={{ color: 'white' }} />}
-        sx={{ color: 'white' }}
-        component={Link}
-        to="/home"
-      />
+      
       <BottomNavigationAction
         label="Assitant"
         value="aichat"
         icon={<AutoFixHighOutlinedIcon style={{ color: 'white' }} />}
         sx={{ color: 'white' }}
         component={Link}
-        to="/aichat"
+        to="/voice"
+      />
+      <BottomNavigationAction
+        label="Knowledge"
+        value="home"
+        icon={<SchoolIcon style={{ color: 'white' }} />}
+        sx={{ color: 'white' }}
+        component={Link}
+        to="/home"
       />
       <BottomNavigationAction
         label="STUDENTS"

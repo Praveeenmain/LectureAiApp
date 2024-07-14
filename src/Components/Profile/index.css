@@ -1,40 +1,99 @@
-/* Profile.css */
+/* General styles */
 
 .profile-container {
-    padding-left:10px;
-    margin-top: 10px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .Profile-name-container{
-    display: flex;
-    align-items: center;
-    
-  }
+  margin-top: -10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  height: 100vh;
+  overflow: scroll;
+}
 
-  .profile-image {
-    border-radius: 50%;
-    height:50px;
-    width:50px;
-    margin-right: 10px;
-    
-  }
-  .profile-name-email{
-    color:white;
-    margin-top: 8px;
-    text-align: center;
-  }
-  .email-icon-container{
-    display: flex;
+.profile-name-container {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+}
 
-    align-items: center;
-  }
-  .message-icon{
-    font-size:20px;
-    color: #ffff;
-    margin-right: 10px;
-  }
-  .Account-About-heading{
-    color: #ffff;
-    text-align: left;
-  }
+.profile-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 2px solid #ffffff;
+}
+
+.profile-name-email {
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.profile-name {
+  font-size: 20px; /* Larger font size for readability */
+  font-weight: bold;
+  margin: 0; /* Remove default margin */
+}
+
+.profile-email {
+  font-size: 14px; /* Consistent size for visibility */
+  color: #b0b0b0;
+  margin: 0; /* Remove default margin */
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #444444;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.profile-about-heading {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  align-self: flex-start;
+  color: #fff;
+}
+.profile-signout-container,
+.profile-email-icon-container {
+  display: flex;
+  align-items: center; /* Center the icon and text vertically */
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.3s;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.profile-email-icon-container:hover {
+  background: #1e1e1e;
+}
+
+.profile-message-icon {
+  margin-right: 15px; /* Space between icon and text */
+  color: #ffffff;
+}
+
+.profile-name-email {
+  display: flex;
+  flex-direction: column; /* Maintain vertical layout */
+  justify-content: center; /* Center text vertically */
+  color: #ffffff;
+}
+
+.profile-name-email span {
+  line-height: 1.2; /* Adjust line height for better spacing */
+}
+
+.profile-signout-container {
+  color: #ff4c4c;
+}
+
+.profile-signout-container:hover {
+
+  color: #ff0000;
+}
