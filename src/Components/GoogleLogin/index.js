@@ -62,7 +62,7 @@ const GoogleLoginComponent = () => {
                 body: JSON.stringify({ name, email })
             });
 
-            history.push('/home');
+            history.push('/voice');
         } catch (error) {
             console.error('Error decoding token:', error);
         }

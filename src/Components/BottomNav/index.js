@@ -43,7 +43,7 @@ const LabelBottomNavigation = () => {
     >
       
       <BottomNavigationAction
-        label="Assitant"
+        label="Assistant"
         value="aichat"
         icon={<AutoFixHighOutlinedIcon style={{ color: 'white' }} />}
         sx={{ color: 'white' }}
@@ -59,7 +59,7 @@ const LabelBottomNavigation = () => {
         to="/home"
       />
       <BottomNavigationAction
-        label="STUDENTS"
+        label="Students"
         value="students"
         icon={<PeopleIcon style={{ color: 'white' }} />}
         sx={{ color: 'white' }}
@@ -67,7 +67,7 @@ const LabelBottomNavigation = () => {
         to="/students"
       />
       <BottomNavigationAction
-        label="PROFILE"
+        label="Profile"
         value="profile"
         icon={<AccountCircleIcon style={{ color: 'white' }} />}
         sx={{ color: 'white' }}

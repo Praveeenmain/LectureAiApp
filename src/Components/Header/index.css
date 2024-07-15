@@ -12,9 +12,8 @@
     margin-left: auto; /* Push "Help" text to the right */
 }
 .header-heading{
-    font-size:25px;
-    text-align: center;
-    margin-top: 10px;
+    font-size:20px;
+   
 }
 .help-heading{
     font-size:15px;

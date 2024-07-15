@@ -60,7 +60,7 @@ const AiBot = () => {
             <div className="Aichat-chatmessage-container">
                     
                 <InitialMessage 
-                    initialText="  Hello I am Your Ai Assitant" 
+                    initialText="  Hello I am Your Ai Assistant" 
                     GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} 
                     AssistantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} 
                     challenges={() => handlePredefinedQuestion('What we can learn from this file?')} 

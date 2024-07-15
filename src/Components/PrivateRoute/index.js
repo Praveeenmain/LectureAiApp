@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
     Cookies.get('jwt_token') ? (
-      <Redirect to="/Home" />
+      <Redirect to="/voice" />
     ) : (
       <Component {...props} />
     )
