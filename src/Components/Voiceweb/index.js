@@ -33,7 +33,7 @@ const VoiceAIComponent = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/getAgent');
-        console.log(response.data);
+       
         setProfileDetails(response.data);
       } catch (error) {
         console.error('Axios error:', error);
