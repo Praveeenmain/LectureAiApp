@@ -94,7 +94,6 @@ const VoiceAIComponent = () => {
             setIsListening(true);
             break;
           case 'error':
-            console.error('Error from server:', message.message);
             setError(message.message);
             break;
           default:
@@ -112,18 +111,17 @@ const VoiceAIComponent = () => {
       wsRef.current.onclose = () => {
         console.log('WebSocket closed');
         setConnectionStatus('disconnected');
+        window.location.reload();
+
       };
     }
+ 
   }, [connectionStatus, handleAudioStream]);
-
+   connectWebSocket();
   const handleStartRecording = async () => {
-    connectWebSocket(); // Connect WebSocket when starting recording
-
-    if (connectionStatus !== 'connected') {
-      return;
-    }
-
+   
     try {
+   
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
@@ -139,7 +137,7 @@ const VoiceAIComponent = () => {
       setIsRecording(true);
       startTimer();
     } catch (error) {
-      console.error('Error starting recording:', error);
+      
       setError('Failed to start recording.');
     }
   };
@@ -248,7 +246,7 @@ const VoiceAIComponent = () => {
                   <span>
                     <img className='company-logo' src="https://play-lh.googleusercontent.com/nPFp9nxBxCdnfiKHfW3dOwPrchqIoXr0c2ujvEhIAqXdXa4H1rRN9iUBKeXD2SMNreWV" alt="logo" />
                   </span>
-                  Powered by Mobishalaa
+                  Powered by Mobishaala
                 </p>
                 <button className="voice-ai-cancel-button" onClick={handleStopRecording}>
                   Close
@@ -257,7 +255,7 @@ const VoiceAIComponent = () => {
             </div>
           )}
 
-          {error && <div className="voice-ai-error-message">{error}</div>}
+          {error && <div className="voice-ai-error-message"></div>}
         </div>
         <LabelBottomNavigation />
       </div>
