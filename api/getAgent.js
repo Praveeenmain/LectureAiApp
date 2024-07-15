@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export default async function handler(req, res) {
     // Get agent ID and API key from environment variables
     const agentId = process.env.REACT_APP_AGENT_ID;
@@ -9,6 +7,7 @@ export default async function handler(req, res) {
     try {
         // Set request options with headers
         const options = {
+            method: 'GET',
             headers: {
                 Authorization: apiKey,
                 'X-USER-ID': userId,
@@ -17,10 +16,18 @@ export default async function handler(req, res) {
         };
 
         // Make the API request
-        const response = await axios.get(`https://api.play.ai/api/v1/agents/${agentId}`, options);
-        
+        const response = await fetch(`https://api.play.ai/api/v1/agents/${agentId}`, options);
+
+        // Check if the response is okay
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        // Parse the response data
+        const data = await response.json();
+
         // Return the response data
-        res.status(200).json(response.data);
+        res.status(200).json(data);
     } catch (error) {
         console.error('API request error:', error);
         res.status(500).json({ error: 'Failed to fetch data' });
