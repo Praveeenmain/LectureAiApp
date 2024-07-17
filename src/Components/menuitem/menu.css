@@ -40,7 +40,7 @@
     border-radius: 5px;
     width:100%;
    
-    max-width: 400px;
+    max-width: 650px;
   }
   .menu-link{
     text-decoration: none;
@@ -64,9 +64,9 @@
     flex: 1;
   }
   
-  .title {
-    font-size: 8px;
-   
+  .audio-menu-title {
+    font-size: 15px;
+    color: #fff;
     font-weight: bold;
   }
   

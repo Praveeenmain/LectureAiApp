@@ -30,7 +30,9 @@ const Message = ({ initialText, generateSummary, generateNotes, generateQA }) =>
         if (index === initialText.length) {
           clearInterval(timer);
           // Scroll to top when the message is fully displayed
-          window.scrollTo({ down: 0, behavior: 'smooth' });
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }, 100); // Delay to ensure content is rendered
         }
       }, 20);
       return () => clearInterval(timer);
@@ -44,22 +46,16 @@ const Message = ({ initialText, generateSummary, generateNotes, generateQA }) =>
   };
 
   const handleGenerateSummary = () => {
-    // Logic for generating summary
-    // Replace this alert with actual logic or API call
     alert('Generating summary...');
     generateSummary();
   };
 
   const handleGenerateNotes = () => {
-    // Logic for generating notes
-    // Replace this alert with actual logic or API call
     alert('Generating notes...');
     generateNotes();
   };
 
   const handleGenerateQA = () => {
-    // Logic for generating Q/A
-    // Replace this alert with actual logic or API call
     alert('Generating Q/A...');
     generateQA();
   };
@@ -152,26 +148,26 @@ const Message = ({ initialText, generateSummary, generateNotes, generateQA }) =>
       )}
       <div className="act-buttons">
         <CopyToClipboard text={displayedText} onCopy={handleCopy}>
-          <button className="copy-button">
+          <button className="copy-button" style={{ color: 'grey' }}>
             <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
           </button>
         </CopyToClipboard>
 
-        <button className="share-button" onClick={handleShare}>
+        <button className="share-button" onClick={handleShare} style={{ color: 'grey' }}>
           <FontAwesomeIcon icon={faShareAlt} />
         </button>
 
-        <button className="additional-button" onClick={toggleSpeakStop}>
+        <button className="additional-button" onClick={toggleSpeakStop} style={{ color: 'grey' }}>
           {isSpeaking ? <FontAwesomeIcon icon={faVolumeMute} /> : (
             <img className='volumeup-bot' src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />
           )}
         </button>
 
-        <button className="additional-button" onClick={handleEdit}>
+        <button className="additional-button" onClick={handleEdit} style={{ color: 'grey' }}>
           <FontAwesomeIcon icon={faEdit} />
         </button>
 
-        <button className="additional-button" onClick={toggleOptions}>
+        <button className="additional-button" onClick={toggleOptions} style={{ color: 'grey' }}>
           <FontAwesomeIcon icon={faRandom} />
         </button>
       </div>

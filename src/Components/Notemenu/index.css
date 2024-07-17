@@ -32,8 +32,8 @@
     flex: 1;
 }
 .Note-title{
-    font-size: 20px;
-   font-family: Roboto,sans-serif;
+    font-size: 15px;
+    color: #fff;
     font-weight: bold;
 }
 .Note-date{

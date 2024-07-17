@@ -65,7 +65,7 @@ const MenuItem = ({ audioFile }) => {
            
           
           <div className="details">
-            <h1 className="title">{truncatedTitle}</h1>
+            <p className="audio-menu-title">{truncatedTitle}</p>
             <div className="date">{formattedDate}</div>
           </div>
           </div>

@@ -12,6 +12,7 @@
   width: 100%;
   max-width: 600px;
   border:1px solid #fff;
+  color: grey;
 }
 
 .chatbot-message {
@@ -27,7 +28,7 @@
 .volumeup-bot{
   height:18px;
   width:18px;
-  filter: invert(100%);
+  filter: invert(1) brightness(0.5);
 }
 .edit-container {
   display: flex;
