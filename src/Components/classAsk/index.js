@@ -100,7 +100,7 @@ const ClassAsk = () => {
 
   return (
     <>
-      <Navbar title="Video AI" />
+      <Navbar title="Class Test Ai" />
       <div className='Video-chatbot-container'>
         <div className="chatmessage-container">
           {isLoading ? (
