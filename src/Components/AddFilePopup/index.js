@@ -4,9 +4,9 @@ import './index.css';
 import { pdfjs } from "react-pdf";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-
+import Navbar from '../NavBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLeftLong,faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faTimes } from '@fortawesome/free-solid-svg-icons';
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
@@ -54,9 +54,7 @@ const AddedFileContainer = ({ onClose }) => {
     setSubject(e.target.value);
   };
 
-  const handleTopicsChange = (e) => {
-    setTopics(e.target.value);
-  };
+  
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -123,14 +121,8 @@ const AddedFileContainer = ({ onClose }) => {
 
   return (
     <div className="Added-file-container">
-      <nav className="navbar navbar-light bg-dark d-flex justify-content-between align-items-center px-3">
-        <div className="d-flex justify-content-center align-items-center">
-          <button onClick={onClose} className="Popup-navbar navbar-brand" style={{ color: 'white', textDecoration: 'none' }}>
-            <FontAwesomeIcon icon={faLeftLong} style={{ color: 'white' }} />
-          </button>
-          <h1 className='dataset-heading'>Add Dataset</h1>
-        </div>
-      </nav>
+     
+      <Navbar title="Add Dataset"/>
 
       <div className="Add-content">
         <div className='notefile-upload-container'>
@@ -139,6 +131,13 @@ const AddedFileContainer = ({ onClose }) => {
             {uploadSuccess && <div className="success-message">Upload successful!</div>}
 
             <div className='note-input-choose'>
+            {fileNames.length > 0 && (
+  <div className="file-names-container">
+  <span>{fileNames.map(name => name.slice(-10)).join(', ')}</span>
+
+    <button className="close-button" onClick={() => setFileNames([])}><FontAwesomeIcon icon={faTimes}/></button>
+  </div>
+)}
               <label className='notes-pdf-input'>
                 <input
                   type="file"
@@ -149,13 +148,7 @@ const AddedFileContainer = ({ onClose }) => {
                 />
                 Upload File
               </label>
-              {fileNames.length > 0 && (
-  <div className="file-names-container">
-  <span>{fileNames.map(name => name.slice(-10)).join(', ')}</span>
-
-    <button className="close-button" onClick={() => setFileNames([])}><FontAwesomeIcon icon={faTimes}/></button>
-  </div>
-)}
+             
 
             </div>
             <input
@@ -164,7 +157,7 @@ const AddedFileContainer = ({ onClose }) => {
               id="title"
               value={title}
               onChange={handleTitleChange}
-              placeholder='Book Name'
+              placeholder='Topic Name'
               required
             />
             <select
@@ -238,7 +231,7 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="Integrity">Integrity</option>
               <option value="Emotional Intelligence">Emotional Intelligence</option>
             </select>
-            <input
+            {/* <input
               className='note-input-title'
               type="text"
               id="topics"
@@ -246,10 +239,10 @@ const AddedFileContainer = ({ onClose }) => {
               onChange={handleTopicsChange}
               placeholder='Enter Topics'
               style={{ marginTop: '20px' }}
-            />
+            /> */}
             
               <div className='Notes-Ai-submit-cancel'>
-                <button className='Notes-Ai-cancel' type="button" onClick={handleCancel}>Cancel</button>
+                <button className='Notes-Ai-cancel' type="button" onClick={handleCancel}>Reset</button>
                 <button className='Notes-Ai-submit' type="submit">
   {isLoading ? "submitting" : "Submit"}
 </button>

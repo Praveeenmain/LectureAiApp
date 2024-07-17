@@ -59,7 +59,7 @@ const VideoAi = () => {
                         onClick={handleUpload}
                         disabled={loading}
                     >
-                        {loading ? "Uploading..." : "Upload"}
+                        {loading ? "Uploading..." : "Submit"}
                     </button>
                     {message && <p className="video-ai-message">{message}</p>}
                 </div>

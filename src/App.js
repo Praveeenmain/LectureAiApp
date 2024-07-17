@@ -20,14 +20,15 @@ import './App.css';
 import Profile from './Components/Profile';
 import AddStudents from './Components/AddStudents';
 import TeacherProfile from './Components/TeacherProfile';
+import LandingPage from './Components/LandingPage';
 
 function App() {
   return (                      
     <div className="App">                
       <Router>
         <Switch>
-
-          <PrivateRoute path="/" exact component={GoogleLoginComponent} />
+          <PrivateRoute path="/" exact component={LandingPage} />
+          <PrivateRoute path="/login" exact component={GoogleLoginComponent} />
           <ProtectedRoute path="/profile" exact component={Profile} />
           <ProtectedRoute path="/students" exact component={AddStudents} />
           <ProtectedRoute path="/Home" exact component={Home} />
@@ -42,9 +43,6 @@ function App() {
           <ProtectedRoute path="/pqs/:id" exact component={ClassAsk} />
           <ProtectedRoute path="/teacherprofile" exact component={TeacherProfile} />
           <ProtectedRoute path="/chat" exact component={AiBot} />
-          
-       
-       
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
