@@ -111,7 +111,7 @@ const VoiceAIComponent = () => {
       wsRef.current.onclose = () => {
         console.log('WebSocket closed');
         setConnectionStatus('disconnected');
-        window.location.reload();
+       
 
       };
     }
@@ -147,7 +147,7 @@ const VoiceAIComponent = () => {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
       stopTimer();
-      window.location.reload();
+   
     }
   };
 
