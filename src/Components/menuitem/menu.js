@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
-
+import Cookie from 'js-cookie'
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric' };
   const date = new Date(dateString);
@@ -20,8 +20,9 @@ const truncateTitle = (title, maxLength) => {
   const words = title.split(' ').map(word => word.replace(/[:,]/g, ''));
   return words.slice(0, 3).join(' ') + '...';
 };
-
+const token = Cookie.get('jwt_token')
 const MenuItem = ({ audioFile }) => {
+  
   const [isDeleting, setIsDeleting] = useState(false);
 
   const formattedDate = formatDate(audioFile.date);
@@ -29,15 +30,20 @@ const MenuItem = ({ audioFile }) => {
 
   const handleDelete = (event) => {
     event.preventDefault(); // Prevent default action (navigation)
-
+  
     if (!audioFile) return;
-
-    const url = `https://pdfaibackend.onrender.com/audiofile/${audioFile.id}`;
-
+  
+    const url = `https://taaibackend.onrender.com/audiofile/${audioFile.id}`;
+   
+  
     setIsDeleting(true);
-
+  
     axios
-      .delete(url)
+      .delete(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       .then((response) => {
         console.log('Audio file deleted successfully');
         window.location.reload(false); // Reloading the page after deletion
@@ -48,6 +54,7 @@ const MenuItem = ({ audioFile }) => {
         setIsDeleting(false);
       });
   };
+  
 
   return (
     <li className="menu-item">

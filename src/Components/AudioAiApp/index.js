@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStop, faUpload, faTrash, faSpinner, faEllipsisV,faGlobe } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Lectures from '../AllLectures';
-
+import Cookie from 'js-cookie'
 import Navbar from '../NavBar';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
@@ -17,7 +17,8 @@ const AudioRecorder = () => {
   const [showDeleteMenu, setShowDeleteMenu] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [language, setLanguage] = useState('en'); // Default language is English
-
+  const token = Cookie.get('jwt_token')
+ 
   const startRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
@@ -66,7 +67,15 @@ const AudioRecorder = () => {
       const formData = new FormData();
       formData.append('audio', blob, 'recording.mp3');
   
-      const response = await axios.post('https://pdfaibackend.onrender.com/upload-transcribe', formData);
+      const response = await axios.post(
+        'https://taaibackend.onrender.com/upload-transcribe',
+        formData,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
       console.log('Upload successful:', response.data);
       setRecording(null);
       setUploadSuccess(true); // Set upload success state

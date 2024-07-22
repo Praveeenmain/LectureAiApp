@@ -5,26 +5,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faNoteSticky, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
-
+import Cookie from 'js-cookie'
 const formatDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric' };
     const date = new Date(dateString);
     return date.toLocaleString('en-US', options);
 };
-
+const token = Cookie.get('jwt_token')
 const Notemenu = ({ Note }) => {
+
     const [isDeleting, setIsDeleting] = useState(false);
-    const formattedDate = formatDate(Note.date);
+    const formattedDate = formatDate(Note.created_at);
 
     const handleDelete = (event) => {
         event.preventDefault(); // Prevent default action (navigation)
         if (!Note) return;
 
-        const url = `https://pdfaibackend.onrender.com/notefile/${Note.id}`;
+        const url = `https://taaibackend.onrender.com/notes/${Note.id}`;
         setIsDeleting(true);
 
         axios
-            .delete(url)
+            .delete(url, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              })
             .then((response) => {
                 console.log('Document file deleted successfully');
                 window.location.reload(); // Reload the page after successful deletion

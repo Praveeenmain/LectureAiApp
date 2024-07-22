@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Circles } from 'react-loader-spinner';
 import Previousmenu from '../questionpapermenu';
+import Cookie from 'js-cookie';
 const AllTestQuestions = () => {
     const [allTests, setAllTest] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,11 +17,16 @@ const AllTestQuestions = () => {
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
-
+    const token = Cookie.get('jwt_token');
     useEffect(() => {
         const fetchAllQuestionPapers = async () => {
             try {
-                const response = await axios.get('https://pdfaibackend.onrender.com/pqfiles');
+                const response = await axios.get('https://taaibackend.onrender.com/pqfiles', {
+                    headers: {
+                      'Authorization': `Bearer ${token}`
+                    }
+                  });
+                  
                 const reversedAllNotes = response.data.reverse(); // Reverse the array if needed
                 setAllTest(reversedAllNotes);
                 setIsLoading(false);

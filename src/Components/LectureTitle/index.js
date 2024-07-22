@@ -6,13 +6,13 @@ import { faSave, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'; // 
 
 const LectureTitle = ({ lecture, id }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(lecture.title);
-  const [originalTitle, setOriginalTitle] = useState(lecture.title); // To keep track of original title
+  const [title, setTitle] = useState(lecture);
+  const [originalTitle, setOriginalTitle] = useState(lecture); // To keep track of original title
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
  
-
+ 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     setError(null); // Clear any previous errors when the user starts typing

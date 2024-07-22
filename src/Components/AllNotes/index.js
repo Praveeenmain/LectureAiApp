@@ -3,18 +3,25 @@ import axios from 'axios';
 import { Circles } from 'react-loader-spinner';
 import Notemenu from '../Notemenu'
 import './index.css';
-
+import Cookie from 'js-cookie'
 const AllNotes = () => {
     const [allDocuments, setAllDocuments] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(7);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const token = Cookie.get('jwt_token')
     useEffect(() => {
         const fetchAllPdfs = async () => {
             try {
-                const response = await axios.get('https://pdfaibackend.onrender.com/notefiles');
+                const response = await axios.get(
+                    'https://taaibackend.onrender.com/notes',
+                    {
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    }
+                  );
                 const reversedAllNotes = response.data;
                 setAllDocuments(reversedAllNotes);
                 setIsLoading(false);

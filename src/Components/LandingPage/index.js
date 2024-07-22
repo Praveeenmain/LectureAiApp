@@ -20,7 +20,7 @@ const LandingPage=()=>{
                 <img className="ai-logo" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1721233321/Untitled-removebg-preview_ufpwz0.png" alt="teacher" />
                </div>
                <h1 className="landing-heading"> For Teachers</h1>
-               <p className="landing-caption">Empower your teaching with AI support.</p>
+               <p className="landing-caption">Empower Your Self with Teacher assistant Ai-<span className="landing-Ai-heading">TaAi.</span></p>
                <Link to="/login" className="teacher-get-started"> Get Started</Link>
            </div>
            <div className="student-Assistant-Ai">
@@ -28,7 +28,7 @@ const LandingPage=()=>{
                 <img className="ai-logo" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1721233288/Untitled__1_-removebg-preview_txuvcr.png" alt="teacher" />
                </div>
                <h1 className="landing-heading"> For Students</h1>
-               <p className="landing-caption">Grow with AI support from Teacher Assistant AI.</p>
+               <p className="landing-caption">Learn at Light Speed with Student Assistant- <span className="landing-Ai-heading">SaAi </span></p>
                <Link to={{ pathname: "https://mobishaala-saai.netlify.app/" }} target="_blank" className="student-get-started">
       Get Started
     </Link>

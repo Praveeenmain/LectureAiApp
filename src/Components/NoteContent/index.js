@@ -2,12 +2,13 @@ import Navbar from "../NavBar";
 import UserMessage from '../UserMessage';
 import Message from '../BotMessage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faMicrophone, faStopCircle ,faArrowCircleUp,faStop} from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
 import { Circles } from 'react-loader-spinner';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import IntialMessage from "../IntialMessage";
+import Cookie from 'js-cookie';
 import './index.css';
 
 const NoteDetails = () => {
@@ -18,15 +19,21 @@ const NoteDetails = () => {
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
+  const token = Cookie.get('jwt_token');
 
   useEffect(() => {
     const fetchNoteDetails = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://pdfaibackend.onrender.com/notefile/${id}`);
+        const response = await fetch(`https://taaibackend.onrender.com/notes/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
         if (response.ok) {
           const noteDetails = await response.json();
-          setNoteFile(noteDetails.pdfFile);
+          setNoteFile(noteDetails);
         } else {
           console.error('Failed to fetch note details');
         }
@@ -35,16 +42,28 @@ const NoteDetails = () => {
       }
       setIsLoading(false);
     };
+
     fetchNoteDetails();
-  }, [id]);
+  }, [id, token]);
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
+    console.log(message);
+    let question = message;
     setIsSending(true);
     try {
-      const response = await axios.post(`https://pdfaibackend.onrender.com/ask/${id}`, { question: message });
+      const response = await fetch(`https://taaibackend.onrender.com/noteask/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ question }),
+      });
       if (response.status === 200) {
-        const chatbotResponse = response.data.answer;
+        const data = await response.json();
+        const chatbotResponse = data.answer;
+        console.log(chatbotResponse);
         setConversation((prevConversation) => [
           ...prevConversation,
           { userMessage: message, chatbotResponse }
@@ -74,11 +93,15 @@ const NoteDetails = () => {
         question = 'Write a question and answer for this file';
         break;
       default:
-        question = questionType; // In case custom types are passed
+        question = questionType;
         break;
     }
     try {
-      const response = await axios.post(`https://pdfaibackend.onrender.com/ask/${id}`, { question });
+      const response = await axios.post(`https://taaibackend.onrender.com/ask/${id}`, { question }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       if (response.status === 200) {
         const data = response.data;
         setConversation((prev) => [...prev, { userMessage: question, chatbotResponse: data.answer }]);
@@ -95,7 +118,6 @@ const NoteDetails = () => {
 
   const toggleVoiceRecognition = () => {
     setSpeechRecognitionActive(!speechRecognitionActive);
-    // Add logic for speech recognition if required
   };
 
   return (
@@ -145,7 +167,7 @@ const NoteDetails = () => {
                   />
                   <button className="send-message-button" onClick={handleSendMessage}>
                     {isSending ? (
-                      <FontAwesomeIcon icon={faStop}/>
+                      <FontAwesomeIcon icon={faStop} />
                     ) : (
                       <FontAwesomeIcon icon={faArrowCircleUp} />
                     )}

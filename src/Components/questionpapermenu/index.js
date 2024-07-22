@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faNoteSticky, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
+import Cookie from 'js-cookie';
 const truncateTitle = (title, maxLength) => {
     if (title.length <= maxLength) {
       return title;
@@ -20,16 +21,20 @@ const Previousmenu =({questionPaper})=>{
     const [isDeleting, setIsDeleting] = useState(false);
     const formattedDate = formatDate(questionPaper.date);
     const truncatedTitle = truncateTitle(questionPaper.title, 1);
-
+    const token = Cookie.get('jwt_token');
     const handleDelete = (event) => {
         event.preventDefault(); // Prevent default action (navigation)
         if (!questionPaper) return;
-
-        const url = `https://pdfaibackend.onrender.com/pqfile/${questionPaper.id}`;
+        
+        const url = `https://taaibackend.onrender.com/pqfile/${questionPaper.id}`;
         setIsDeleting(true);
 
         axios
-            .delete(url)
+            .delete(url, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              })
             .then((response) => {
                 console.log('Document file deleted successfully');
                 window.location.reload(); // Reload the page after successful deletion

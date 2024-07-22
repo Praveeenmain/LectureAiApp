@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
-import { RiRobot3Fill } from "react-icons/ri";
+import { RiRobot3Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import Navbar from '../NavBar';
 import UserMessage from '../UserMessage';
 import Message from '../BotMessage';
 import InitialMessage from '../IntialMessage'; // Assuming corrected import
-
+import Cookie from 'js-cookie';
 import './index.css';
 import axios from 'axios';
 
@@ -17,8 +17,7 @@ const AiBot = () => {
     const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
     const [conversation, setConversation] = useState([]);
     const [isSending, setIsSending] = useState(false);
-
-  
+    const token = Cookie.get('jwt_token');
 
     const handleSendMessage = async () => {
         if (message.trim()) {
@@ -29,7 +28,10 @@ const AiBot = () => {
             setMessage('');
 
             try {
-                const response = await axios.post('https://pdfaibackend.onrender.com/askdb', { question: message });
+                const response = await axios.post('https://taaibackend.onrender.com/aichat', 
+                    { question: message },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
                 const botResponse = response.data.answer;
 
                 const updatedConversation = [...conversation, { userMessage: message, botResponse }];
@@ -43,10 +45,24 @@ const AiBot = () => {
         }
     };
 
-    const handlePredefinedQuestion = (question) => {
+    const handlePredefinedQuestion = async (question) => {
         const newMessage = { sender: 'user', text: question };
         const newMessages = [...messages, newMessage];
         setMessages(newMessages);
+        setMessage(question);
+
+        try {
+            const response = await axios.post('/aichat', 
+                { question },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            const botResponse = response.data.answer;
+
+            const updatedConversation = [...conversation, { userMessage: question, botResponse }];
+            setConversation(updatedConversation);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     };
 
     const toggleVoiceRecognition = () => {
@@ -56,14 +72,13 @@ const AiBot = () => {
 
     return (
         <>
-            <Navbar title="Chat Ai" />
+            <Navbar title="Chat AI" />
             <div className="Aichat-chatmessage-container">
-                    
                 <InitialMessage 
-                    initialText="  Hello I am Your Ai Assistant" 
-                    GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} 
+                    initialText="Hello I am Your AI Assistant" 
+                    GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this file?')} 
                     AssistantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} 
-                    challenges={() => handlePredefinedQuestion('What we can learn from this file?')} 
+                    challenges={() => handlePredefinedQuestion('What can we learn from this file?')} 
                 />
                 {conversation.map((item, index) => (
                     <React.Fragment key={index}>
@@ -71,9 +86,9 @@ const AiBot = () => {
                         <Message initialText={item.botResponse} />
                     </React.Fragment>
                 ))}
-                 <Link to="/voice" className="voice-add-file-button">
-                 <RiRobot3Fill />
-    </Link>
+                <Link to="/voice" className="voice-add-file-button">
+                    <RiRobot3Fill />
+                </Link>
                 <div className="Aichat-fixed-input-box-container">
                     <button className="Aichat-voice-button" onClick={toggleVoiceRecognition}>
                         <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />

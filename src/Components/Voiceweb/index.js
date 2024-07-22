@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import 'react-h5-audio-player/lib/styles.css';
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment,faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import LabelBottomNavigation from '../BottomNav';
 
 const agentId = process.env.REACT_APP_AGENT_ID;
@@ -33,7 +33,6 @@ const VoiceAIComponent = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/getAgent');
-       
         setProfileDetails(response.data);
       } catch (error) {
         console.error('Axios error:', error);
@@ -111,35 +110,40 @@ const VoiceAIComponent = () => {
       wsRef.current.onclose = () => {
         console.log('WebSocket closed');
         setConnectionStatus('disconnected');
-       
-
       };
     }
- 
   }, [connectionStatus, handleAudioStream]);
-   connectWebSocket();
-  const handleStartRecording = async () => {
-   
-    try {
-   
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
 
-      mediaRecorder.ondataavailable = async (event) => {
-        const base64Data = await blobToBase64(event.data);
-        if (wsRef.current.readyState === WebSocket.OPEN) {
-          wsRef.current.send(JSON.stringify({ type: 'audioIn', data: base64Data }));
-        }
-      };
-
-      mediaRecorder.start(100);
-      setIsRecording(true);
-      startTimer();
-    } catch (error) {
-      
-      setError('Failed to start recording.');
+  const closeWebSocket = useCallback(() => {
+    if (wsRef.current) {
+      wsRef.current.close();
+      wsRef.current = null;
     }
+  }, []);
+
+  const handleStartRecording = async () => {
+    connectWebSocket();
+
+    setTimeout(async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+
+        mediaRecorder.ondataavailable = async (event) => {
+          const base64Data = await blobToBase64(event.data);
+          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: 'audioIn', data: base64Data }));
+          }
+        };
+
+        mediaRecorder.start(100);
+        setIsRecording(true);
+        startTimer();
+      } catch (error) {
+        setError('Failed to start recording.');
+      }
+    }, 2000); // 2 seconds delay
   };
 
   const handleStopRecording = () => {
@@ -147,8 +151,12 @@ const VoiceAIComponent = () => {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
       stopTimer();
-   
     }
+  };
+
+  const handleClose = () => {
+    handleStopRecording();
+    closeWebSocket();
   };
 
   const base64toBlob = (base64Data) => {
@@ -213,9 +221,9 @@ const VoiceAIComponent = () => {
               <button className="click-buttton"> Click to Talk</button>
 
               <Link to="/chat" className="voice-add-file-button">
-      <FontAwesomeIcon icon={faComment} />
-    </Link>
-            </div> 
+                <FontAwesomeIcon icon={faComment} />
+              </Link>
+            </div>
           )}
 
           {isRecording && (
@@ -248,14 +256,14 @@ const VoiceAIComponent = () => {
                   </span>
                   Powered by Mobishaala
                 </p>
-                <button className="voice-ai-cancel-button" onClick={handleStopRecording}>
+                <button className="voice-ai-cancel-button" onClick={handleClose}>
                   Close
                 </button>
               </div>
             </div>
           )}
 
-          {error && <div className="voice-ai-error-message"></div>}
+          {error && <div className="voice-ai-error-message">{error}</div>}
         </div>
         <LabelBottomNavigation />
       </div>

@@ -21,8 +21,8 @@ import {
 import './index.css';
 
 const Profile = () => {
-  const jwtToken = Cookies.get('jwt_token');
-  const decodedToken = jwtDecode(jwtToken);
+  const profile = Cookies.get('jwt');
+  const decodedToken = jwtDecode(profile);
   const { name, email, picture } = decodedToken;
   const history = useHistory();
 

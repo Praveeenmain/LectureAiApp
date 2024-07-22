@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MenuItem from '../menuitem/menu'; // Adjust the import path as needed
-
+import Cookie from 'js-cookie'
 import { Circles } from 'react-loader-spinner';
 
 import './index.css';
@@ -12,11 +12,18 @@ const Lectures = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(7); // Number of items to display per page
     const [isLoading, setIsLoading] = useState(true); // State to track loading status
-
+    const token = Cookie.get('jwt_token')
     useEffect(() => {
         const fetchAudioFiles = async () => {
             try {
-                const response = await axios.get('https://pdfaibackend.onrender.com/audiofiles');
+                const response = await axios.get(
+                    'https://taaibackend.onrender.com/audiofiles',
+                    {
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    }
+                  );
                
                 const reversedAudioFiles = response.data.reverse();
                 
@@ -29,7 +36,7 @@ const Lectures = () => {
         };
         fetchAudioFiles();
         
-    }, []);
+    }, [token]);
   
     
     const indexOfLastItem = currentPage * itemsPerPage;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Cookie from 'js-cookie';
 
 const AddStudentForm = ({ onCancel }) => {
     const [name, setName] = useState('');
@@ -10,16 +11,21 @@ const AddStudentForm = ({ onCancel }) => {
     const handleNameChange = (e) => setName(e.target.value);
     const handleStudentNumberChange = (e) => setStudentNumber(e.target.value);
     const handleEmailChange = (e) => setEmail(e.target.value);
+    const token = Cookie.get('jwt_token'); // Retrieve token from cookies
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true); // Start loading
 
         try {
-            const response = await axios.post('https://pdfaibackend.onrender.com/students', {
+            const response = await axios.post('https://taaibackend.onrender.com/students', {
                 name,
                 studentNumber,
                 email
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include token in headers
+                }
             });
             console.log(response);
             // Reset form fields after successful submission

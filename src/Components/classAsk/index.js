@@ -9,7 +9,7 @@ import Navbar from '../NavBar';
 import IntialMessage from "../IntialMessage";
 import UserMessage from '../UserMessage';
 import Message from '../BotMessage';
-
+import Cookie from 'js-cookie';
 
 const ClassAsk = () => {
   const { id } = useParams();
@@ -19,12 +19,17 @@ const ClassAsk = () => {
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
+  const token = Cookie.get('jwt_token');
 
   useEffect(() => {
     const fetchQuestionDetails = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://pdfaibackend.onrender.com/pqfile/${id}`);
+        const response = await fetch(`https://taaibackend.onrender.com/pqfile/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
           const questionFile = await response.json();
           setQuestionFile(questionFile);
@@ -37,7 +42,7 @@ const ClassAsk = () => {
       setIsLoading(false);
     };
     fetchQuestionDetails();
-  }, [id]);
+  }, [id, token]);
 
   const toggleVoiceRecognition = () => {
     setSpeechRecognitionActive(!speechRecognitionActive);
@@ -48,9 +53,17 @@ const ClassAsk = () => {
     if (!message.trim()) return;
     setIsSending(true);
     try {
-      const response = await axios.post(`https://pdfaibackend.onrender.com/askprevious/${id}`, { question: message });
+      const response = await axios.post(`https://taaibackend.onrender.com/askprevious/${id}`, 
+        { question: message },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
       if (response.status === 200) {
-        const chatbotResponse = response.data.generatedQuestion;
+        const chatbotResponse = response.data.answer;
+       
         setConversation(prevConversation => [
           ...prevConversation,
           { userMessage: message, chatbotResponse }
@@ -79,14 +92,21 @@ const ClassAsk = () => {
         question = 'Write a question and answer for this file';
         break;
       default:
-        question = questionType; // In case custom types are passed
+        question = questionType;
         break;
     }
     try {
-      const response = await axios.post(`https://pdfaibackend.onrender.com/askprevious/${id}`, { question });
+      const response = await axios.post(`https://taaibackend.onrender.com/askprevious/${id}`, 
+        { question },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
       if (response.status === 200) {
-        const data = response.data;
-        setConversation((prev) => [...prev, { userMessage: question, chatbotResponse: data.generatedQuestion }]);
+        const data = response.data.answer;
+        setConversation(prev => [...prev, { userMessage: question, chatbotResponse: data }]);
       } else {
         console.error('Failed to send message:', response.statusText);
         alert('Failed to send message. Please try again.');
@@ -104,10 +124,9 @@ const ClassAsk = () => {
       <div className='Video-chatbot-container'>
         <div className="chatmessage-container">
           {isLoading ? (
-                <div className='loader-container'>
-                 <Circles height="80" width="80" color="white" ariaLabel="circles-loading" visible={true} />
-                </div>
-
+            <div className='loader-container'>
+              <Circles height="80" width="80" color="white" ariaLabel="circles-loading" visible={true} />
+            </div>
           ) : (
             <>
               <IntialMessage

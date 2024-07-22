@@ -108,8 +108,8 @@
 }
 
 .teacher-Assistant-Ai {
-    max-width: 600px;
-    width: 90%;
+    max-width: 900px;
+    width: 110%;
     background-color: rgb(92, 91, 91);
     max-height: 400px;
     padding: 16px 16px 24px;
@@ -151,14 +151,14 @@
 }
 
 .student-Assistant-Ai {
-    margin-top: 20px;
-    max-width: 600px;
-    width: 90%;
-    background-color: rgb(97, 94, 94);
+    max-width: 900px;
+    width: 110%;
+    background-color: rgb(92, 91, 91);
     max-height: 400px;
     padding: 16px 16px 24px;
     border-radius: 10px;
     animation: fadeIn 1.5s ease-in-out;
+    margin-top: 10px;
 }
 
 .student-get-started {
@@ -210,4 +210,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.landing-Ai-heading{
+    font-size: 20px;
+    font-weight: bold;
 }

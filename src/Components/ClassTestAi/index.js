@@ -1,24 +1,25 @@
 import React, { useState, useRef } from 'react';
 import Navbar from "../NavBar";
-import AllTestQuestions from '../AllTestquestion'
-
+import AllTestQuestions from '../AllTestquestion';
 import './index.css';
+import Cookie from 'js-cookie';
 
 const ClassTestAi = () => {
     const [files, setFiles] = useState([]);
     const [fileDisplay, setFileDisplay] = useState('');
-    const [uploading, setUploading] = useState(false); // State for showing loader
-    const [success ,setSucess]=useState('')
+    const [uploading, setUploading] = useState(false);
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
     const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
-        setFiles([selectedFile]);
-        
-        // Displaying last 10 characters of file name
-        const fileName = selectedFile.name;
-        const displayFileName = fileName.length > 12 ? fileName.slice(-12) : fileName;
-        setFileDisplay(displayFileName);
+        if (selectedFile) {
+            setFiles([selectedFile]);
+            const fileName = selectedFile.name;
+            const displayFileName = fileName.length > 12 ? fileName.slice(-12) : fileName;
+            setFileDisplay(displayFileName);
+        }
     };
 
     const handleUpload = async () => {
@@ -27,13 +28,18 @@ const ClassTestAi = () => {
             return;
         }
 
-        setUploading(true); // Show loader when starting upload
+        setUploading(true);
+        setSuccess('');
+        setError('');
 
         const formData = new FormData();
-        formData.append('files', files[0]);
+        formData.append('file', files[0]);
 
         try {
-            const response = await fetch('https://pdfaibackend.onrender.com/uploadpapers', {
+            const response = await fetch('https://taaibackend.onrender.com/uploadpapers', {
+                headers: {
+                    'Authorization': `Bearer ${Cookie.get('jwt_token')}`,
+                },
                 method: 'POST',
                 body: formData
             });
@@ -43,18 +49,16 @@ const ClassTestAi = () => {
             }
 
             const data = await response.json();
-            console.log('Success:', data);
-            window.location.reload();
-            setSucess("Uploaded Question paper succesfully")
+            setSuccess("Uploaded Question paper successfully");
+            setFiles([]);
+            setFileDisplay('');
+            fileInputRef.current.value = '';
+            window.location.reload(); 
         } catch (error) {
             console.error('Error:', error);
-            setSucess("Error in the upload,pls try again aftersometime")
+            setError("Error in the upload, please try again later");
         } finally {
-            setUploading(false); // Hide loader after upload completes (whether success or error)
-            setFiles([]); // Clear selected file after upload
-            setFileDisplay(''); // Clear file display name
-            fileInputRef.current.value = ''; // Reset file input (if needed)
-
+            setUploading(false);
         }
     };
 
@@ -75,17 +79,20 @@ const ClassTestAi = () => {
                         Choose File
                     </label>
                     <span className='class-test-file-name'>{fileDisplay}</span>
-                    <button className="upload-button" onClick={handleUpload} disabled={uploading}>
+                    <button
+                        className="upload-button"
+                        onClick={handleUpload}
+                        disabled={uploading}
+                    >
                         {uploading ? 'Uploading...' : 'Upload'}
                     </button>
-                   
+                    {success && <p className='success-message'>{success}</p>}
+                    {error && <p className='error-message'>{error}</p>}
                 </div>
-                <AllTestQuestions/>
-                <p>{success}</p>
+                <AllTestQuestions />
             </div>
-            
         </>
     );
-}
+};
 
 export default ClassTestAi;

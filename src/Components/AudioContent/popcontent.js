@@ -11,7 +11,7 @@ import {Circles } from 'react-loader-spinner';
 import { useParams } from 'react-router-dom';
 import IntialMessage from '../IntialMessage';
 import './popup.css';
-
+import Cookie from 'js-cookie'
 const PopContent = () => {
   const { id } = useParams();
   const [audioFile, setAudioFile] = useState(null);
@@ -23,7 +23,7 @@ const PopContent = () => {
   const [isListening, setIsListening] = useState(false);
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-
+  const token = Cookie.get('jwt_token')
   recognition.continuous = false;
   recognition.interimResults = false;
   recognition.lang = 'en-US';
@@ -32,10 +32,18 @@ const PopContent = () => {
     const fetchAudioDetails = async (id) => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://pdfaibackend.onrender.com/audiofile/${id}`);
+        const response = await fetch(`https://taaibackend.onrender.com/audiofile/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (response.ok) {
           const audioFile = await response.json();
+          
           setAudioFile(audioFile);
+         
+          
         } else {
           console.error('Failed to fetch audio details');
         }
@@ -45,7 +53,7 @@ const PopContent = () => {
       setIsLoading(false);
     };
     fetchAudioDetails(id);
-  }, [id]);
+  }, [id,token]);
 
   const toggleVoiceRecognition = () => {
     if (!isListening) {
@@ -82,8 +90,8 @@ const PopContent = () => {
   const toggleSpeakStop = () => {
     if (isSpeaking) {
       handleStopSpeaking();
-    } else if (audioFile?.AudioFile?.transcription) {
-      handleSpeak(audioFile.AudioFile.transcription);
+    } else if (audioFile?.audioFile?.transcription) {
+      handleSpeak(audioFile.audioFile.transcription);
     }
   };
 
@@ -99,10 +107,11 @@ const PopContent = () => {
     }
     setIsSending(true);
     try {
-      const response = await fetch(`https://pdfaibackend.onrender.com/audioask/${id}`, {
+      const response = await fetch(`https://taaibackend.onrender.com/audioask/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ question: message }),
       });
@@ -121,13 +130,10 @@ const PopContent = () => {
     setIsSending(false);
   };
 
-  const bufferToBase64 = (buffer) => {
-    const binary = Array.from(new Uint8Array(buffer)).map((byte) => String.fromCharCode(byte)).join('');
-    return window.btoa(binary);
-  };
+ 
 
   const handlePredefinedQuestion = async (question) => {
-    if (!audioFile?.AudioFile?.transcription) return;
+    if (!audioFile?.audioFile?.transcription) return;
    
 
     // Create a new AbortController
@@ -135,10 +141,11 @@ const PopContent = () => {
 
     setIsSending(true);
     try {
-      const response = await fetch(`https://pdfaibackend.onrender.com/audioask/${id}`, {
+      const response = await fetch(`https://taaibackend.onrender.com/audioask/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ question }),
       });
@@ -156,7 +163,10 @@ const PopContent = () => {
     setIsSending(false);
   };
 
+
+ 
   return (
+    
     <div>
       <Navbar title="Audio Ai" />
       <div className="popup">
@@ -166,12 +176,14 @@ const PopContent = () => {
               <Circles height="80" width="80" color="white" ariaLabel="circles-loading" visible={true} />
             </div>
           ) : (
+            
             audioFile && (
               <>
                 <div className="audio-player-container">
-                  {audioFile.AudioFile?.audio?.data && (
+                  {audioFile.audioFile?.audio && (
+                    
                     <AudioPlayer
-                      src={`data:audio/wav;base64,${bufferToBase64(audioFile.AudioFile.audio.data)}`}
+                      src={`https://mobishalataai.s3.amazonaws.com/${audioFile.audioFile.audio}`}
                       autoPlay={false}
                       showJumpControls={true}
                       customAdditionalControls={[]}
@@ -180,14 +192,14 @@ const PopContent = () => {
                   )}
                 </div>
                 <div className="Title-voice">
-                  <LectureTitle lecture={{ title: truncateTitle(audioFile.AudioFile.title, 3) }} id={audioFile?.id} onClick={toggleSpeakStop} />
+                  <LectureTitle lecture={ truncateTitle(audioFile.audioFile.title, 3)} id={audioFile?.id} onClick={toggleSpeakStop} />
                   <button className="speak-stop-button" onClick={toggleSpeakStop}>
                     <FontAwesomeIcon className={isSpeaking ? 'volume-mute' : 'volumeup-icon'} icon={isSpeaking ? faVolumeMute : faMicrophone} />
                     {!isSpeaking && <img className="volumeup-icon" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />}
                   </button>
                 </div>
                 <div className="chatmessage-container">
-                  <IntialMessage initialText={audioFile.AudioFile.transcription} GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} AssitantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} challenges={() => handlePredefinedQuestion('What we can learn from this file?')} />
+                  <IntialMessage initialText={audioFile.audioFile.transcription} GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} AssitantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} challenges={() => handlePredefinedQuestion('What we can learn from this file?')} />
                   {conversation.map((item, index) => (
                     <React.Fragment key={index}>
                       <UserMessage initialMessage={item.userMessage} onSend={handleSendMessage} />

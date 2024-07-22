@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-import './index.css';
-import { pdfjs } from "react-pdf";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react';
 import axios from 'axios';
+import './index.css';
 import Navbar from '../NavBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faTimes } from '@fortawesome/free-solid-svg-icons';
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import "react-pdf/dist/esm/Page/TextLayer.css";
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Cookie from 'js-cookie';
 
 const AddedFileContainer = ({ onClose }) => {
   const [title, setTitle] = useState('');
@@ -24,6 +18,7 @@ const AddedFileContainer = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const token = Cookie.get('jwt_token');
 
   const handleFileChange = (e) => {
     const chosenFiles = Array.from(e.target.files);
@@ -36,29 +31,12 @@ const AddedFileContainer = ({ onClose }) => {
     setError(null); // Clear error message on new file selection
     setUploadSuccess(false); // Clear success message on new file selection
   };
-  
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  };
-
-  const handleExamChange = (e) => {
-    setExam(e.target.value);
-  };
-
-  const handlePaperChange = (e) => {
-    setPaper(e.target.value);
-  };
-
-  const handleSubjectChange = (e) => {
-    setSubject(e.target.value);
-  };
-
-  
-
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
+  const handleCategoryChange = (e) => setCategory(e.target.value);
+  const handleExamChange = (e) => setExam(e.target.value);
+  const handlePaperChange = (e) => setPaper(e.target.value);
+  const handleSubjectChange = (e) => setSubject(e.target.value);
+  const handleTitleChange = (e) => setTitle(e.target.value);
 
   const handleCancel = () => {
     setTitle('');
@@ -80,13 +58,13 @@ const AddedFileContainer = ({ onClose }) => {
       setError('Please select files to upload.');
       return;
     }
-  
+
     setIsLoading(true);
-  
+
     try {
       const formData = new FormData();
       formData.append('title', title);
-      files.forEach(file => formData.append('files', file));
+      formData.append('file', files[0]); // Ensure single file upload key matches 'file'
       formData.append('category', category);
       formData.append('exam', exam);
       formData.append('paper', paper);
@@ -94,17 +72,21 @@ const AddedFileContainer = ({ onClose }) => {
       if (topics.trim() !== '') {
         formData.append('topics', topics);
       }
-  
+
       // Log the formData entries before making the POST request
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
       }
-  
-      const response = await axios.post('https://pdfaibackend.onrender.com/uploadnotes', formData);
+
+      const response = await axios.post('https://taaibackend.onrender.com/upload-notes', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
       console.log('Upload successful!', response.data);
-  
       setUploadSuccess(true);
-      onClose()
+      onClose();
       window.location.reload(false);
     } catch (error) {
       console.error('Upload failed:', error);
@@ -113,31 +95,22 @@ const AddedFileContainer = ({ onClose }) => {
       setIsLoading(false);
     }
   };
-  useEffect(() => {
-    if (uploadSuccess) {
-      window.location.reload(false);
-    }
-  }, [uploadSuccess]);
 
   return (
     <div className="Added-file-container">
-     
-      <Navbar title="Add Dataset"/>
-
+      <Navbar title="Add Dataset" />
       <div className="Add-content">
         <div className='notefile-upload-container'>
           <form className='notes-form-container' onSubmit={handleSubmit}>
             {error && <div className="error-message">{error}</div>}
             {uploadSuccess && <div className="success-message">Upload successful!</div>}
-
             <div className='note-input-choose'>
-            {fileNames.length > 0 && (
-  <div className="file-names-container">
-  <span>{fileNames.map(name => name.slice(-10)).join(', ')}</span>
-
-    <button className="close-button" onClick={() => setFileNames([])}><FontAwesomeIcon icon={faTimes}/></button>
-  </div>
-)}
+              {fileNames.length > 0 && (
+                <div className="file-names-container">
+                  <span>{fileNames.map(name => name.slice(-10)).join(', ')}</span>
+                  <button className="close-button" onClick={() => setFileNames([])}><FontAwesomeIcon icon={faTimes} /></button>
+                </div>
+              )}
               <label className='notes-pdf-input'>
                 <input
                   type="file"
@@ -148,16 +121,13 @@ const AddedFileContainer = ({ onClose }) => {
                 />
                 Upload File
               </label>
-             
-
             </div>
             <input
               className='note-input-title'
               type="text"
-              id="title"
               value={title}
               onChange={handleTitleChange}
-              placeholder='Topic Name'
+              placeholder="Title"
               required
             />
             <select
@@ -168,7 +138,7 @@ const AddedFileContainer = ({ onClose }) => {
             >
               <option value="" disabled>Exam Category</option>
               <option value="UPSC">UPSC</option>
-              
+              {/* Add other category options here */}
             </select>
             <select
               className='note-input-category'
@@ -178,8 +148,8 @@ const AddedFileContainer = ({ onClose }) => {
             >
               <option value="" disabled>Exam Stage</option>
               <option value="Prelims">UPSC Prelims</option>
-              <option value="Mains"> UPSC Mains GS</option>
-              
+              <option value="Mains">UPSC Mains GS</option>
+              {/* Add other exam options here */}
             </select>
             <select
               className='note-input-category'
@@ -195,7 +165,8 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="GS Paper 2">GS Paper 2</option>
               <option value="GS Paper 3">GS Paper 3</option>
               <option value="GS Paper 4">GS Paper 4</option>
-              <option value="GS Paper 4">GS Paper 2-CSAT</option>
+              <option value="GS Paper 2-CSAT">GS Paper 2-CSAT</option>
+              {/* Add other paper options here */}
             </select>
             <select
               className='note-input-category'
@@ -230,25 +201,20 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="Ethics">Ethics</option>
               <option value="Integrity">Integrity</option>
               <option value="Emotional Intelligence">Emotional Intelligence</option>
+              {/* Add other subject options here */}
             </select>
-            {/* <input
-              className='note-input-title'
-              type="text"
-              id="topics"
+            <textarea
+              className='note-input-category'
               value={topics}
-              onChange={handleTopicsChange}
-              placeholder='Enter Topics'
-              style={{ marginTop: '20px' }}
-            /> */}
-            
-              <div className='Notes-Ai-submit-cancel'>
-                <button className='Notes-Ai-cancel' type="button" onClick={handleCancel}>Reset</button>
-                <button className='Notes-Ai-submit' type="submit">
-  {isLoading ? "submitting" : "Submit"}
-</button>
-          </div>
-            
+              onChange={(e) => setTopics(e.target.value)}
+              placeholder="Topics (optional)"
+            />
+            <button className='Notes-Ai-submit' type="submit" disabled={isLoading}>
+              {isLoading ? 'Uploading...' : 'Submit'}
+            </button>
+            <button className='Notes-Ai-cancel' onClick={handleCancel}>Cancel</button>
           </form>
+          
         </div>
       </div>
     </div>
