@@ -8,6 +8,7 @@ import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import LabelBottomNavigation from '../BottomNav';
+import { Circles } from 'react-loader-spinner';  // Import the loader
 
 const agentId = process.env.REACT_APP_AGENT_ID;
 const apiKey = process.env.REACT_APP_API_KEY;
@@ -23,6 +24,8 @@ const VoiceAIComponent = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [loading, setLoading] = useState(false);  // Add loading state
+
   const wsRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioPlayerRef = useRef(null);
@@ -57,11 +60,14 @@ const VoiceAIComponent = () => {
     if (connectionStatus === 'disconnected') {
       console.log('Connecting to WebSocket...');
       setConnectionStatus('connecting');
+      setLoading(true);  // Set loading to true
+
       wsRef.current = new WebSocket(wsUrl);
 
       wsRef.current.onopen = () => {
         console.log('WebSocket connected');
         setConnectionStatus('connected');
+        setLoading(false);  // Set loading to false
         wsRef.current.send(
           JSON.stringify({
             type: 'setup',
@@ -105,11 +111,13 @@ const VoiceAIComponent = () => {
         console.error('WebSocket error:', error);
         setError('WebSocket error occurred.');
         setConnectionStatus('disconnected');
+        setLoading(false);  // Set loading to false
       };
 
       wsRef.current.onclose = () => {
         console.log('WebSocket closed');
         setConnectionStatus('disconnected');
+        setLoading(false);  // Set loading to false
       };
     }
   }, [connectionStatus, handleAudioStream]);
@@ -210,7 +218,20 @@ const VoiceAIComponent = () => {
       <Navbar title="Voice Ai" />
       <div className="voice-ai-container">
         <div className="voice-ai-controls ">
-          {!isRecording && (
+          {loading && (
+            <div className="voice-ai-loading">
+              <Circles
+                height="80"
+                width="80"
+                color="#fff"
+                ariaLabel="circles-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            </div>
+          )}
+          {!isRecording && !loading && (
             <div className='voice-ai-controls-container'>
               <button
                 className={`voice-ai-talk-button ${isRecording ? 'voice-ai-recording' : ''}`}
