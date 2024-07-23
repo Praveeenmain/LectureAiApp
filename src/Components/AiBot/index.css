@@ -9,6 +9,7 @@
     margin: 0;
     padding:15px;
     background-color:black;
+    overflow-y:auto;
     
 }
 
@@ -144,4 +145,67 @@
 
 .size-fit{
     margin-bottom: 88px;
+}
+
+.botmessage-loader {
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    left: 0; /* Positioning the loader to the left side */
+}
+
+.botmessage-loader div {
+    position: absolute;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.botmessage-loader div:nth-child(1) {
+    left: 4px;
+    animation: loader1 0.6s infinite;
+}
+.botmessage-loader div:nth-child(2) {
+    left: 4px;
+    animation: loader2 0.6s infinite;
+}
+.botmessage-loader div:nth-child(3) {
+    left: 12px;
+    animation: loader2 0.6s infinite;
+}
+.botmessage-loader div:nth-child(4) {
+    left: 16px;
+    animation: loader3 0.6s infinite;
+}
+
+@keyframes loader1 {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes loader2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(6px, 0);
+    }
+}
+
+@keyframes loader3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
 }

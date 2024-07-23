@@ -15,32 +15,34 @@ const AiBot = () => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
     const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
-    const [conversation, setConversation] = useState([]);
     const [isSending, setIsSending] = useState(false);
+    const [botIsTyping, setBotIsTyping] = useState(false);
     const token = Cookie.get('jwt_token');
 
     const handleSendMessage = async () => {
         if (message.trim()) {
-            setIsSending(true);
             const newMessage = { sender: 'user', text: message };
             const newMessages = [...messages, newMessage];
             setMessages(newMessages);
             setMessage('');
 
             try {
+                setIsSending(true);
+                setBotIsTyping(true);
                 const response = await axios.post('https://taaibackend.onrender.com/aichat', 
                     { question: message },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 const botResponse = response.data.answer;
 
-                const updatedConversation = [...conversation, { userMessage: message, botResponse }];
-                setConversation(updatedConversation);
+                const botMessage = { sender: 'bot', text: botResponse };
+                setMessages((prevMessages) => [...prevMessages, botMessage]);
             } catch (error) {
                 console.error('Error fetching data:', error);
                 // Handle error state or display an error message to the user
             } finally {
                 setIsSending(false);
+                setBotIsTyping(false);
             }
         }
     };
@@ -52,16 +54,22 @@ const AiBot = () => {
         setMessage(question);
 
         try {
-            const response = await axios.post('/aichat', 
+            setIsSending(true);
+            setBotIsTyping(true);
+            console.log(token)
+            const response = await axios.post('https://taaibackend.onrender.com/aichat', 
                 { question },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             const botResponse = response.data.answer;
 
-            const updatedConversation = [...conversation, { userMessage: question, botResponse }];
-            setConversation(updatedConversation);
+            const botMessage = { sender: 'bot', text: botResponse };
+            setMessages((prevMessages) => [...prevMessages, botMessage]);
         } catch (error) {
             console.error('Error fetching data:', error);
+        } finally {
+            setIsSending(false);
+            setBotIsTyping(false);
         }
     };
 
@@ -75,17 +83,26 @@ const AiBot = () => {
             <Navbar title="Chat AI" />
             <div className="Aichat-chatmessage-container">
                 <InitialMessage 
-                    initialText="Hello I am Your AI Assistant" 
+                    initialText="  Hello I am Your AI Assistant" 
                     GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this file?')} 
                     AssistantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} 
                     challenges={() => handlePredefinedQuestion('What can we learn from this file?')} 
                 />
-                {conversation.map((item, index) => (
-                    <React.Fragment key={index}>
-                        <UserMessage initialMessage={item.userMessage} onSend={handleSendMessage} />
-                        <Message initialText={item.botResponse} />
-                    </React.Fragment>
+                {messages.map((item, index) => (
+                    item.sender === 'user' 
+                        ? <UserMessage key={index} initialMessage={item.text} onSend={handleSendMessage} />
+                        : <Message key={index} initialText={item.text} />
                 ))}
+                {botIsTyping && (
+                    <div className="bot-message-container">
+                        <div className="botmessage-loader">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                )}
                 <Link to="/voice" className="voice-add-file-button">
                     <RiRobot3Fill />
                 </Link>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass } from '@fortawesome/free-solid-svg-icons';
-import './index.css'
-const IntialMessage = ({ initialText ,GoalQuestion,AssitantQuestion,challenges}) => {
+import './index.css';
+
+const InitialMessage = ({ initialText, GoalQuestion, AssitantQuestion, challenges }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [showQuestions, setShowQuestions] = useState(false);
 
@@ -20,7 +21,7 @@ const IntialMessage = ({ initialText ,GoalQuestion,AssitantQuestion,challenges})
         if (index === initialText.length) {
           clearInterval(timer);
         }
-      }, 15);
+      }, 50);
       return () => clearInterval(timer);
     }
   }, [initialText]);
@@ -30,45 +31,36 @@ const IntialMessage = ({ initialText ,GoalQuestion,AssitantQuestion,challenges})
   };
 
   const handleGoalQuestion = () => {
-    GoalQuestion()
+    GoalQuestion();
   };
 
   const handleAssistanceQuestion = () => {
-   
-    AssitantQuestion()
+    AssitantQuestion();
   };
 
   const handleChallengesQuestion = () => {
-   
-    challenges()
+    challenges();
   };
-
- 
 
   return (
     <div className='action-buttons'>
-      <p className='intial-text'>{displayedText}</p>
+      <p className='initial-text'>{displayedText}</p>
       <div className="predefined-questions">
         {showQuestions && (
-          <ul className='intial-messages-container'>
+          <ul className='initial-messages-container'>
             <li className='question-button' onClick={handleGoalQuestion}>What is main goal with this File?</li>
             <li className='question-button' onClick={handleAssistanceQuestion}>Explain this in 10 lines?</li>
-            <li className='question-button' onClick={handleChallengesQuestion}>what we can get from this file?</li>
-            
-           
+            <li className='question-button' onClick={handleChallengesQuestion}>What can we get from this file?</li>
           </ul>
         )}
       </div>
-   
-  <FontAwesomeIcon 
-    icon={faCompass} 
-    onClick={toggleQuestions} 
-    className="icon-compass" 
-  />
-
-
+      <FontAwesomeIcon 
+        icon={faCompass} 
+        onClick={toggleQuestions} 
+        className="icon-compass" 
+      />
     </div>
   );
 };
 
-export default IntialMessage;
+export default InitialMessage;

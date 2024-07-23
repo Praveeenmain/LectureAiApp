@@ -15,29 +15,32 @@ const Message = ({ initialText, generateSummary, generateNotes, generateQA }) =>
   const [speechUtterance, setSpeechUtterance] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
-
+   const text="  "+initialText
+  
   useEffect(() => {
-    if (initialText) {
-      let index = 0;
+    if (text) {
+    
+      let index =0 ;
       const timer = setInterval(() => {
         setDisplayedText(prev => {
-          if (index < initialText.length) {
-            return prev + initialText[index];
+          if (index < text.length) {
+           
+            return prev + text[index];
           }
           return prev;
         });
         index += 1;
-        if (index === initialText.length) {
+        if (index === text.length) {
           clearInterval(timer);
           // Scroll to top when the message is fully displayed
           setTimeout(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }, 100); // Delay to ensure content is rendered
         }
-      }, 20);
+      }, -20);
       return () => clearInterval(timer);
     }
-  }, [initialText]);
+  }, [text]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayedText);
