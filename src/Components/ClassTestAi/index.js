@@ -48,7 +48,7 @@ const ClassTestAi = () => {
                 throw new Error('Network response was not ok');
             }
 
-            const data = await response.json();
+           
             setSuccess("Uploaded Question paper successfully");
             setFiles([]);
             setFileDisplay('');

@@ -33,7 +33,7 @@ const AllNotes = () => {
         };
 
         fetchAllPdfs();
-    }, []);
+    }, [token]);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = allDocuments.slice(indexOfFirstItem, indexOfLastItem);

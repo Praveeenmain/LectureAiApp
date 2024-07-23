@@ -6,25 +6,25 @@ import './index.css';
 const InitialMessage = ({ initialText, GoalQuestion, AssitantQuestion, challenges }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [showQuestions, setShowQuestions] = useState(false);
-
+   const text="  "+initialText
   useEffect(() => {
-    if (initialText) {
+    if (text) {
       let index = 0;
       const timer = setInterval(() => {
         setDisplayedText(prev => {
-          if (index < initialText.length) {
-            return prev + initialText[index];
+          if (index < text.length) {
+            return prev + text[index];
           }
           return prev;
         });
         index += 1;
-        if (index === initialText.length) {
+        if (index === text.length) {
           clearInterval(timer);
         }
       }, 50);
       return () => clearInterval(timer);
     }
-  }, [initialText]);
+  }, [text]);
 
   const toggleQuestions = () => {
     setShowQuestions(!showQuestions);

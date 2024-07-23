@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
 import { Circles } from 'react-loader-spinner';
 import Navbar from '../NavBar';
-import IntialMessage from "../IntialMessage";
+import IntialMessage from '../IntialMessage';
 import UserMessage from '../UserMessage';
 import Message from '../BotMessage';
 import Cookie from 'js-cookie';
@@ -19,6 +18,7 @@ const ClassAsk = () => {
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const token = Cookie.get('jwt_token');
 
   useEffect(() => {
@@ -51,7 +51,14 @@ const ClassAsk = () => {
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
+
+    // Immediately add user message to conversation
+    const newUserMessage = { userMessage: message, chatbotResponse: '' };
+    setConversation(prevConversation => [...prevConversation, newUserMessage]);
+    setMessage('');
     setIsSending(true);
+    setIsTyping(true);
+
     try {
       const response = await axios.post(`https://taaibackend.onrender.com/askprevious/${id}`, 
         { question: message },
@@ -61,25 +68,31 @@ const ClassAsk = () => {
           },
         }
       );
+
       if (response.status === 200) {
         const chatbotResponse = response.data.answer;
-       
-        setConversation(prevConversation => [
-          ...prevConversation,
-          { userMessage: message, chatbotResponse }
-        ]);
-        setMessage('');
+        setConversation(prevConversation =>
+          prevConversation.map((msg, index) =>
+            index === prevConversation.length - 1
+              ? { ...msg, chatbotResponse }
+              : msg
+          )
+        );
       } else {
         console.error('Failed to send message');
       }
     } catch (error) {
       console.error('Error sending message:', error.response ? error.response.data : error.message);
     }
+
     setIsSending(false);
+    setIsTyping(false);
   };
 
   const handlePredefinedQuestion = async (questionType) => {
     setIsSending(true);
+    setIsTyping(true);
+
     let question;
     switch (questionType) {
       case 'summary':
@@ -115,7 +128,9 @@ const ClassAsk = () => {
       console.error('Error sending message:', error);
       alert('Failed to send message. Please try again.');
     }
+
     setIsSending(false);
+    setIsTyping(false);
   };
 
   return (
@@ -137,13 +152,24 @@ const ClassAsk = () => {
               />
               {conversation.map((item, index) => (
                 <React.Fragment key={index}>
-                  <UserMessage initialMessage={item.userMessage} onSend={handleSendMessage} />
-                  <Message
-                    initialText={item.chatbotResponse}
-                    generateSummary={() => handlePredefinedQuestion('summary')}
-                    generateNotes={() => handlePredefinedQuestion('notes')}
-                    generateQA={() => handlePredefinedQuestion('qanda')}
-                  />
+                  <UserMessage initialMessage={item.userMessage} />
+                  {item.chatbotResponse ? (
+                    <Message
+                      initialText={item.chatbotResponse}
+                      generateSummary={() => handlePredefinedQuestion('summary')}
+                      generateNotes={() => handlePredefinedQuestion('notes')}
+                      generateQA={() => handlePredefinedQuestion('qanda')}
+                    />
+                  ) : index === conversation.length - 1 && isTyping ? (
+                    <div className="bot-message-container">
+                      <div className="botmessage-loader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </div>
+                  ) : null}
                 </React.Fragment>
               ))}
               <div className="input-box-container">

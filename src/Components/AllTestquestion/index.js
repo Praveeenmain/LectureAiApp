@@ -38,7 +38,7 @@ const AllTestQuestions = () => {
         };
 
         fetchAllQuestionPapers();
-    }, []);
+    }, [token]);
 
     return (
         <div className="Allnotes-container">

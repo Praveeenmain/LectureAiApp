@@ -5,13 +5,15 @@ import LectureTitle from '../LectureTitle';
 import UserMessage from '../UserMessage';
 import Navbar from '../NavBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleUp, faVolumeMute, faMicrophone, faStopCircle,faStop } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleUp, faVolumeMute, faMicrophone, faStopCircle, faStop } from '@fortawesome/free-solid-svg-icons';
 import Message from '../BotMessage';
-import {Circles } from 'react-loader-spinner';
+import { Circles } from 'react-loader-spinner';
 import { useParams } from 'react-router-dom';
 import IntialMessage from '../IntialMessage';
 import './popup.css';
-import Cookie from 'js-cookie'
+import Cookie from 'js-cookie';
+import axios from 'axios';
+
 const PopContent = () => {
   const { id } = useParams();
   const [audioFile, setAudioFile] = useState(null);
@@ -22,8 +24,9 @@ const PopContent = () => {
   const [conversation, setConversation] = useState([]);
   const [isListening, setIsListening] = useState(false);
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
+  const [botIsTyping, setBotIsTyping] = useState(false);
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  const token = Cookie.get('jwt_token')
+  const token = Cookie.get('jwt_token');
   recognition.continuous = false;
   recognition.interimResults = false;
   recognition.lang = 'en-US';
@@ -40,10 +43,7 @@ const PopContent = () => {
         });
         if (response.ok) {
           const audioFile = await response.json();
-          
           setAudioFile(audioFile);
-         
-          
         } else {
           console.error('Failed to fetch audio details');
         }
@@ -53,7 +53,7 @@ const PopContent = () => {
       setIsLoading(false);
     };
     fetchAudioDetails(id);
-  }, [id,token]);
+  }, [id, token]);
 
   const toggleVoiceRecognition = () => {
     if (!isListening) {
@@ -101,45 +101,38 @@ const PopContent = () => {
   };
 
   const handleSendMessage = async () => {
-    if (message.trim() === '') {
-      alert('Please enter a message');
-      return;
-    }
-    setIsSending(true);
-    try {
-      const response = await fetch(`https://taaibackend.onrender.com/audioask/${id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ question: message }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setConversation((prev) => [...prev, { userMessage: message, chatbotResponse: data.answer }]);
-        setMessage('');
-      } else {
-        console.error('Failed to send message:', response.statusText);
-        alert('Failed to send message. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
-    }
-    setIsSending(false);
-  };
+    if (message.trim()) {
+      const newMessage = { sender: 'user', text: message };
+      setConversation((prev) => [...prev, newMessage]);
+      setMessage('');
+      setIsSending(true);
+      setBotIsTyping(true);
 
- 
+      try {
+        const response = await axios.post('https://taaibackend.onrender.com/aichat', 
+          { question: message },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        const botResponse = response.data.answer;
+        const botMessage = { sender: 'bot', text: botResponse };
+        setConversation((prev) => [...prev, botMessage]);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Optionally handle error state
+      } finally {
+        setIsSending(false);
+        setBotIsTyping(false);
+      }
+    } else {
+      alert('Please enter a message');
+    }
+  };
 
   const handlePredefinedQuestion = async (question) => {
     if (!audioFile?.audioFile?.transcription) return;
-   
-
-    // Create a new AbortController
-  
-
     setIsSending(true);
+    setBotIsTyping(true);
     try {
       const response = await fetch(`https://taaibackend.onrender.com/audioask/${id}`, {
         method: 'POST',
@@ -161,12 +154,10 @@ const PopContent = () => {
       alert('Failed to send message. Please try again.');
     }
     setIsSending(false);
+    setBotIsTyping(false);
   };
 
-
- 
   return (
-    
     <div>
       <Navbar title="Audio Ai" />
       <div className="popup">
@@ -176,12 +167,10 @@ const PopContent = () => {
               <Circles height="80" width="80" color="white" ariaLabel="circles-loading" visible={true} />
             </div>
           ) : (
-            
             audioFile && (
               <>
                 <div className="audio-player-container">
                   {audioFile.audioFile?.audio && (
-                    
                     <AudioPlayer
                       src={`https://mobishalataai.s3.amazonaws.com/${audioFile.audioFile.audio}`}
                       autoPlay={false}
@@ -192,7 +181,7 @@ const PopContent = () => {
                   )}
                 </div>
                 <div className="Title-voice">
-                  <LectureTitle lecture={ truncateTitle(audioFile.audioFile.title, 3)} id={audioFile?.id} onClick={toggleSpeakStop} />
+                  <LectureTitle lecture={truncateTitle(audioFile.audioFile.title, 3)} id={audioFile?.id} onClick={toggleSpeakStop} />
                   <button className="speak-stop-button" onClick={toggleSpeakStop}>
                     <FontAwesomeIcon className={isSpeaking ? 'volume-mute' : 'volumeup-icon'} icon={isSpeaking ? faVolumeMute : faMicrophone} />
                     {!isSpeaking && <img className="volumeup-icon" src="https://res.cloudinary.com/dgviahrbs/image/upload/v1718715561/audio-book_1_htj0pr.png" alt="volumeup" />}
@@ -202,17 +191,27 @@ const PopContent = () => {
                   <IntialMessage initialText={audioFile.audioFile.transcription} GoalQuestion={() => handlePredefinedQuestion('What is your main goal with this File?')} AssitantQuestion={() => handlePredefinedQuestion('Explain this in 10 lines')} challenges={() => handlePredefinedQuestion('What we can learn from this file?')} />
                   {conversation.map((item, index) => (
                     <React.Fragment key={index}>
-                      <UserMessage initialMessage={item.userMessage} onSend={handleSendMessage} />
-                      <Message initialText={item.chatbotResponse} generateSummary={() => handlePredefinedQuestion('Generate summary')} generateNotes={() => handlePredefinedQuestion('Notes: Point 1, Point 2, ...')} generateQA={() => handlePredefinedQuestion('Write a question and answer for this file')} />
+                      {item.sender === 'user' && <UserMessage initialMessage={item.text} onSend={handleSendMessage} />}
+                      {item.sender === 'bot' && <Message initialText={item.text} generateSummary={() => handlePredefinedQuestion('Generate summary')} generateNotes={() => handlePredefinedQuestion('Notes: Point 1, Point 2, ...')} generateQA={() => handlePredefinedQuestion('Write a question and answer for this file')} />}
                     </React.Fragment>
                   ))}
+                  {botIsTyping && (
+                    <div className="bot-message-container">
+                      <div className="botmessage-loader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </div>
+                  )}
                   <div className="input-box-container">
                     <button className="voice-button" onClick={toggleVoiceRecognition}>
                       <FontAwesomeIcon icon={speechRecognitionActive ? faStopCircle : faMicrophone} />
                     </button>
                     <input placeholder="Type your message here..." value={message} onChange={(e) => setMessage(e.target.value)} className="input-box" />
                     <button className="send-message-button" onClick={handleSendMessage}>
-                      {isSending ? <FontAwesomeIcon icon={faStop}/> : <FontAwesomeIcon icon={faArrowCircleUp} />}
+                      {isSending ? <FontAwesomeIcon icon={faStop} /> : <FontAwesomeIcon icon={faArrowCircleUp} />}
                     </button>
                   </div>
                 </div>

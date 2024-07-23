@@ -35,7 +35,7 @@ const Message = ({ initialText, generateSummary, generateNotes, generateQA }) =>
           // Scroll to top when the message is fully displayed
           setTimeout(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-          }, 100); // Delay to ensure content is rendered
+          }, 10); // Delay to ensure content is rendered
         }
       }, -20);
       return () => clearInterval(timer);

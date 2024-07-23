@@ -1,13 +1,13 @@
-import Navbar from "../NavBar";
-import UserMessage from '../UserMessage';
-import Message from '../BotMessage';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
-import { Circles } from 'react-loader-spinner';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faStopCircle, faArrowCircleUp, faStop } from '@fortawesome/free-solid-svg-icons';
+import { Circles } from 'react-loader-spinner';
+import Navbar from '../NavBar';
 import IntialMessage from "../IntialMessage";
+import UserMessage from '../UserMessage';
+import Message from '../BotMessage';
 import Cookie from 'js-cookie';
 import './index.css';
 
@@ -19,6 +19,7 @@ const NoteDetails = () => {
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const token = Cookie.get('jwt_token');
 
   useEffect(() => {
@@ -48,9 +49,14 @@ const NoteDetails = () => {
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
-    console.log(message);
-    let question = message;
+
+    // Immediately add user message to conversation
+    const newUserMessage = { userMessage: message, chatbotResponse: '' };
+    setConversation(prevConversation => [...prevConversation, newUserMessage]);
+    setMessage('');
     setIsSending(true);
+    setIsTyping(true);
+
     try {
       const response = await fetch(`https://taaibackend.onrender.com/noteask/${id}`, {
         method: 'POST',
@@ -58,17 +64,21 @@ const NoteDetails = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question: message }),
       });
+
       if (response.status === 200) {
         const data = await response.json();
         const chatbotResponse = data.answer;
-        console.log(chatbotResponse);
-        setConversation((prevConversation) => [
-          ...prevConversation,
-          { userMessage: message, chatbotResponse }
-        ]);
-        setMessage('');
+
+        // Update the latest message with chatbot response
+        setConversation(prevConversation =>
+          prevConversation.map((msg, index) =>
+            index === prevConversation.length - 1
+              ? { ...msg, chatbotResponse }
+              : msg
+          )
+        );
       } else {
         console.error('Failed to send message');
       }
@@ -76,11 +86,15 @@ const NoteDetails = () => {
       console.error('Error sending message:', error.response ? error.response.data : error.message);
     }
     setIsSending(false);
+    setIsTyping(false);
   };
 
   const handlePredefinedQuestion = async (questionType) => {
     if (!noteFile?.text) return;
+
     setIsSending(true);
+    setIsTyping(true);
+
     let question;
     switch (questionType) {
       case 'summary':
@@ -97,14 +111,17 @@ const NoteDetails = () => {
         break;
     }
     try {
-      const response = await axios.post(`https://taaibackend.onrender.com/ask/${id}`, { question }, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(`https://taaibackend.onrender.com/ask/${id}`, 
+        { question }, 
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
       if (response.status === 200) {
         const data = response.data;
-        setConversation((prev) => [...prev, { userMessage: question, chatbotResponse: data.answer }]);
+        setConversation(prev => [...prev, { userMessage: question, chatbotResponse: data.answer }]);
       } else {
         console.error('Failed to send message:', response.statusText);
         alert('Failed to send message. Please try again.');
@@ -114,10 +131,12 @@ const NoteDetails = () => {
       alert('Failed to send message. Please try again.');
     }
     setIsSending(false);
+    setIsTyping(false);
   };
 
   const toggleVoiceRecognition = () => {
     setSpeechRecognitionActive(!speechRecognitionActive);
+    // Add logic for speech recognition if required
   };
 
   return (
@@ -146,13 +165,24 @@ const NoteDetails = () => {
                 />
                 {conversation.map((item, index) => (
                   <React.Fragment key={index}>
-                    <UserMessage initialMessage={item.userMessage} onSend={handleSendMessage} />
-                    <Message
-                      initialText={item.chatbotResponse}
-                      generateSummary={() => handlePredefinedQuestion('summary')}
-                      generateNotes={() => handlePredefinedQuestion('notes')}
-                      generateQA={() => handlePredefinedQuestion('qanda')}
-                    />
+                    <UserMessage initialMessage={item.userMessage} />
+                    {item.chatbotResponse ? (
+                      <Message
+                        initialText={item.chatbotResponse}
+                        generateSummary={() => handlePredefinedQuestion('summary')}
+                        generateNotes={() => handlePredefinedQuestion('notes')}
+                        generateQA={() => handlePredefinedQuestion('qanda')}
+                      />
+                    ) : index === conversation.length - 1 && isTyping ? (
+                      <div className="bot-message-container">
+                      <div className="botmessage-loader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </div>
+                    ) : null}
                   </React.Fragment>
                 ))}
                 <div className="input-box-container">
