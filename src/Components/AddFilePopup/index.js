@@ -203,16 +203,18 @@ const AddedFileContainer = ({ onClose }) => {
               <option value="Emotional Intelligence">Emotional Intelligence</option>
               {/* Add other subject options here */}
             </select>
-            <textarea
-              className='note-input-category'
+            <input
+              className='note-input-title'
               value={topics}
               onChange={(e) => setTopics(e.target.value)}
               placeholder="Topics (optional)"
             />
+            <div className='Notes-Ai-submit-cancel'>
             <button className='Notes-Ai-submit' type="submit" disabled={isLoading}>
               {isLoading ? 'Uploading...' : 'Submit'}
             </button>
-            <button className='Notes-Ai-cancel' onClick={handleCancel}>Cancel</button>
+            <button className='Notes-Ai-cancel' onClick={handleCancel}>Reset</button>
+            </div>
           </form>
           
         </div>

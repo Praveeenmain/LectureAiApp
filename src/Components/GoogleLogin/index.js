@@ -52,7 +52,7 @@ const GoogleLoginComponent = () => {
         try {
             const token = credentialResponse.credential;
             Cookies.set('jwt', token, { expires: 30, secure: true, sameSite: 'strict' });
-          
+
             // Set the loader state to true
             setLoading(true);
 
@@ -76,10 +76,8 @@ const GoogleLoginComponent = () => {
         console.error('Google Sign-In Error:', error);
     };
     
-
     return (
         <div className='Login-bg-container'>
-            
             <div className='Login-text-container' style={{ backgroundColor: bgColor, padding: '20px', fontSize: '25px', fontFamily: "Roboto", fontWeight: "bold", position: 'relative' }}>
                 <h1 className='main-taAi' style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', width: '100%' }}>
                     {isFirstCycle && currentTextIndex === 0 ? (
@@ -104,23 +102,22 @@ const GoogleLoginComponent = () => {
                     />
                 </div>
             )}
-            <div className='google-button-email-container'>
-                <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-                    <div className="google-button-wrapper">
-                        <GoogleLogin size='large' onSuccess={onSuccess} onError={onError} text="continue_with" />
-                    </div>
-                    
-                </GoogleOAuthProvider>
-                <button className='Whatapp-button custom-whatsapp-button' onClick={() => {
-                    const message = encodeURIComponent("Hello, I want to know more about TaAi. My name is [Your Name]");
-                    window.open(`https://wa.me/919972968390?text=${message}`, '_blank');
-                }}>
-                    <FaWhatsapp className='Whatapp-icon' />
-                    <span className='Whatapp-text'>Talk to us</span>
-                </button>
-            
-            </div>
-          
+            {!loading && (
+                <div className='google-button-email-container'>
+                    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+                        <div className="google-button-wrapper">
+                            <GoogleLogin size='large' onSuccess={onSuccess} onError={onError} text="continue_with" />
+                        </div>
+                    </GoogleOAuthProvider>
+                    <button className='Whatapp-button custom-whatsapp-button' onClick={() => {
+                        const message = encodeURIComponent("Hello, I want to know more about TaAi. My name is [Your Name]");
+                        window.open(`https://wa.me/919972968390?text=${message}`, '_blank');
+                    }}>
+                        <FaWhatsapp className='Whatapp-icon' />
+                        <span className='Whatapp-text'>Talk to us</span>
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
