@@ -378,3 +378,21 @@
   align-items: center; /* Center vertically */
   justify-content: center; /* Center horizontally */
 }
+
+.voicegpt-add-file-button{
+  background-color: black;
+  color: grey;
+  padding: 0; /* Remove padding to center text */
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  bottom: 155px;
+  right: 20px;
+  border: 1px solid #2b2f33;
+  width: 50px;
+  height: 50px; /* Make height equal to width for perfect circle */
+  display: flex; /* Enable flexbox */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+}

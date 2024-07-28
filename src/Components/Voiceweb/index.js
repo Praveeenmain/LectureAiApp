@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import 'react-h5-audio-player/lib/styles.css';
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faMicrophone,faWalkieTalkie } from '@fortawesome/free-solid-svg-icons';
 import LabelBottomNavigation from '../BottomNav';
 import { Circles } from 'react-loader-spinner';  // Import the loader
 
@@ -240,10 +240,13 @@ const VoiceAIComponent = () => {
                 <FontAwesomeIcon icon={faMicrophone} />
               </button>
               <button className="click-buttton"> Click to Talk</button>
-
+              <Link to="/voicegpt" className="voicegpt-add-file-button">
+              <FontAwesomeIcon icon={faWalkieTalkie} />
+              </Link>
               <Link to="/chat" className="voice-add-file-button">
                 <FontAwesomeIcon icon={faComment} />
               </Link>
+
             </div>
           )}
 

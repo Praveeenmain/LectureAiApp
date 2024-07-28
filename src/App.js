@@ -15,13 +15,12 @@ import GoogleLoginComponent from './Components/GoogleLogin'
 import VoiceAIComponent  from './Components/Voiceweb'
 import ProtectedRoute from './Components/ProtectedRoute'
 import PrivateRoute from './Components/PrivateRoute';
-
 import './App.css';
 import Profile from './Components/Profile';
 import AddStudents from './Components/AddStudents';
 import TeacherProfile from './Components/TeacherProfile';
 import LandingPage from './Components/LandingPage';
-
+import VoiceGpt from './Components/VoiceGpt'
 function App() {
   return (                      
     <div className="App">                
@@ -43,6 +42,7 @@ function App() {
           <ProtectedRoute path="/pqs/:id" exact component={ClassAsk} />
           <ProtectedRoute path="/teacherprofile" exact component={TeacherProfile} />
           <ProtectedRoute path="/chat" exact component={AiBot} />
+          <ProtectedRoute path="/voicegpt" exact component={VoiceGpt} />
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
